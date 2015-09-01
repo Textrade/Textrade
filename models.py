@@ -42,3 +42,15 @@ class Book(Model):
 
     class Meta:
         database = db
+
+
+class Trade(Model):
+    """Trade model."""
+    user_one = ForeignKeyField(User, to_field='username')
+    user_two = ForeignKeyField(User, to_field='username')
+    book = ForeignKeyField(Book, to_field='isbn')
+    status = CharField(max_length=255)
+    date = DateField(default=datetime.datetime.now)
+
+    class Meta:
+        database = db
