@@ -86,5 +86,22 @@ def create_tables():
     db.close()
     print("Tables created successfully.")
 
+
+def drop_tables():
+    """Delete all tables of the model."""
+    print("All the information in the tables will be gone.")
+    choice = input("Are you sure? [y/N] >>> ").upper()
+    if choice == 'Y':
+        db.connect()
+        db.drop_tables(
+            [
+                WishList,
+                Trade,
+                Book,
+                User
+            ]
+        )
+
+
 if __name__ == '__main__':
     create_tables()
