@@ -1,7 +1,7 @@
 import datetime
 
-from peewee import *
 from flask.ext.login import UserMixin
+from peewee import *
 
 
 # DATABASE INFO
@@ -19,7 +19,7 @@ class User(UserMixin, Model):
     """User model."""
     first_name = CharField(max_length=255)
     second_name = CharField(max_length=255)
-    username = CharField(max_length=255)
+    username = CharField(max_length=255, unique=True)
     password = CharField(max_length=255)
     joined = DateTimeField(default=datetime.datetime.now)
     university_name = CharField(max_length=255, null=True)
@@ -35,7 +35,7 @@ class Book(Model):
     name = CharField(max_length=255)
     edition = CharField(max_length=255)
     author = CharField(max_length=255)
-    isbn = CharField(max_length=255)
+    isbn = CharField(max_length=255, unique=True)
     username = CharField(max_length=255)
     available = CharField(max_length=255)
     added = DateField(default=datetime.datetime.now)
@@ -46,11 +46,11 @@ class Book(Model):
 
 class Trade(Model):
     """Trade model."""
-    user_one = ForeignKeyField(User, to_field='username')
-    user_two = ForeignKeyField(User, to_field='username')
-    book = ForeignKeyField(Book, to_field='isbn')
+    user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
+    user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
+    book = ForeignKeyField(Book, to_field='isbn', related_name='book_to_trade')
     status = CharField(max_length=255)
-    date = DateField(default=datetime.datetime.now)
+    date = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = db
@@ -76,7 +76,7 @@ def create_tables():
                 User,
                 Book,
                 Trade,
-                WishList
+                WishList,
             ],
             safe=True
         )
@@ -102,6 +102,6 @@ def drop_tables():
             ]
         )
 
-
 if __name__ == '__main__':
+    # drop_tables()
     create_tables()
