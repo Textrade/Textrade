@@ -65,3 +65,26 @@ class WishList(Model):
 
     class Meta:
         database = db
+
+
+def create_tables():
+    """Create tables from model"""
+    db.connect()
+    try:
+        db.create_tables(
+            [
+                User,
+                Book,
+                Trade,
+                WishList
+            ],
+            safe=True
+        )
+    except Exception as e:
+        print(e)
+        return None
+    db.close()
+    print("Tables created successfully.")
+
+if __name__ == '__main__':
+    create_tables()
