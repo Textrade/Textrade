@@ -3,7 +3,16 @@ import datetime
 from peewee import *
 from flask.ext.login import UserMixin
 
-db = MySQLDatabase()
+
+# DATABASE INFO
+HOST = "localhost"
+DATABASE_NAME = "textrade"
+PORT = 3306
+USERNAME = "root"
+PASSWORD = ""
+
+db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
+                   user=USERNAME, passwd=PASSWORD)
 
 
 class User(UserMixin, Model):
