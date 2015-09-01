@@ -29,3 +29,16 @@ class User(UserMixin, Model):
     class Meta:
         database = db
 
+
+class Book(Model):
+    """Book model."""
+    name = CharField(max_length=255)
+    edition = CharField(max_length=255)
+    author = CharField(max_length=255)
+    isbn = CharField(max_length=255)
+    username = CharField(max_length=255)
+    available = CharField(max_length=255)
+    added = DateField(default=datetime.datetime.now)
+
+    class Meta:
+        database = db
