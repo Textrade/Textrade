@@ -54,3 +54,14 @@ class Trade(Model):
 
     class Meta:
         database = db
+
+
+class WishList(Model):
+    """WishList model."""
+    book = ForeignKeyField(Book, to_field='isbn')
+    username = ForeignKeyField(User, to_field='username')
+    status = CharField(max_length=255)
+    date = DateTimeField()
+
+    class Meta:
+        database = db
