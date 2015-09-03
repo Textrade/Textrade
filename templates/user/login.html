@@ -1,110 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Textrade</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../static/styles/sass/main.css">
-</head>
+{% extends 'default/base.html' %}
 
-<body>
-    <div class="container-fluid" id="page-wrap">
-    
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Brand</a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">Login <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">Our Services</a></li>
-                        <li><a href="#">Rent</a></li>
-                        <li><a href="#">Trade</a></li>
-                        <li><a href="#">Donate</a></li>
-                    </ul>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav> 
-        
-        <div class="row">
-            <div id="login-wrap">
-                <div id="login-dialog">
-                    <h3>Login</h3>
-                        <form>
-                            <input type="text" name="user" placeholder="username">
-                            <input type="password" name="pass" placeholder="password">
-                            <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Login">
-                            <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account</a><span> | </span><a href="#">Forgot Password</a></p>
-                            
-                            <!-- Modal -->
-                            <div class="modal fade" id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">Register for Textrade</h4>   
-                                        </div>
-                                        <div class="modal-body form-horizontal" id=
-"register-form">
-                                            <form>
-                                                <input type="text" name="firstName" placeholder="First Name">
-                                                <input type="text" name="lastName" placeholder="Last Name">
-                                                <input type="text" name="email" placeholder="UML Email">
-                                                <!-- must include a quick tid-bit saying why it must be UML -->
-                                                <input type="text" name="username" placeholder="Username">
-                                                <input type="password" name="password" placeholder="Password">
-                                                <input type="password" name="confrimPassword" placeholder="Confirm Your Password">
-                                                <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Login">
-                                            </form> 
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
+{% block content %}
+    <div class="row">
+        <div id="login-wrap">
+            <div id="login-dialog">
+                <h3>Login</h3>
+                    <form>
+                        <input type="text" name="user" placeholder="username">
+                        <input type="password" name="pass" placeholder="password">
+                        <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Login">
+                        <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account</a><span> | </span><a href="#">Forgot Password</a></p>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Register for Textrade</h4>
+                                    </div>
+                                    <div class="modal-body form-horizontal" id="register-form">
+                                        <form>
+                                            <input type="text" name="firstName" placeholder="First Name">
+                                            <input type="text" name="lastName" placeholder="Last Name">
+                                            <input type="text" name="email" placeholder="UML Email">
+                                            <!-- must include a quick tid-bit saying why it must be UML -->
+                                            <input type="text" name="username" placeholder="Username">
+                                            <input type="password" name="password" placeholder="Password">
+                                            <input type="password" name="confrimPassword" placeholder="Confirm Your Password">
+                                            <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Login">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                </div>
+                        </div>
+                    </form>
             </div>
         </div>
-        
-        <div class="row">
-            <footer>
-                <h3>This is where we say how awesome we are.</h3>
-                <table>
-                    <tr><td>And</td><td>we</td><td>list</td><td>things</td></tr>
-                </table>
-            </footer>
-        </div>
-    </div><!-- close .container-fluid -->
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
- 
+    </div>
 
-</body>
-</html>    
+    <div class="row">
+        <footer>
+            <h3>This is where we say how awesome we are.</h3>
+            <table>
+                <tr><td>And</td><td>we</td><td>list</td><td>things</td></tr>
+            </table>
+        </footer>
+    </div>
+{% endblock %}
