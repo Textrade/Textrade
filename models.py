@@ -18,13 +18,13 @@ db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
 class User(UserMixin, Model):
     """User model."""
     first_name = CharField(max_length=255)
-    second_name = CharField(max_length=255)
+    last_name = CharField(max_length=255)
     username = CharField(max_length=255, unique=True)
     password = CharField(max_length=255)
     joined = DateTimeField(default=datetime.datetime.now)
-    university_name = CharField(max_length=255, null=True)
+    university_name = CharField(max_length=255)
     university_email = CharField(max_length=255)
-    personal_email = CharField(max_length=255)
+    personal_email = CharField(max_length=255, null=True)
 
     class Meta:
         database = db
@@ -103,5 +103,5 @@ def drop_tables():
         )
 
 if __name__ == '__main__':
-    # drop_tables()
+    drop_tables()
     create_tables()
