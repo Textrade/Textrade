@@ -15,7 +15,7 @@
 <body>
     <div class="container-fluid" id="page-wrap">
     
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed-top container-fluid">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -31,18 +31,13 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">Login <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">Our Services</a></li>
-                        <li><a href="#">Rent</a></li>
-                        <li><a href="#">Trade</a></li>
-                        <li><a href="#">Donate</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="our-services.html">Our Services</a></li>
+                        <li><a href="rent.html">Rent</a></li>
+                        <li><a href="the-team.html">The Team <span class="sr-only">(current)</span></a></li>
+                        <li><a href="trade.html">Trade</a></li>
+                        <li><a href="donate.html">Donate</a></li>
                     </ul>
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav> 
@@ -63,21 +58,32 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">Register for Textrade</h4>   
+                                                <h3 class="modal-title" id="myModalLabel">Register</h3>   
                                         </div>
                                         <div class="modal-body form-horizontal" id=
 "register-form">
                                             <form>
-                                                <input type="text" name="firstName" placeholder="First Name">
-                                                <input type="text" name="lastName" placeholder="Last Name">
-                                                <input type="text" name="email" placeholder="UML Email">
-                                                <!-- must include a quick tid-bit saying why it must be UML -->
-                                                <input type="text" name="username" placeholder="Username">
-                                                <input type="password" name="password" placeholder="Password">
-                                                <input type="password" name="confrimPassword" placeholder="Confirm Your Password">
-                                                <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Login">
-                                            </form> 
-                                        </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Name</label>
+                                                    <input type="firstName" class="form-control" id="firstName" placeholder="First">
+                                                    <input type="lastName" class="form-control" id="lastName" placeholder="Last">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">UML Student Email</label>
+                                                    <input type="email" class="form-control" id="email" placeholder="Email">
+                                                    <p class="note">*You must have a UML email to register with Textrade</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Username</label>
+                                                    <input type="username" class="form-control" id="username" placeholder="Username">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Password</label>
+                                                    <input type="password-create" class="form-control" id="password-create" placeholder="Password">
+                                                    <input type="password-confirm" class="form-control" id="password-confirm" placeholder="Confirm Password">
+                                                </div>
+                                            </form>
+                                        </div><!-- close form container -->
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                             <button type="button" class="btn btn-primary">Save changes</button>
@@ -90,12 +96,17 @@
             </div>
         </div>
         
-        <div class="row">
+        <div class="row" id="footer">
             <footer>
-                <h3>This is where we say how awesome we are.</h3>
-                <table>
-                    <tr><td>And</td><td>we</td><td>list</td><td>things</td></tr>
+                <h2>Textrade</h2>
+                <h4>An Educated Book Buying Market</h4>
+                <table id="site-actions">
+                    <tr id="main-actions"><td>About Us</td><td>Services</td><td>Donate</td><td>Log-In</td></tr>
+                    <tr><td>The Team</td><td>Rent</td><td></td><td></td></tr>
+                    <tr><td>Our Mission</td><td>Trade</td><td></td><td></td></tr>
+                    <tr><td>Contact</td><td></td><td></td><td></td></tr>
                 </table>
+                <p id="copyright">This is where the copyright goes</p>
             </footer>
         </div>
     </div><!-- close .container-fluid -->
