@@ -1,0 +1,101 @@
+from flask_wtf import Form
+from wtforms import StringField, PasswordField
+from wtforms.validators import (DataRequired, Regexp, ValidationError, Email,
+                                Length, EqualTo)
+
+from models import User
+
+
+def username_exits(form, field):
+    if User.select().where(User.username == field.data).exist():
+        raise ValidationError('User with that username already exists.')
+
+
+def university_email_exits(form, field):
+    if User.select().where(User.university_email == field.data).exist():
+        raise ValidationError('This email is already in our system.')
+
+
+def personal_email_exits(form, field):
+    if User.select().where(User.personal_email == field.data).exist():
+        raise ValidationError('This email is already in our system.')
+
+
+def is_uml_email(form, field):
+    if "@student.uml.edu" not in field.data:
+        raise ValidationError('This is not a valid email. You must be a UML student.')
+
+
+class RegisterForm(Form):
+    """Form to register an user."""
+    first_name = StringField(
+        'First Name',
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[a-zA-Z]+$',
+                message="First name can only contain characters."
+            )
+        ]
+    )
+    second_name = StringField(
+        'Last Name',
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[a-zA-Z]+$',
+                message="Last name can only contain characters."
+            )
+        ]
+    )
+    username = StringField(
+        'Username',
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[a-zA-Z0-9_-]+$',
+                message=("Username should be one word, letters, "
+                         "numbers, and '_, -'.")
+            ),
+            username_exits
+        ]
+    )
+    password = PasswordField(
+        'Password',
+        validators=[
+            DataRequired(),
+            Length(min=5),
+            EqualTo('password2', message='Password must match')
+        ]
+    )
+    password2 = PasswordField(
+        'Confirm Password',
+        validators=[DataRequired()]
+    )
+    # TODO: when expansion to different schools
+    # university_name = StringField(
+    #     'University Name',
+    #     validators=[
+    #         DataRequired(),
+    #         Regexp(
+    #             r'^[a-zA-Z]+&',
+    #             message="University name can only contain characters."
+    #         )
+    #     ]
+    # )
+    university_email = StringField(
+        'University Email',
+        validators=[
+            DataRequired(),
+            Email(),
+            is_uml_email,
+            university_email_exits
+        ]
+    )
+    personal_email = StringField(
+        'Personal Email (Optional)',
+        validators=[
+            Email(),
+            personal_email_exits
+        ]
+    )
