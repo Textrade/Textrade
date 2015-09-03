@@ -22,7 +22,8 @@ class User(UserMixin, Model):
     username = CharField(max_length=255, unique=True)
     password = CharField(max_length=255)
     joined = DateTimeField(default=datetime.datetime.now)
-    university_name = CharField(max_length=255)
+    # TODO: when expansion to different schools
+    # university_name = CharField(max_length=255)
     university_email = CharField(max_length=255)
     personal_email = CharField(max_length=255, null=True)
 
