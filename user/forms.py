@@ -38,7 +38,7 @@ class RegisterForm(Form):
             )
         ]
     )
-    second_name = StringField(
+    last_name = StringField(
         'Last Name',
         validators=[
             DataRequired(),
