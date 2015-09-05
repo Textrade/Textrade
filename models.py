@@ -14,6 +14,8 @@ PASSWORD = ""
 db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
                    user=USERNAME, passwd=PASSWORD)
 
+# TODO: Add a table named UserStatus
+
 
 class User(UserMixin, Model):
     """User model."""
@@ -26,6 +28,7 @@ class User(UserMixin, Model):
     # university_name = CharField(max_length=255)
     university_email = CharField(max_length=255)
     personal_email = CharField(max_length=255, null=True)
+    # TODO: Add active column
 
     class Meta:
         database = db
@@ -50,6 +53,7 @@ class Trade(Model):
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
     book = ForeignKeyField(Book, to_field='isbn', related_name='book_to_trade')
+    # TODO: Add a second book.
     status = CharField(max_length=255)
     date = DateTimeField(default=datetime.datetime.now)
 
