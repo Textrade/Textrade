@@ -1,0 +1,34 @@
+{% extends 'default/base.html' %}
+{% from 'default/macros.html' import render_field %}
+{% block content %}
+    <div class="row">
+        <div id="login-wrap">
+            <div id="login-dialog">
+                <h3>Register</h3>
+                <form method="post" action="{{ url_for('register') }}">
+                    {{ reg_form.hidden_tag() }}
+                    {% for field in reg_form %}
+                        {{ render_field(field) }}
+                    {% endfor %}
+                    <!-- must include a quick tid-bit saying why it must be UML -->
+                    <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Register">
+                </form>
+                {% with messeages = get_flashed_messages(with_categories=True) %}
+                    {% if messeages %}
+                        {% for msg in messeages %}
+                            <p>{{ msg[1] }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <footer>
+            <h3>This is where we say how awesome we are.</h3>
+            <table>
+                <tr><td>And</td><td>we</td><td>list</td><td>things</td></tr>
+            </table>
+        </footer>
+    </div>
+{% endblock %}

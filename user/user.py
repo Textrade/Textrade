@@ -10,7 +10,7 @@ def create_user(**kwargs):
         last_name=kwargs['last_name'],
         username=kwargs['username'],
         password=kwargs['password'],
-        university_name=kwargs['university_name'],
+        # university_name=kwargs['university_name'],
         university_email=kwargs['university_email'],
         personal_email=kwargs['personal_email']
     )

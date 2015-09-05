@@ -7,17 +7,17 @@ from models import User
 
 
 def username_exits(form, field):
-    if User.select().where(User.username == field.data).exist():
+    if User.select().where(User.username == field.data).exists():
         raise ValidationError('User with that username already exists.')
 
 
 def university_email_exits(form, field):
-    if User.select().where(User.university_email == field.data).exist():
+    if User.select().where(User.university_email == field.data).exists():
         raise ValidationError('This email is already in our system.')
 
 
 def personal_email_exits(form, field):
-    if User.select().where(User.personal_email == field.data).exist():
+    if User.select().where(User.personal_email == field.data).exists():
         raise ValidationError('This email is already in our system.')
 
 
@@ -99,3 +99,9 @@ class RegisterForm(Form):
             personal_email_exits
         ]
     )
+
+
+class LoginForm(Form):
+    """Login user form."""
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
