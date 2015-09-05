@@ -36,18 +36,24 @@ class User(UserMixin, Model):
 
 class TradeStatus(Model):
     """Status for trades"""
-    status = CharField(max_length=50)
+    status = CharField(max_length=50, unique=True)
 
     class Meta:
         database = db
+
+    def __str__(self):
+        return self.status
 
 
 class BookStatus(Model):
     """Status for books"""
-    status = CharField(max_length=50)
+    status = CharField(max_length=50, unique=True)
 
     class Meta:
         database = db
+
+    def __str__(self):
+        return self.status
 
 
 class Book(Model):
@@ -57,7 +63,7 @@ class Book(Model):
     author = CharField(max_length=255)
     isbn = CharField(max_length=255, unique=True)
     username = ForeignKeyField(User, to_field='username', related_name='book')
-    available = CharField(max_length=255)
+    available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateField(default=datetime.datetime.now)
 
     class Meta:
@@ -72,7 +78,7 @@ class Trade(Model):
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
     book = ForeignKeyField(Book, to_field='isbn', related_name='book_to_trade')
-    status = CharField(max_length=255)
+    status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
@@ -103,6 +109,8 @@ def create_tables():
         db.create_tables(
             [
                 User,
+                TradeStatus,
+                BookStatus,
                 Book,
                 Trade,
                 WishList,
@@ -127,7 +135,9 @@ def drop_tables():
                 WishList,
                 Trade,
                 Book,
-                User
+                BookStatus,
+                TradeStatus,
+                User,
             ]
         )
 

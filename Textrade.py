@@ -24,8 +24,11 @@ login_manager.login_view = 'login'
 
 admin = Admin(app, name="Textrade", template_mode="bootstrap3")
 admin.add_view(ModelView(models.User))
+admin.add_view(ModelView(models.TradeStatus))
 admin.add_view(ModelView(models.Trade))
+admin.add_view(ModelView(models.BookStatus))
 admin.add_view(ModelView(models.Book))
+
 
 
 @login_manager.user_loader
