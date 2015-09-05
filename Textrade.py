@@ -3,6 +3,9 @@ from flask.ext.bcrypt import check_password_hash, generate_password_hash
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 from itsdangerous import URLSafeSerializer, BadSignature
+from flask_admin import Admin
+from flask_admin.contrib.peewee import ModelView
+
 
 import models
 from user.forms import RegisterForm, LoginForm
@@ -18,6 +21,11 @@ app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+admin = Admin(app, name="Textrade", template_mode="bootstrap3")
+admin.add_view(ModelView(models.User))
+admin.add_view(ModelView(models.Trade))
+admin.add_view(ModelView(models.Book))
 
 
 @login_manager.user_loader
