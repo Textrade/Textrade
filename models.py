@@ -30,6 +30,25 @@ class User(UserMixin, Model):
     class Meta:
         database = db
 
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
+
+
+class TradeStatus(Model):
+    """Status for trades"""
+    status = CharField(max_length=50)
+
+    class Meta:
+        database = db
+
+
+class BookStatus(Model):
+    """Status for books"""
+    status = CharField(max_length=50)
+
+    class Meta:
+        database = db
+
 
 class Book(Model):
     """Book model."""
@@ -37,12 +56,15 @@ class Book(Model):
     edition = CharField(max_length=255)
     author = CharField(max_length=255)
     isbn = CharField(max_length=255, unique=True)
-    username = CharField(max_length=255)
+    username = ForeignKeyField(User, to_field='username', related_name='book')
     available = CharField(max_length=255)
     added = DateField(default=datetime.datetime.now)
 
     class Meta:
         database = db
+
+    def __str__(self):
+        return self.name
 
 
 class Trade(Model):
@@ -56,6 +78,9 @@ class Trade(Model):
     class Meta:
         database = db
 
+    def __str__(self):
+        return "Trade between {} and {}".format(self.user_one, self.user_two)
+
 
 class WishList(Model):
     """WishList model."""
@@ -66,6 +91,9 @@ class WishList(Model):
 
     class Meta:
         database = db
+
+    def __str__(self):
+        return "{} Wish List".format(self.username)
 
 
 def create_tables():
