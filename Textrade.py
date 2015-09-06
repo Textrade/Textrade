@@ -2,7 +2,6 @@ from flask import (Flask, g, render_template, redirect, url_for, flash)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
-from itsdangerous import URLSafeSerializer, BadSignature
 
 import models
 from user.forms import RegisterForm, LoginForm
