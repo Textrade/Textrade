@@ -1,7 +1,7 @@
 from flask import (Flask, g, render_template, redirect, url_for, flash, request)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 from flask.ext.login import (LoginManager, login_user, logout_user,
-                             login_required)
+                             login_required, user_logged_in)
 import flask_wtf
 import flask_login
 from flask_admin import Admin
@@ -38,13 +38,14 @@ class TextradeModelView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login', next=request.url))
 
-admin = Admin(app, name="Textrade", template_mode="bootstrap3")
-admin.add_view(ModelView(models.UserRole))
+
+admin = Admin(app, name="Textrade")
+admin.add_view(TextradeModelView(models.UserRole))
 admin.add_view(TextradeModelView(models.User))
-# admin.add_view(TextradeModelView(models.TradeStatus))
-# admin.add_view(TextradeModelView(models.Trade))
-# admin.add_view(TextradeModelView(models.BookStatus))
-# admin.add_view(TextradeModelView(models.Book))
+admin.add_view(TextradeModelView(models.TradeStatus))
+admin.add_view(TextradeModelView(models.Trade))
+admin.add_view(TextradeModelView(models.BookStatus))
+admin.add_view(TextradeModelView(models.Book))
 
 
 @login_manager.user_loader
@@ -91,26 +92,30 @@ def team():
 
 @app.route('/login', methods=('GET', 'POST'))
 def login():
-    # Login form in login view
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        try:
-            log_user = models.User.get(models.User.username == login_form.username.data)
-        except models.DoesNotExist:
-            flash("Your username  or password doesn't match!", "error")
-        else:
-            if check_password_hash(log_user.password, login_form.password.data):
-                login_user(log_user)
-                flash("You've been logged in!", "success")
-                return redirect(url_for('dashboard'))
-            else:
+    if not flask_login.current_user.is_authenticated():
+        # Login form in login view
+        login_form = LoginForm()
+        if login_form.validate_on_submit():
+            try:
+                log_user = models.User.get(models.User.username == login_form.username.data)
+            except models.DoesNotExist:
                 flash("Your username  or password doesn't match!", "error")
-    return render_template(
-        'user/login.html',
-        section="user",
-        title="Login",
-        log_form=login_form
-    )
+            else:
+                if check_password_hash(log_user.password, login_form.password.data):
+                    login_user(log_user)
+                    flash("You've been logged in!", "success")
+                    return redirect(url_for('dashboard'))
+                else:
+                    flash("Your username  or password doesn't match!", "error")
+        return render_template(
+            'user/login.html',
+            section="user",
+            title="Login",
+            log_form=login_form
+        )
+    else:
+        flash("You are already logged in.")
+        return redirect(url_for('dashboard'))
 
 
 @app.route('/register', methods=('GET', 'POST'))
@@ -135,8 +140,9 @@ def register():
             section="user",
             title="Register"
         )
-    flash("You are logged in.")
-    return redirect(url_for('dashboard'))
+    else:
+        flash("You are already a user!", "success")
+        return redirect(url_for('dashboard'))
 
 
 @app.route('/dashboard')
