@@ -4,8 +4,7 @@ from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
 import flask_login
-from itsdangerous import URLSafeSerializer, BadSignature
-from flask_admin import Admin, BaseView, expose
+from flask_admin import Admin
 from flask_admin.contrib.peewee import ModelView
 
 
