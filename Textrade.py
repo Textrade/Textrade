@@ -1,9 +1,11 @@
-from flask import (Flask, g, render_template, redirect, url_for, flash)
+from flask import (Flask, g, render_template, redirect, url_for, flash, request)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
+import flask_wtf
+import flask_login
 from itsdangerous import URLSafeSerializer, BadSignature
-from flask_admin import Admin
+from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.peewee import ModelView
 
 
@@ -17,18 +19,33 @@ PORT = 5000
 
 app = Flask(__name__)
 app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
-
+app.config['CSRF_ENABLED'] = True
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-admin = Admin(app, name="Textrade", template_mode="bootstrap3")
-admin.add_view(ModelView(models.User))
-admin.add_view(ModelView(models.TradeStatus))
-admin.add_view(ModelView(models.Trade))
-admin.add_view(ModelView(models.BookStatus))
-admin.add_view(ModelView(models.Book))
 
+class TextradeModelView(ModelView):
+    """ModelView override."""
+    form_base_class = flask_wtf.Form
+    # Exclude encrypted password from admin view
+    column_exclude_list = ['password', ]
+    form_excluded_columns = ['password', ]
+    column_details_exclude_list = ['password', ]
+
+    def is_accessible(self):
+        return flask_login.current_user.is_authenticated()
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('login', next=request.url))
+
+admin = Admin(app, name="Textrade", template_mode="bootstrap3")
+admin.add_view(ModelView(models.UserRole))
+admin.add_view(TextradeModelView(models.User))
+# admin.add_view(TextradeModelView(models.TradeStatus))
+# admin.add_view(TextradeModelView(models.Trade))
+# admin.add_view(TextradeModelView(models.BookStatus))
+# admin.add_view(TextradeModelView(models.Book))
 
 
 @login_manager.user_loader
@@ -64,6 +81,7 @@ def after_request(response):
 
 @app.route('/')
 def index():
+    print(flask_login.current_user)
     return render_template('default/index.html')
 
 
@@ -99,24 +117,27 @@ def login():
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     # Registration form in login view
-    reg_form = RegisterForm()
-    if reg_form.validate_on_submit():
-        create_user(
-            first_name=reg_form.first_name.data,
-            last_name=reg_form.last_name.data,
-            username=reg_form.username.data,
-            password=generate_password_hash(reg_form.password.data),
-            university_email=reg_form.university_email.data,
-            personal_email=reg_form.personal_email.data
+    if not flask_login.current_user.is_authenticated():
+        reg_form = RegisterForm()
+        if reg_form.validate_on_submit():
+            create_user(
+                first_name=reg_form.first_name.data,
+                last_name=reg_form.last_name.data,
+                username=reg_form.username.data,
+                password=generate_password_hash(reg_form.password.data),
+                university_email=reg_form.university_email.data,
+                personal_email=reg_form.personal_email.data
+            )
+            flash("User created successfully!", "success")
+            return redirect(url_for('login'))
+        return render_template(
+            'user/register.html',
+            reg_form=reg_form,
+            section="user",
+            title="Register"
         )
-        flash("User created successfully!", "success")
-        return redirect(url_for('login'))
-    return render_template(
-        'user/register.html',
-        reg_form=reg_form,
-        section="user",
-        title="Register"
-    )
+    flash("You are logged in.")
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/dashboard')

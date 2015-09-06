@@ -15,6 +15,17 @@ db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
                    user=USERNAME, passwd=PASSWORD)
 
 
+class UserRole(Model):
+    """User role table. Used to have restriction for users."""
+    role = CharField(max_length=40, unique=True)
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return self.role
+
+
 class User(UserMixin, Model):
     """User model."""
     first_name = CharField(max_length=255)
@@ -26,6 +37,11 @@ class User(UserMixin, Model):
     # university_name = CharField(max_length=255)
     university_email = CharField(max_length=255)
     personal_email = CharField(max_length=255, null=True)
+    role = ForeignKeyField(UserRole, to_field='role', related_name='user', default='costumer')
+
+    def is_admin(self):
+        if self.role == 'admin' or self.role == 'developer':
+            return True
 
     class Meta:
         database = db
@@ -108,6 +124,7 @@ def create_tables():
     try:
         db.create_tables(
             [
+                UserRole,
                 User,
                 TradeStatus,
                 BookStatus,
