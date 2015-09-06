@@ -14,6 +14,8 @@ PASSWORD = ""
 db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
                    user=USERNAME, passwd=PASSWORD)
 
+# TODO: Add a table named UserStatus
+
 
 class UserRole(Model):
     """User role table. Used to have restriction for users."""
@@ -38,6 +40,7 @@ class User(UserMixin, Model):
     university_email = CharField(max_length=255)
     personal_email = CharField(max_length=255, null=True)
     role = ForeignKeyField(UserRole, to_field='role', related_name='user', default='costumer')
+    # TODO: Add active column
 
     def is_admin(self):
         if self.role == 'admin' or self.role == 'developer':
@@ -81,7 +84,7 @@ class Book(Model):
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateField(default=datetime.datetime.now)
-
+    
     class Meta:
         database = db
 
@@ -93,8 +96,10 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
+    # TODO: Add a second book.
     book = ForeignKeyField(Book, to_field='isbn', related_name='book_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
+    status = CharField(max_length=255)
     date = DateTimeField(default=datetime.datetime.now)
 
     class Meta:

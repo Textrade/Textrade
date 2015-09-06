@@ -7,7 +7,6 @@ import flask_login
 from flask_admin import Admin
 from flask_admin.contrib.peewee import ModelView
 
-
 import models
 from user.forms import RegisterForm, LoginForm
 from user.user import create_user
