@@ -42,10 +42,6 @@ class User(UserMixin, Model):
     role = ForeignKeyField(UserRole, to_field='role', related_name='user', default='costumer')
     # TODO: Add active column
 
-    def is_admin(self):
-        if self.role == 'admin' or self.role == 'developer':
-            return True
-
     class Meta:
         database = db
 
