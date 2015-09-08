@@ -7,9 +7,65 @@
 
 #quick-blurbs .blurb {
   padding: 5%;
-  text-align: center; }
-  #quick-blurbs .blurb h3 {
-    color: #028090; }
+  text-align: center;
+  height: 300px;
+  display: table; }
+  #quick-blurbs .blurb img {
+    height: 100px;
+    width: auto;
+    margin: auto; }
+  #quick-blurbs .blurb .blurb-text {
+    height: 125px; }
+    #quick-blurbs .blurb .blurb-text h3 {
+      color: #028090; }
+  #quick-blurbs .blurb button {
+    display: table-cell;
+    vertical-align: bottom;
+    margin-top: 20px; }
+
+#quick-about {
+  text-align: center;
+  background: #68b0ab;
+  color: white; }
+  #quick-about #incentive {
+    margin: 65px 0 50px 0; }
+
+#create-account-modal {
+  color: black;
+  text-align: left; }
+  #create-account-modal h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 300;
+    color: #05668d; }
+  #create-account-modal input {
+    width: 100%;
+    height: 44px;
+    font-size: 1.3em;
+    -webkit-appearance: none;
+    background: #fff;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    border: none;
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    margin: 5px 0;
+    font-weight: 300; }
+  #create-account-modal #submit {
+    width: 100%;
+    display: block;
+    margin: 10px 0;
+    position: relative;
+    background: #02c39a;
+    color: white;
+    border: none; }
+    #create-account-modal #submit:hover {
+      letter-spacing: 1px; }
+  #create-account-modal .modal-body {
+    max-width: 350px;
+    margin: auto; }
+    #create-account-modal .modal-body form {
+      width: 350px; }
 
 #login-wrap {
   margin: auto;
@@ -88,7 +144,9 @@
       border-radius: 80px;
       -webkit-border-radius: 80px;
       -moz-border-radius: 80px;
-      background: #05668d;
+      background: url(../../img/tm-1.jpg) center;
+      background-size: 100%;
+      background-repeat: no-repeat;
       margin: auto; }
       #team-member-profiles .team-member .circular img {
         width: 300px;
@@ -165,9 +223,66 @@
       font-family: Open Sans, sans-serif;
       font-weight: 300; }
 
+#rent-page-header {
+  text-align: left;
+  height: 500px;
+  width: auto;
+  padding: 0;
+  margin-top: 50px;
+  background: url(../../img/lib.jpg) center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin: 0; }
+  #rent-page-header .header-text-wrap {
+    background: -webkit-linear-gradient(left, #ffe1e1, rgba(255, 225, 225, 0));
+    background: -o-linear-gradient(right, #ffe1e1, rgba(255, 225, 225, 0));
+    background: -moz-linear-gradient(right, #ffe1e1, rgba(255, 225, 225, 0));
+    background: linear-gradient(to right, #ffe1e1, rgba(255, 225, 225, 0));
+    padding-top: 100px;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    color: white; }
+  #rent-page-header h1 {
+    font-weight: 600;
+    font-size: 6em;
+    margin-left: 200px; }
+  #rent-page-header h3, #rent-page-header h4 {
+    font-weight: 300;
+    margin-left: 200px; }
+
+#rent-actions-wrap {
+  background: #02c39a;
+  color: white; }
+  #rent-actions-wrap .rent-actions p {
+    padding-right: 10%; }
+
+.create-account-include {
+  text-align: center;
+  padding-top: 5%;
+  font-weight: 300; }
+  .create-account-include a {
+    color: inherit;
+    text-decoration: underline; }
+
+#rent-form-wrap #image-select #book-cover-image {
+  height: 250px;
+  width: 175px;
+  border: solid 1px grey;
+  margin: auto; }
+#rent-form-wrap #image-select button {
+  margin: auto; }
+#rent-form-wrap .fix-margin input {
+  margin: 10px 0; }
+#rent-form-wrap textarea {
+  margin: 10px 0; }
+#rent-form-wrap h2 {
+  margin-top: 50px; }
+#rent-form-wrap p {
+  margin-bottom: 35px; }
+
 body {
-  font-family: Open Sans, sans-serif;
-  background: #05668d; }
+  font-family: Open Sans, sans-serif; }
 
 nav {
   width: 100%; }
@@ -176,7 +291,13 @@ nav {
   padding: 5% 10%;
   background: white; }
 
+.row-special {
+  padding: 5% 0; }
+
 p {
   font-size: 14px; }
+
+h1 {
+  font-size: 6em; }
 
 /*# sourceMappingURL=main.css.map */
