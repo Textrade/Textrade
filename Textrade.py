@@ -1,3 +1,5 @@
+import datetime
+
 from flask import (Flask, g, render_template, redirect, url_for, flash, request)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 from flask.ext.login import (LoginManager, login_user, logout_user,
@@ -10,14 +12,19 @@ from flask_admin.contrib.peewee import ModelView
 import models
 from user.forms import RegisterForm, LoginForm
 from user.user import create_user
+from user.token import *
 
 DEBUG = True
 HOST = "127.0.0.1"
 PORT = 5000
 
+# APP CONFIG
 app = Flask(__name__)
 app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
 app.config['CSRF_ENABLED'] = True
+app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
+
+# LOGIN MANAGER CONFIG
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -126,8 +133,8 @@ def register():
                 university_email=reg_form.university_email.data,
                 personal_email=reg_form.personal_email.data
             )
-
             flash("User created successfully!", "success")
+            generate_confirmation_token(reg_form.university_email.data)
             return redirect(url_for('login'))
         return render_template(
             'user/register.html',
@@ -137,6 +144,27 @@ def register():
         )
     flash("You are logged in.")
     return redirect(url_for('dashboard'))
+
+
+@app.route('/user/activate/<token>')
+@login_required
+def confirm_email(token):
+    try:
+        email = confirm_email(token)
+    except:
+        flash("The confirmation link is invalid or has expired.", "error")
+        return redirect(url_for('index'))
+    user = models.User.get(models.User.university_email == email)
+    if user.active:
+        flash("You email is already confirmed. Please login.", "success")
+        return redirect(url_for('login'))
+    else:
+        user.update(
+            active=True,
+            active_on=datetime.datetime.now
+        ).execute()
+        flash("Your email have been confirmed.", "success")
+    return redirect(url_for("login"))
 
 
 @app.route('/dashboard')
