@@ -38,7 +38,7 @@ class TextradeModelView(ModelView):
         return redirect(url_for('login', next=request.url))
 
 admin = Admin(app, name="Textrade", template_mode="bootstrap3")
-admin.add_view(ModelView(models.UserRole))
+admin.add_view(TextradeModelView(models.UserRole))
 admin.add_view(TextradeModelView(models.User))
 admin.add_view(TextradeModelView(models.TradeStatus))
 admin.add_view(TextradeModelView(models.Trade))
@@ -126,6 +126,7 @@ def register():
                 university_email=reg_form.university_email.data,
                 personal_email=reg_form.personal_email.data
             )
+
             flash("User created successfully!", "success")
             return redirect(url_for('login'))
         return render_template(
