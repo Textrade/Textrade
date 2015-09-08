@@ -281,6 +281,40 @@
 #rent-form-wrap p {
   margin-bottom: 35px; }
 
+#rent-search-header {
+  text-align: center; }
+
+#search-results .search-keywords {
+  font-style: italic;
+  color: grey; }
+#search-results .results-number {
+  padding-left: 50px;
+  font-weight: 600;
+  color: #02c39a; }
+#search-results #filter {
+  background-color: #f7f9f8;
+  margin-top: 50px;
+  border-radius: 4px; }
+  #search-results #filter form {
+    padding: 5px; }
+    #search-results #filter form .filter-label {
+      padding-left: 10px;
+      margin-top: 10px; }
+#search-results #results {
+  padding-left: 50px; }
+  #search-results #results #results-header {
+    border-bottom: solid 3px #02c39a;
+    margin-bottom: 20px; }
+  #search-results #results .result-instance {
+    width: 100%;
+    border-bottom: solid 1px #d8e1de; }
+    #search-results #results .result-instance .result-cover-image img {
+      max-width: 120px;
+      max-height: 175px;
+      margin: auto; }
+    #search-results #results .result-instance a {
+      color: #05668d; }
+
 body {
   font-family: Open Sans, sans-serif; }
 

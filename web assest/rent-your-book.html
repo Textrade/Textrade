@@ -104,11 +104,13 @@
                         <div class="checkbox">
                             <label><input type="checkbox" value="">In-Person Exchange</label>
                         </div>
-                    </div>    
+                    </div>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#payment-form" aria-expanded="false" aria-controls="payment-form" style="float:right; margin-top: 35px; margin-bottom: 35px">Continue to Payment Preferences</button>
                 </div>    
             </form>
                 <!-- payment form -->
-                <form class="form-horizontal">
+                <div class="collapse" id="payment-form">
+                    <form class="form-horizontal">
                     <h2>Payment Form</h2>
                     <p>Please enter either the PayPal account that you would like your rent income to be directed to.</p>
                 <div class="form-group fix-margin">
@@ -121,16 +123,17 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                     <div class="checkbox">
-                        <label><input type="checkbox"> I agree to Textrade's terms and conditions</label><br>
-                        <label><input type="checkbox"> I promise that the above information is correct</label><br>
+                        <label><input type="checkbox"> I agree to Textrade's terms and conditions and certify that the above information is true</label><br>
                         <button type="submit" class="btn btn-default">Submit</button>
                     </div>
                     </div>    
                 </div>    
-            </form>
+            </form>  
+                </div>    
             </div><!-- close rent form -->    
         </div> <!-- close rent-form-wrap" -->
         
+        <!-- RENT FAQs -->
         <div class="row" id="rent-FAQ">
             <h2>Rent FAQs</h2>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -174,6 +177,7 @@
                 <p id="copyright">This is where the copyright goes</p>
             </footer>
         </div>
+        
         <!-- Modal For Account Creation-->
                 <div class="modal fade" id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog" role="document">
