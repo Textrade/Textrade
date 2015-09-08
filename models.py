@@ -178,9 +178,10 @@ def init_app():
         {'status': 'cancelled'},
     ]
 
-    UserRole.insert_many(user_role).execute()
-    BookStatus.insert_many(book_status).execute()
-    TradeStatus.insert_many(trade_status).execute()
+    with db.atomic():
+        UserRole.insert_many(user_role).execute()
+        BookStatus.insert_many(book_status).execute()
+        TradeStatus.insert_many(trade_status).execute()
     User.create(
         first_name="admin", last_name="admin",
         username="admin", password=generate_password_hash("admin"),
