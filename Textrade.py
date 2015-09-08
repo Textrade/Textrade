@@ -40,10 +40,10 @@ class TextradeModelView(ModelView):
 admin = Admin(app, name="Textrade", template_mode="bootstrap3")
 admin.add_view(ModelView(models.UserRole))
 admin.add_view(TextradeModelView(models.User))
-# admin.add_view(TextradeModelView(models.TradeStatus))
-# admin.add_view(TextradeModelView(models.Trade))
-# admin.add_view(TextradeModelView(models.BookStatus))
-# admin.add_view(TextradeModelView(models.Book))
+admin.add_view(TextradeModelView(models.TradeStatus))
+admin.add_view(TextradeModelView(models.Trade))
+admin.add_view(TextradeModelView(models.BookStatus))
+admin.add_view(TextradeModelView(models.Book))
 
 
 @login_manager.user_loader

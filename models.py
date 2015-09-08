@@ -40,7 +40,7 @@ class User(UserMixin, Model):
     university_email = CharField(max_length=255)
     personal_email = CharField(max_length=255, null=True)
     role = ForeignKeyField(UserRole, to_field='role', related_name='user', default='costumer')
-    # TODO: Add active column
+    is_active = BooleanField(default=False)
 
     class Meta:
         database = db
@@ -92,10 +92,9 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    # TODO: Add a second book.
-    book = ForeignKeyField(Book, to_field='isbn', related_name='book_to_trade')
+    book_one = ForeignKeyField(Book, to_field='isbn', related_name='book_one_to_trade')
+    book_two = ForeignKeyField(Book, to_field='isbn', related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
-    status = CharField(max_length=255)
     date = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
@@ -150,12 +149,13 @@ def drop_tables():
         db.connect()
         db.drop_tables(
             [
-                WishList,
-                Trade,
-                Book,
-                BookStatus,
-                TradeStatus,
+                UserRole,
                 User,
+                TradeStatus,
+                BookStatus,
+                Book,
+                Trade,
+                WishList
             ]
         )
 

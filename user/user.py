@@ -12,6 +12,7 @@ def create_user(**kwargs):
         last_name=kwargs['last_name'],
         username=kwargs['username'],
         password=kwargs['password'],
+        # TODO: when expansion to different schools
         # university_name=kwargs['university_name'],
         university_email=kwargs['university_email'],
         personal_email=kwargs['personal_email']
@@ -19,7 +20,7 @@ def create_user(**kwargs):
 
 
 def change_user_password(pk_id, old_password, new_password):
-    """Edit a user."""
+    """Edit a user. Old password is required."""
     user = User.get(User.id == pk_id)
 
     if check_password_hash(user.password, old_password):
