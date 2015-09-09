@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms import StringField, PasswordField
 from wtforms.validators import (DataRequired, Regexp, ValidationError, Email,
                                 Length, EqualTo)
-
+from peewee import Model
 from models import User
 
 
@@ -22,8 +22,13 @@ def university_email_does_not_exits(form, field):
 
 
 def is_not_user_active(form, field):
-    if User.get(User.university_email == field.data).active:
-        raise ValidationError("Your account is already active.")
+    # This try was done to prevent UserDoesn't exist
+    # Could find specific exception
+    try:
+        if User.get(User.university_email == field.data).active:
+            raise ValidationError("Your account is already active.")
+    except not ValidationError:
+        pass
 
 
 def personal_email_exits(form, field):
