@@ -12,7 +12,7 @@ from flask_admin import Admin
 from flask_admin.contrib.peewee import ModelView
 
 import models
-from user.forms import RegisterForm, LoginForm
+from user.forms import RegisterForm, LoginForm, ResendToken
 from user.user import create_user
 from user.token import *
 
@@ -190,6 +190,24 @@ def confirm_email(token):
         ).execute()
         flash("Your email have been confirmed.", "success")
     return redirect(url_for('dashboard'))
+
+
+@app.route('/user/activate/resend', methods=('GET', 'POST'))
+def resend_token():
+    form = ResendToken()
+    if form.validate_on_submit():
+        email = form.university_email.data
+        token = generate_confirmation_token(email)
+        html = render_template('user/email_verification.html', token=token)
+        subject = "Confirm email and activate your account!"
+        send_email(
+            to=email,
+            subject=subject,
+            template=html
+        )
+        flash("The activation link have been resend!")
+        return redirect(url_for('index'))
+    return render_template('user/resend_token.html', form=form)
 
 
 @app.route('/dashboard')
