@@ -1,6 +1,13 @@
 {% extends 'default/base.html' %}
 
 {% block content %}
+        {% with messeages = get_flashed_messages(with_categories=True) %}
+                    {% if messeages %}
+                        {% for msg in messeages %}
+                            <p>{{ msg[1] }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
                 <ol class="carousel-indicators">

@@ -1,7 +1,9 @@
 import datetime
 
+from itsdangerous import URLSafeSerializer, BadSignature
 from flask import (Flask, g, render_template, redirect, url_for, flash, request)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
+from flask.ext.mail import Mail, Message
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
@@ -14,6 +16,8 @@ from user.forms import RegisterForm, LoginForm
 from user.user import create_user
 from user.token import *
 
+
+# DATABASE CONFIG
 DEBUG = True
 HOST = "127.0.0.1"
 PORT = 5000
@@ -21,8 +25,18 @@ PORT = 5000
 # APP CONFIG
 app = Flask(__name__)
 app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
-app.config['CSRF_ENABLED'] = True
 app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
+app.config['CSRF_ENABLED'] = True
+
+# MAIL CONFIG
+mail = Mail()
+app.config['MAIL_SERVER'] = "smtp.gmail.com"
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_SENDER'] = "Textrade <umltextrade@gmail.com>"
+app.config['MAIL_USERNAME'] = "umltextrade@gmail.com"
+app.config['MAIL_PASSWORD'] = "Angell100."
+mail.init_app(app)
 
 # LOGIN MANAGER CONFIG
 login_manager = LoginManager()
@@ -86,7 +100,6 @@ def after_request(response):
 
 @app.route('/')
 def index():
-    print(flask_login.current_user)
     return render_template('default/index.html')
 
 
@@ -99,24 +112,33 @@ def team():
 def login():
     # Login form in login view
     login_form = LoginForm()
-    if login_form.validate_on_submit():
-        try:
-            log_user = models.User.get(models.User.username == login_form.username.data)
-        except models.DoesNotExist:
-            flash("Your username  or password doesn't match!", "error")
-        else:
-            if check_password_hash(log_user.password, login_form.password.data):
-                login_user(log_user)
-                flash("You've been logged in!", "success")
-                return redirect(url_for('dashboard'))
-            else:
+    if not flask_login.current_user.is_authenticated():
+        if login_form.validate_on_submit():
+            try:
+                log_user = models.User.get(models.User.username == login_form.username.data)
+            except models.DoesNotExist:
                 flash("Your username  or password doesn't match!", "error")
-    return render_template(
-        'user/login.html',
-        section="user",
-        title="Login",
-        log_form=login_form
-    )
+            else:
+                if check_password_hash(log_user.password, login_form.password.data):
+                    login_user(log_user)
+                    flash("You've been logged in!", "success")
+
+                    _next = request.args.get('next')
+                    if _next:
+                        return redirect(_next)
+                    else:
+                        return redirect(url_for('dashboard'))
+                else:
+                    flash("Your username  or password doesn't match!", "error")
+        return render_template(
+            'user/login.html',
+            section="user",
+            title="Login",
+            log_form=login_form
+        )
+    # TODO: Find why this has been printing twice!
+    flash("You are logged in already.", "success")
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/register', methods=('GET', 'POST'))
@@ -134,14 +156,17 @@ def register():
                 personal_email=reg_form.personal_email.data
             )
             flash("User created successfully!", "success")
-            generate_confirmation_token(reg_form.university_email.data)
+            token = generate_confirmation_token(reg_form.university_email.data)
+            html = render_template('user/email_verification.html', token=token)
+            subject = "Confirm email and activate your account!"
+            send_email(
+                to=reg_form.university_email.data,
+                subject=subject,
+                template=html
+            )
+            flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
-        return render_template(
-            'user/register.html',
-            reg_form=reg_form,
-            section="user",
-            title="Register"
-        )
+        return render_template('user/register.html', reg_form=reg_form, section="user", title="Register")
     flash("You are logged in.")
     return redirect(url_for('dashboard'))
 
@@ -150,8 +175,8 @@ def register():
 @login_required
 def confirm_email(token):
     try:
-        email = confirm_email(token)
-    except:
+        email = confirm_token(token)
+    except BadSignature:
         flash("The confirmation link is invalid or has expired.", "error")
         return redirect(url_for('index'))
     user = models.User.get(models.User.university_email == email)
@@ -161,16 +186,17 @@ def confirm_email(token):
     else:
         user.update(
             active=True,
-            active_on=datetime.datetime.now
+            activated_on=datetime.datetime.now()
         ).execute()
         flash("Your email have been confirmed.", "success")
-    return redirect(url_for("login"))
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('default/dashboard.html')
+    c_user = flask_login.current_user.first_name
+    return render_template('default/dashboard.html', c_user=c_user)
 
 
 if __name__ == '__main__':

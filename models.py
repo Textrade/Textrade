@@ -40,7 +40,7 @@ class User(UserMixin, Model):
     personal_email = CharField(max_length=255, null=True)
     role = ForeignKeyField(UserRole, to_field='role', related_name='user', default='costumer')
     active = BooleanField(default=False)
-    activated_on = DateField(null=True)
+    activated_on = DateTimeField(null=True)
 
     class Meta:
         database = db
