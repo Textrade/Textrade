@@ -1,4 +1,10 @@
-<h2>Welcome {{ c_user }}</h2>
+<h2>Welcome {{ c_user.first_name }} {{ c_user.last_name }}</h2>
+<h3>You are an {% if c_user.active %}active{% else %}inactive{% endif %} user.</h3>
+<h3>Your University Email is {{ c_user.university_email }}</h3>
+<h3>Your username is {{ c_user.username }}</h3>
+<h3>And you are a {{ c_user.role }}! {% if c_user.role == 'developer' %}Thanks for making me!{% endif %}</h3>
+<p>This a test made by D</p>
+
 {% with messeages = get_flashed_messages(with_categories=True) %}
     {% if messeages %}
         {% for msg in messeages %}

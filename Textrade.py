@@ -195,7 +195,7 @@ def confirm_email(token):
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    c_user = flask_login.current_user.first_name
+    c_user = flask_login.current_user
     return render_template('default/dashboard.html', c_user=c_user)
 
 
