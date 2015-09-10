@@ -6,11 +6,11 @@ from flask.ext.bcrypt import generate_password_hash
 
 
 # DATABASE INFO
-HOST = "localhost"
-DATABASE_NAME = "textrade"
+HOST = "us-cdbr-iron-east-02.cleardb.net"
+DATABASE_NAME = "heroku_2dd220ea85b707f"
 PORT = 3306
-USERNAME = "root"
-PASSWORD = ""
+USERNAME = "b3f30e097887ef"
+PASSWORD = "401b1071"
 
 db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
                    user=USERNAME, passwd=PASSWORD)
