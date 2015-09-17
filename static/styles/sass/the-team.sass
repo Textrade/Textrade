@@ -1,13 +1,14 @@
 .page-header
     text-align: center
-    padding: 20px 0
-    #team-photo
-        width: 80%
-        height: auto
-        margin: auto
+    h1
+        font-family: Oswald, sans-serif
 #team-member-profiles
-    background: $sea-foam
-    color: white
+    color: $black
+    background: #eaeaea
+    background: -webkit-linear-gradient(top,white,white,#d6d6d6) //Safari 5.1-6
+    background: -o-linear-gradient(top,white,white,#d6d6d6) //Opera 11.1-12
+    background: -moz-linear-gradient(top,white,white,#d6d6d6) //Fx 3.6-15        
+    background: linear-gradient(to bottom,white,white,#d6d6d6) //Standard 
     .team-member
         padding: 10px
         text-align: center
@@ -28,12 +29,21 @@
                 border-radius: 150px
                 -webkit-border-radius: 150px
                 -moz-border-radius: 150px
+        h3
+            font-family: Oswald, sans-serif
+    .developers
+        text-align: center
+        padding-top: 25px
+        h3, h4
+            font-family: Oswald, sans-serif
 #mission
     text-align: center
-    
-    color: $blue
+    background: -webkit-linear-gradient(top,#d6d6d6,white,white) //Safari 5.1-6
+    background: -o-linear-gradient(top,#d6d6d6,white,white) //Opera 11.1-12
+    background: -moz-linear-gradient(top,#d6d6d6,white,white) //Fx 3.6-15        
+    background: linear-gradient(to bottom,#d6d6d6,white,white) //Standard 
+    color: $black
     h1
-        
         margin-bottom: 25px
         font-weight: 300
         font-family: Oswald, sans-serif
@@ -42,3 +52,21 @@
     p
         margin: 0 10%
         font-weight: 300
+    .btn
+        background: none
+        border: solid 3px #323232
+        margin-top: 5%
+        padding: 5px 25px
+        color: #323232
+        &:hover
+            opacity: .9
+        a
+            color: #323232
+            font-weight: 500
+            font-family: Oswald, sans-serif
+            font-size: 18px    
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 768px) 
+    #team-member-profiles
+        p    
+            padding: 0 15%
