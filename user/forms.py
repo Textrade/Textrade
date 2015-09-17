@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms import StringField, PasswordField
 from wtforms.validators import (DataRequired, Regexp, ValidationError, Email,
                                 Length, EqualTo)
-
+from peewee import Model
 from models import User
 
 
@@ -14,6 +14,21 @@ def username_exits(form, field):
 def university_email_exits(form, field):
     if User.select().where(User.university_email == field.data).exists():
         raise ValidationError('This email is already in our system.')
+
+
+def university_email_does_not_exits(form, field):
+    if not User.select().where(User.university_email == field.data).exists():
+        raise ValidationError("This email is not in our system.")
+
+
+def is_not_user_active(form, field):
+    # This try was done to prevent UserDoesn't exist
+    # Could find specific exception
+    try:
+        if User.get(User.university_email == field.data).active:
+            raise ValidationError("Your account is already active.")
+    except not ValidationError:
+        pass
 
 
 def personal_email_exits(form, field):
@@ -105,3 +120,16 @@ class LoginForm(Form):
     """Login user form."""
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
+
+
+class ResendToken(Form):
+    """Resend token form when activating user."""
+    university_email = StringField(
+        validators=[
+            DataRequired(),
+            Email(),
+            is_uml_email,
+            university_email_does_not_exits,
+            is_not_user_active
+        ]
+    )

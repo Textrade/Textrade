@@ -1,0 +1,12 @@
+{% extends 'default/base.html' %}
+{% from 'default/macros.html' import render_field %}
+
+{% block content %}
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        {% for field in form %}
+            {{ render_field(field) }}
+        {% endfor %}
+        <input id="submit" type="submit" value="Resend email">
+    </form>
+{% endblock %}

@@ -2,19 +2,18 @@ import datetime
 
 from flask.ext.login import UserMixin
 from peewee import *
+from flask.ext.bcrypt import generate_password_hash
 
 
 # DATABASE INFO
-HOST = "localhost"
-DATABASE_NAME = "textrade"
+HOST = "us-cdbr-iron-east-02.cleardb.net"
+DATABASE_NAME = "heroku_2dd220ea85b707f"
 PORT = 3306
-USERNAME = "root"
-PASSWORD = ""
+USERNAME = "b3f30e097887ef"
+PASSWORD = "401b1071"
 
 db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
                    user=USERNAME, passwd=PASSWORD)
-
-# TODO: Add a table named UserStatus
 
 
 class UserRole(Model):
@@ -40,11 +39,8 @@ class User(UserMixin, Model):
     university_email = CharField(max_length=255)
     personal_email = CharField(max_length=255, null=True)
     role = ForeignKeyField(UserRole, to_field='role', related_name='user', default='costumer')
-    # TODO: Add active column
-
-    def is_admin(self):
-        if self.role == 'admin' or self.role == 'developer':
-            return True
+    active = BooleanField(default=False)
+    activated_on = DateTimeField(null=True)
 
     class Meta:
         database = db
@@ -96,10 +92,9 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    # TODO: Add a second book.
-    book = ForeignKeyField(Book, to_field='isbn', related_name='book_to_trade')
+    book_one = ForeignKeyField(Book, to_field='isbn', related_name='book_one_to_trade')
+    book_two = ForeignKeyField(Book, to_field='isbn', related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
-    status = CharField(max_length=255)
     date = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
@@ -154,15 +149,47 @@ def drop_tables():
         db.connect()
         db.drop_tables(
             [
-                WishList,
-                Trade,
-                Book,
-                BookStatus,
-                TradeStatus,
+                UserRole,
                 User,
+                TradeStatus,
+                BookStatus,
+                Book,
+                Trade,
+                WishList
             ]
         )
+
+
+def init_app():
+    """Create rows for default foreignkey."""
+    user_role = [
+        {'role': 'admin'},
+        {'role': 'developer'},
+        {'role': 'costumer'},
+    ]
+    book_status = [
+        {'status': 'requested'},
+        {'status': 'no_available'},
+        {'status': 'available'},
+    ]
+    trade_status = [
+        {'status': 'completed'},
+        {'status': 'processing'},
+        {'status': 'cancelled'},
+    ]
+
+    with db.atomic():
+        UserRole.insert_many(user_role).execute()
+        BookStatus.insert_many(book_status).execute()
+        TradeStatus.insert_many(trade_status).execute()
+    User.create(
+        first_name="admin", last_name="admin",
+        username="admin", password=generate_password_hash("admin"),
+        university_email="admin@student.uml.edu", role="admin",
+        active=True
+    )
 
 if __name__ == '__main__':
     drop_tables()
     create_tables()
+    init_app()
