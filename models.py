@@ -162,6 +162,7 @@ def drop_tables():
 
 def init_app():
     """Create rows for default foreignkey."""
+    # SETUP TESTING ENVIRONMENT
     user_role = [
         {'role': 'admin'},
         {'role': 'developer'},
@@ -177,11 +178,70 @@ def init_app():
         {'status': 'processing'},
         {'status': 'cancelled'},
     ]
-
+    users = [
+        {
+            'first_name': 'John',
+            'last_name': 'Smith',
+            'username': 'jsmith',
+            'password': generate_password_hash('test'),
+            'university_email': 'john_smith@student.uml.edu',
+            'personal_email': 'jsmith@gmail.com',
+            'role': 'costumer',
+            'active': True,
+        },
+        {
+            'first_name': 'Marie',
+            'last_name': 'York',
+            'username': 'myork',
+            'password': generate_password_hash('test'),
+            'university_email': 'marie_york@student.uml.edu',
+            'personal_email': 'myork@gmail.com',
+            'role': 'costumer',
+            'active': True,
+        },
+        {
+            'first_name': 'Juan',
+            'last_name': 'Cook',
+            'username': 'jcook',
+            'password': generate_password_hash('test'),
+            'university_email': 'juan_cook@student.uml.edu',
+            'personal_email': 'jcook@gmail.com',
+            'role': 'costumer',
+            'active': True,
+        }
+    ]
+    books = [
+        {
+            'name': 'Java How To Program',
+            'edition': '10th',
+            'author': 'Paul Deitel & Harvey Daitel',
+            'isbn': '9780133807806',
+            'username': 'jsmith',
+            'available': 'available',
+        },
+        {
+            'name': 'MICROECONOMICS PRINCIPLES and POLICY',
+            'edition': '13th',
+            'author': 'William J. Baumol & Alan S. Blinder',
+            'isbn': '9781305280618',
+            'username': 'myork',
+            'available': 'available',
+        },
+        {
+            'name': 'Physics For Scientist and Engineers',
+            'edition': '3rd',
+            'author': 'Randall D. Knight',
+            'isbn': '978032175291',
+            'username': 'jcook',
+            'available': 'available',
+        },
+    ]
     with db.atomic():
         UserRole.insert_many(user_role).execute()
         BookStatus.insert_many(book_status).execute()
         TradeStatus.insert_many(trade_status).execute()
+        User.insert_many(users).execute()
+        Book.insert_many(books).execute()
     User.create(
         first_name="admin", last_name="admin",
         username="admin", password=generate_password_hash("admin"),
