@@ -67,22 +67,32 @@
     #create-account-modal .modal-body form {
       width: 350px; }
 
+#login-page-row {
+  background: url(../../img/books-magazines-building-school.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative; }
+
 #login-wrap {
   margin: auto;
   margin-top: 100px;
   margin-bottom: 100px;
   width: 350px;
-  padding: 15px;
+  padding: 25px 15px;
   height: auto;
   background: #f2f2f2;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
-  border-radius: 2px; }
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  opacity: 1; }
   #login-wrap #login-dialog {
     background: white;
     border-radius: 2px;
     width: 90%;
     margin: auto;
-    padding: 5%; }
+    padding: 5%;
+    opacity: 1; }
     #login-wrap #login-dialog h3 {
       text-align: center;
       margin-bottom: 15px;
@@ -125,16 +135,17 @@
       width: 350px; }
 
 .page-header {
-  text-align: center;
-  padding: 20px 0; }
-  .page-header #team-photo {
-    width: 80%;
-    height: auto;
-    margin: auto; }
+  text-align: center; }
+  .page-header h1 {
+    font-family: Oswald, sans-serif; }
 
 #team-member-profiles {
-  background: #02c39a;
-  color: white; }
+  color: #323232;
+  background: #eaeaea;
+  background: -webkit-linear-gradient(top, white, white, #d6d6d6);
+  background: -o-linear-gradient(top, white, white, #d6d6d6);
+  background: -moz-linear-gradient(top, white, white, #d6d6d6);
+  background: linear-gradient(to bottom, white, white, #d6d6d6); }
   #team-member-profiles .team-member {
     padding: 10px;
     text-align: center; }
@@ -154,10 +165,21 @@
         border-radius: 150px;
         -webkit-border-radius: 150px;
         -moz-border-radius: 150px; }
+    #team-member-profiles .team-member h3 {
+      font-family: Oswald, sans-serif; }
+  #team-member-profiles .developers {
+    text-align: center;
+    padding-top: 25px; }
+    #team-member-profiles .developers h3, #team-member-profiles .developers h4 {
+      font-family: Oswald, sans-serif; }
 
 #mission {
   text-align: center;
-  color: #05668d; }
+  background: -webkit-linear-gradient(top, #d6d6d6, white, white);
+  background: -o-linear-gradient(top, #d6d6d6, white, white);
+  background: -moz-linear-gradient(top, #d6d6d6, white, white);
+  background: linear-gradient(to bottom, #d6d6d6, white, white);
+  color: #323232; }
   #mission h1 {
     margin-bottom: 25px;
     font-weight: 300;
@@ -167,31 +189,52 @@
   #mission p {
     margin: 0 10%;
     font-weight: 300; }
+  #mission .btn {
+    background: none;
+    border: solid 3px #323232;
+    margin-top: 5%;
+    padding: 5px 25px;
+    color: #323232; }
+    #mission .btn:hover {
+      opacity: 0.9; }
+    #mission .btn a {
+      color: #323232;
+      font-weight: 500;
+      font-family: Oswald, sans-serif;
+      font-size: 18px; }
 
+/* Small devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+  #team-member-profiles p {
+    padding: 0 15%; } }
 #footer {
   text-align: center;
-  color: white;
-  background: #05668d;
+  color: black;
+  background: #323232;
   padding-bottom: 15px;
   margin-bottom: 0; }
   #footer h2 {
     font-family: Oswald, sans-serif;
     font-weight: 300; }
-  #footer h4 {
+  #footer p {
     font-weight: 300; }
   #footer #site-actions {
     width: 80%;
     margin: auto;
     margin-top: 35px;
     margin-bottom: 15px;
-    font-weight: 300; }
+    font-weight: 300;
+    font-size: 12px;
+    color: black; }
     #footer #site-actions td {
       width: 25%;
       text-align: center;
       padding: 5px 0; }
     #footer #site-actions #main-actions {
-      font-size: 16px;
-      font-weight: 500; }
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      letter-spacing: 0.09em; }
   #footer #copyright {
     margin-top: 50px;
     margin-bottom: 0;
@@ -200,70 +243,101 @@
     font-size: 10px; }
 
 .navbar, .navbar-default, .navbar-fixed-top {
-  background: #05668d;
-  color: white;
+  background: white;
+  color: black;
   border: none;
-  margin-bottom: 50px; }
+  margin-bottom: 50px;
+  box-shadow: 0 4px 3px -3px #b2b2b2; }
   .navbar .container-fluid, .navbar-default .container-fluid, .navbar-fixed-top .container-fluid {
-    background: #05668d;
-    color: white; }
+    background: white;
+    color: black; }
     .navbar .container-fluid .navbar-header, .navbar-default .container-fluid .navbar-header, .navbar-fixed-top .container-fluid .navbar-header {
-      background: #05668d;
-      color: white; }
+      background: white;
+      color: black; }
       .navbar .container-fluid .navbar-header button, .navbar-default .container-fluid .navbar-header button, .navbar-fixed-top .container-fluid .navbar-header button {
-        background: #05668d; }
+        background: white; }
         .navbar .container-fluid .navbar-header button span, .navbar-default .container-fluid .navbar-header button span, .navbar-fixed-top .container-fluid .navbar-header button span {
-          background: white; }
+          background: black; }
       .navbar .container-fluid .navbar-header .navbar-brand, .navbar-default .container-fluid .navbar-header .navbar-brand, .navbar-fixed-top .container-fluid .navbar-header .navbar-brand {
-        color: white;
+        color: black;
         width: 200px; }
     .navbar .container-fluid navbar-collapse ul li a, .navbar .container-fluid #bs-example-navbar-collapse-1 ul li a, .navbar-default .container-fluid navbar-collapse ul li a, .navbar-default .container-fluid #bs-example-navbar-collapse-1 ul li a, .navbar-fixed-top .container-fluid navbar-collapse ul li a, .navbar-fixed-top .container-fluid #bs-example-navbar-collapse-1 ul li a {
-      background: #05668d;
-      color: white;
+      background: white;
+      color: black;
       font-family: Open Sans, sans-serif;
       font-weight: 300; }
 
-#rent-page-header {
-  text-align: left;
-  height: 500px;
-  width: auto;
-  padding: 0;
-  margin-top: 50px;
-  background: url(../../img/lib.jpg) center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  margin: 0; }
-  #rent-page-header .header-text-wrap {
-    background: -webkit-linear-gradient(left, #ffe1e1, rgba(255, 225, 225, 0));
-    background: -o-linear-gradient(right, #ffe1e1, rgba(255, 225, 225, 0));
-    background: -moz-linear-gradient(right, #ffe1e1, rgba(255, 225, 225, 0));
-    background: linear-gradient(to right, #ffe1e1, rgba(255, 225, 225, 0));
-    padding-top: 100px;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    color: white; }
-  #rent-page-header h1 {
-    font-weight: 600;
-    font-size: 6em;
-    margin-left: 200px; }
-  #rent-page-header h3, #rent-page-header h4 {
-    font-weight: 300;
-    margin-left: 200px; }
-
 #rent-actions-wrap {
-  background: #02c39a;
-  color: white; }
-  #rent-actions-wrap .rent-actions p {
-    padding-right: 10%; }
+  background: url(../../img/blur-old-antique-book.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative; }
+  #rent-actions-wrap .rent-actions {
+    color: #4c4c4c;
+    margin-top: 55px;
+    padding: 0 5%; }
+    @media (min-width: 768px) {
+      #rent-actions-wrap .rent-actions {
+        margin-top: 70px; } }
+    #rent-actions-wrap .rent-actions .text-wrap {
+      height: 200px;
+      /* Small devices (tablets, 768px and up) */
+      /* Medium devices (desktops, 992px and up) */ }
+      @media (min-width: 768px) {
+        #rent-actions-wrap .rent-actions .text-wrap {
+          height: 180px; } }
+      @media (min-width: 992px) {
+        #rent-actions-wrap .rent-actions .text-wrap {
+          height: 120px; } }
+      #rent-actions-wrap .rent-actions .text-wrap h2 {
+        font-family: Oswald, sans-serif;
+        margin-bottom: 15px;
+        color: #323232; }
+    #rent-actions-wrap .rent-actions .btn {
+      background: none;
+      border: solid 3px white;
+      margin-top: 5%;
+      padding: 5px 25px;
+      color: white; }
+      #rent-actions-wrap .rent-actions .btn:hover {
+        opacity: 0.9; }
+      #rent-actions-wrap .rent-actions .btn a {
+        color: white;
+        font-weight: 500;
+        font-family: Oswald, sans-serif;
+        font-size: 18px; }
+      @media (min-width: 992px) {
+        #rent-actions-wrap .rent-actions .btn {
+          border: solid 3px #323232;
+          color: #323232;
+          margin-top: 0; }
+          #rent-actions-wrap .rent-actions .btn a {
+            color: #323232; } }
 
 .create-account-include {
   text-align: center;
-  padding-top: 5%;
-  font-weight: 300; }
+  padding-top: 10%;
+  font-weight: 300;
+  color: white; }
   .create-account-include a {
-    color: inherit;
+    color: white;
     text-decoration: underline; }
+
+#rent-FAQ .panel-group .panel-heading {
+  background: #e5e5e5; }
+#rent-FAQ .panel-group .panel-collapse {
+  border: #e5e5e5; }
+
+#rent-page-header {
+  background: url(../../img/blur-old-antique-book.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative;
+  height: 200px; }
 
 #rent-form-wrap #image-select #book-cover-image {
   height: 250px;
@@ -283,6 +357,10 @@
 
 #rent-search-header {
   text-align: center; }
+  #rent-search-header form {
+    width: 90%; }
+    #rent-search-header form input {
+      width: 400px; }
 
 #search-results .search-keywords {
   font-style: italic;
@@ -315,8 +393,97 @@
     #search-results #results .result-instance a {
       color: #05668d; }
 
+#trade-actions-wrap {
+  background: url(../../img/blur-old-antique-book.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative;
+  height: 200px; }
+
+.step {
+  margin: 50px 0 30px 0; }
+  .step span {
+    color: #02c39a; }
+  .step p {
+    margin-right: 55%;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #b2b2b2; }
+
+.trade-column {
+  /* Small devices (tablets, 768px and up) */ }
+  .trade-column .add-line {
+    height: 50px; }
+    .trade-column .add-line .add-button {
+      height: 20px;
+      width: 20px;
+      border-radius: 10px;
+      margin: 15px 0;
+      background: #02c39a;
+      color: white;
+      text-align: center; }
+  .trade-column input {
+    height: 40px;
+    margin: 5px 0; }
+  @media (min-width: 786px) {
+    .trade-column {
+      padding: 0 10%; }
+      .trade-column form {
+        padding-left: 5%; }
+        .trade-column form input {
+          width: 200px; } }
+
+#books-to-trade {
+  border-right: solid 1px #efefef; }
+
+#trade-request-confirmation .alert {
+  width: 450px;
+  margin: auto; }
+
+#service-list .col-xs-6 {
+  text-align: center;
+  padding: 0 5%; }
+
+.rent-explained {
+  text-align: center; }
+  .rent-explained h2, .rent-explained h3 {
+    font-family: Oswald, sans-serif; }
+  .rent-explained p {
+    padding: 0 15% 5% 15%; }
+  .rent-explained img {
+    height: 100px;
+    width: auto;
+    margin: 20px 0; }
+  .rent-explained button {
+    background: #70C1B3;
+    border: #70C1B3;
+    padding: 10px 30px;
+    color: white; }
+
+#info-three, #info-two {
+  background: #3384A0;
+  color: white; }
+
+#info-top {
+  padding: 10px 0 15px 0; }
+
+#info-top, #title {
+  background: #1F4F60;
+  color: white; }
+
+#info-footer {
+  background: #3384A0;
+  padding: 10% 0; }
+
 body {
-  font-family: Open Sans, sans-serif; }
+  font-family: Open Sans, sans-serif;
+  padding: 0;
+  margin: 0; }
+
+#page-wrap {
+  padding: 0;
+  margin: 0; }
 
 nav {
   width: 100%; }

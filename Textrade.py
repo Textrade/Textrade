@@ -217,5 +217,20 @@ def dashboard():
     return render_template('default/dashboard.html', c_user=c_user)
 
 
+@app.route('/rent')
+def rent():
+    return render_template('rent/rent.html')
+
+
+@app.route('/rent/your-book')
+def rent_your_book():
+    return render_template('rent/rent-your-book.html')
+
+
+@app.route('/rent/search')
+def rent_search():
+    return render_template('rent/rent-books-search.html')
+
+
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)

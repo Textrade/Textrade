@@ -4,7 +4,6 @@ from flask.ext.login import UserMixin
 from peewee import *
 from flask.ext.bcrypt import generate_password_hash
 
-
 # DATABASE INFO
 HOST = "us-cdbr-iron-east-02.cleardb.net"
 DATABASE_NAME = "heroku_2dd220ea85b707f"
@@ -250,6 +249,6 @@ def init_app():
     )
 
 if __name__ == '__main__':
-    drop_tables()
+    #drop_tables()
     create_tables()
     init_app()
