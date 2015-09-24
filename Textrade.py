@@ -229,7 +229,7 @@ def rent_your_book():
 
 @app.route('/rent/search')
 def rent_search():
-    return render_template('rent/rent-books-search.html')
+    return render_template('rent/rental-books-search.html')
 
 
 if __name__ == '__main__':

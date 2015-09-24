@@ -9,7 +9,7 @@
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/sass/main.css">
+    <link rel="stylesheet" type="text/css" href="/static/styles/sass/main.css">
 </head>
 
 <body>
@@ -31,7 +31,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Home</a></li>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
                         <li><a href="our-services.html">Our Services</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rent <span class="caret"></span></a>
@@ -117,7 +117,7 @@
                     <p>Showing results for: <span class="search-keywords">Harold Purple Crayon</span> <span class="results-number">25 Results</span></p>
                 </div>
                 <div class="row result-instance">
-                    <div class="col-xs-4 col-sm-3 result-cover-image"><img src="img/lib.jpg"></div>
+                    <div class="col-xs-4 col-sm-3 result-cover-image"><img src="/static/img/lib.jpg"></div>
                     <div class="col-xs-8 col-sm-9 result-details">
                         <h4 class="col-xs-12 result-book-title"><a href="#">Harold and the Purple Crayon</a></h4>
                         <!-- Price -->
@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="row result-instance">
-                    <div class="col-xs-3 result-cover-image"><img src="img/lib.jpg"></div>
+                    <div class="col-xs-3 result-cover-image"><img src="/static/img/lib.jpg"></div>
                     <div class="col-xs-9 result-details">
                         <h4 class="col-xs-12 result-book-title"><a href="#">Harold and the Purple Crayon</a></h4>
                         <!-- Price -->
@@ -153,7 +153,7 @@
                     </div>
                 </div>
                 <div class="row result-instance">
-                    <div class="col-xs-3 result-cover-image"><img src="img/lib.jpg"></div>
+                    <div class="col-xs-3 result-cover-image"><img src="/static/img/lib.jpg"></div>
                     <div class="col-xs-9 result-details">
                         <h4 class="col-xs-12 result-book-title"><a href="#">Harold and the Purple Crayon</a></h4>
                         <!-- Price -->
@@ -171,7 +171,7 @@
                     </div>
                 </div>
                 <div class="row result-instance">
-                    <div class="col-xs-3 result-cover-image"><img src="img/lib.jpg"></div>
+                    <div class="col-xs-3 result-cover-image"><img src="/static/img/lib.jpg"></div>
                     <div class="col-xs-9 result-details">
                         <h4 class="col-xs-12 result-book-title"><a href="#">Harold and the Purple Crayon</a></h4>
                         <!-- Price -->
