@@ -23,7 +23,7 @@ def university_email_does_not_exits(form, field):
 
 def is_not_user_active(form, field):
     # This try was done to prevent UserDoesn't exist
-    # Could find specific exception
+    # Could not find specific exception
     try:
         if User.get(User.university_email == field.data).active:
             raise ValidationError("Your account is already active.")
@@ -125,11 +125,42 @@ class LoginForm(Form):
 class ResendToken(Form):
     """Resend token form when activating user."""
     university_email = StringField(
+        'Universiry Email',
         validators=[
             DataRequired(),
             Email(),
             is_uml_email,
             university_email_does_not_exits,
-            is_not_user_active
+        ]
+    )
+
+
+class ForgotCredentialReset(Form):
+    """Form to send reset email with verification."""
+    university_email = StringField(
+        'University Email',
+        validators=[
+            DataRequired(),
+            Email(),
+            is_uml_email,
+            university_email_does_not_exits
+        ]
+    )
+
+
+class ResetPassword(Form):
+    """Form to reset password."""
+    password = PasswordField(
+        'New Password',
+        validators=[
+            DataRequired(),
+            Length(min=5),
+            EqualTo('password2', message="Password must match!")
+        ]
+    )
+    password2 = PasswordField(
+        'Confirm Password',
+        validators=[
+            DataRequired(),
         ]
     )

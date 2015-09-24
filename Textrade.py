@@ -12,7 +12,8 @@ from flask_admin import Admin
 from flask_admin.contrib.peewee import ModelView
 
 import models
-from user.forms import RegisterForm, LoginForm, ResendToken
+from user.forms import (RegisterForm, LoginForm, ResendToken, ForgotCredentialReset,
+                        ResetPassword)
 from user.user import create_user
 from user.token import *
 
@@ -113,23 +114,28 @@ def login():
     # Login form in login view
     login_form = LoginForm()
     if not flask_login.current_user.is_authenticated():
-        if login_form.validate_on_submit():
-            try:
-                log_user = models.User.get(models.User.username == login_form.username.data)
-            except models.DoesNotExist:
-                flash("Your username  or password doesn't match!", "error")
-            else:
-                if check_password_hash(log_user.password, login_form.password.data):
-                    login_user(log_user)
-                    flash("You've been logged in!", "success")
 
-                    _next = request.args.get('next')
-                    if _next:
-                        return redirect(_next)
-                    else:
-                        return redirect(url_for('dashboard'))
-                else:
+        if login_form.validate_on_submit():
+            username = login_form.username.data
+            current_user = models.User.get(models.User.username == username)
+            if current_user.active:
+                try:
+                    log_user = models.User.get(models.User.username == username)
+                except models.DoesNotExist:
                     flash("Your username  or password doesn't match!", "error")
+                else:
+                    if check_password_hash(log_user.password, login_form.password.data):
+                        login_user(log_user)
+                        flash("You've been logged in!", "success")
+                        _next = request.args.get('next')
+                        if _next:
+                            return redirect(_next)
+                        else:
+                            return redirect(url_for('dashboard'))
+                    else:
+                        flash("Your username  or password doesn't match!", "error")
+            else:
+                flash("You account is not active yet, please check you email.")
         return render_template(
             'user/login.html',
             section="user",
@@ -172,7 +178,6 @@ def register():
 
 
 @app.route('/user/activate/<token>')
-@login_required
 def confirm_email(token):
     try:
         email = confirm_token(token)
@@ -190,6 +195,45 @@ def confirm_email(token):
         ).execute()
         flash("Your email have been confirmed.", "success")
     return redirect(url_for('dashboard'))
+
+
+@app.route('/user/forgot', methods=('POST', 'GET'))
+def forgot_credentials():
+    form = ForgotCredentialReset()
+    if form.validate_on_submit():
+        email = form.university_email.data
+        token = generate_confirmation_token(email)
+        html = render_template('user/reset_password_email.html', token=token)
+        subject = "Reset password request"
+        send_email(
+            to=email,
+            subject=subject,
+            template=html
+        )
+        flash("We've sent you an email with a link to reset your password.")
+    return render_template('user/forgot_credentials.html', form=form)
+
+
+@app.route('/user/forgot/<token>', methods=('POST', 'GET'))
+def change_credentials(token):
+    email = confirm_token(token)
+    if email:
+        try:
+            user = models.User.get(models.User.university_email == email)
+        except models.DoesNotExist:
+            flash("Something went wrong with your username.")
+            return redirect(url_for('login'))
+        form = ResetPassword()
+        if form.validate_on_submit():
+            user.update(
+                password=generate_password_hash(form.password.data)
+            ).execute()
+            flash("Your password was reset successfully")
+            return redirect(url_for('login'))
+        return render_template('user/reset_password.html', form=form)
+    else:
+        flash("The confirmation link is invalid or has expired.", "error")
+        return redirect(url_for('forgot_credentials'))
 
 
 @app.route('/user/activate/resend', methods=('GET', 'POST'))
