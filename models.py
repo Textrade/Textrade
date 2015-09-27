@@ -76,6 +76,7 @@ class Book(Model):
     edition = CharField(max_length=255)
     author = CharField(max_length=255)
     isbn = CharField(max_length=255, unique=True)
+    condition = CharField(max_length=255, unique=True)
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateField(default=datetime.datetime.now)
@@ -217,6 +218,7 @@ def init_app():
             'isbn': '9780133807806',
             'username': 'jsmith',
             'available': 'available',
+            'condition': 'like new',
         },
         {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
@@ -225,6 +227,7 @@ def init_app():
             'isbn': '9781305280618',
             'username': 'myork',
             'available': 'available',
+            'condition': 'new',
         },
         {
             'name': 'Physics For Scientist and Engineers',
@@ -233,6 +236,7 @@ def init_app():
             'isbn': '978032175291',
             'username': 'jcook',
             'available': 'available',
+            'condition': 'used',
         },
     ]
     with db.atomic():
@@ -249,6 +253,6 @@ def init_app():
     )
 
 if __name__ == '__main__':
-    #drop_tables()
+    drop_tables()
     create_tables()
     init_app()

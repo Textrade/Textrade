@@ -77,14 +77,6 @@ def load_user(userid):
         return None
 
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash("You've been successfully logged out.")
-    return redirect(url_for('index'))
-
-
 @app.before_request
 def before_request():
     """Connect to the database before a request."""
@@ -145,6 +137,14 @@ def login():
     # TODO: Find why this has been printing twice!
     flash("You are logged in already.", "success")
     return redirect(url_for('dashboard'))
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You've been successfully logged out.")
+    return redirect(url_for('index'))
 
 
 @app.route('/register', methods=('GET', 'POST'))
