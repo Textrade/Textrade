@@ -127,7 +127,7 @@ def login():
                     else:
                         flash("Your username  or password doesn't match!", "error")
             else:
-                flash("You account is not active yet, please check you email.")
+                flash("You account is not active yet, please check you email.", "no-active")
         return render_template(
             'user/login.html',
             section="user",
@@ -211,6 +211,7 @@ def forgot_credentials():
             template=html
         )
         flash("We've sent you an email with a link to reset your password.")
+        return redirect(url_for('login'))
     return render_template('user/forgot_credentials.html', form=form)
 
 
@@ -250,7 +251,7 @@ def resend_token():
             template=html
         )
         flash("The activation link have been resend!")
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
     return render_template('user/resend_token.html', form=form)
 
 
