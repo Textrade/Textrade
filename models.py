@@ -70,12 +70,24 @@ class BookStatus(Model):
         return self.status
 
 
+class BookCondition(Model):
+    """List of condition for the books."""
+    condition = CharField(max_length=255, unique=True)
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return self.condition
+
+
 class Book(Model):
     """Book model."""
     name = CharField(max_length=255)
     edition = CharField(max_length=255)
     author = CharField(max_length=255)
     isbn = CharField(max_length=255, unique=True)
+    condition = ForeignKeyField(BookCondition, to_field='condition', related_name='book')
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateField(default=datetime.datetime.now)
@@ -127,6 +139,7 @@ def create_tables():
                 User,
                 TradeStatus,
                 BookStatus,
+                BookCondition,
                 Book,
                 Trade,
                 WishList,
@@ -152,6 +165,7 @@ def drop_tables():
                 User,
                 TradeStatus,
                 BookStatus,
+                BookCondition,
                 Book,
                 Trade,
                 WishList
@@ -209,6 +223,23 @@ def init_app():
             'active': True,
         }
     ]
+    books_condition = [
+        {
+            'condition': 'new',
+        },
+        {
+            'condition': 'like new',
+        },
+        {
+            'condition': 'used',
+        },
+        {
+            'condition': 'good',
+        },
+        {
+            'condition': 'bad',
+        },
+    ]
     books = [
         {
             'name': 'Java How To Program',
@@ -217,6 +248,7 @@ def init_app():
             'isbn': '9780133807806',
             'username': 'jsmith',
             'available': 'available',
+            'condition': 'good',
         },
         {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
@@ -225,6 +257,7 @@ def init_app():
             'isbn': '9781305280618',
             'username': 'myork',
             'available': 'available',
+            'condition': 'used',
         },
         {
             'name': 'Physics For Scientist and Engineers',
@@ -233,11 +266,13 @@ def init_app():
             'isbn': '978032175291',
             'username': 'jcook',
             'available': 'available',
+            'condition': 'new',
         },
     ]
     with db.atomic():
         UserRole.insert_many(user_role).execute()
         BookStatus.insert_many(book_status).execute()
+        BookCondition.insert_many(books_condition).execute()
         TradeStatus.insert_many(trade_status).execute()
         User.insert_many(users).execute()
         Book.insert_many(books).execute()
@@ -251,4 +286,4 @@ def init_app():
 if __name__ == '__main__':
     #drop_tables()
     create_tables()
-    init_app()
+    #init_app()
