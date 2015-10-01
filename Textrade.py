@@ -1,13 +1,15 @@
 import datetime
+import os
 
-from itsdangerous import URLSafeSerializer, BadSignature
 from flask import (Flask, g, render_template, redirect, url_for, flash, request)
+from werkzeug.utils import secure_filename
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 from flask.ext.mail import Mail, Message
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
 import flask_login
+
 from flask_admin import Admin
 from flask_admin.contrib.peewee import ModelView
 
@@ -43,6 +45,11 @@ mail.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+# FILE MANAGER
+UPLOAD_FOLDER = '/static/books'
+BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 class TextradeModelView(ModelView):
