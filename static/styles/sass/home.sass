@@ -3,31 +3,32 @@
 .carousel-inner
     height: 400px
     margin-top: 75px
-#quick-blurbs
-    .blurb
-        padding: 5%
-        text-align: center
-        height: 300px
-        display: table
-        img
-            height: 100px
-            width: auto
-            margin: auto
-        .blurb-text
-            height: 125px
-            h3
-                color: $off-blue
-        button
-            display: table-cell
-            vertical-align: bottom
-            margin-top: 20px    
 #quick-about
     text-align: center
-    background: $light-blue
+    background: $off-blue
     color: white
-    #incentive
-        margin: 65px 0 50px 0
-#create-account-modal
+    h2
+        font-family: Oswald, sans-serif
+    h3
+        font-weight: 300
+    button
+        margin-top: 15px
+#quick-blurbs
+    border-top: solid 5px $sea-foam
+    border-bottom: solid 5px $sea-foam
+    .blurb
+        text-align: center
+        img
+            height: 100px
+            margin: auto
+        h3
+            font-family: $font-stack
+        p
+            padding: 0 20%
+        @media (min-width: 768px) 
+            p
+                padding: 0
+#create-account-modal 
     color: black
     text-align: left
     h3

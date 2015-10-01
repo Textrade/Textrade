@@ -1,101 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Textrade | The Team</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/sass/main.css">
-</head>
+{% extends 'default/baseuser.html' %}
+{% block content %}
+    <div class="row page-header">
+        <h1>The Team</h1>
+    </div>
 
-<body>
-    <div class="container-fluid" id="page-wrap">
-    
-        <nav class="navbar navbar-default navbar-fixed-top container-fluid">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Brand</a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="our-services.html">Our Services</a></li>
-                        <li><a href="rent.html">Rent</a></li>
-                        <li><a href="the-team.html">The Team <span class="sr-only">(current)</span></a></li>
-                        <li><a href="trade.html">Trade</a></li>
-                        <li><a href="donate.html">Donate</a></li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav> 
-        
-        <div class="row page-header">
-            <h1>The Team</h1>
-            <div class="image-container">
-                <img src="img/hands-people-woman-working.jpg" id="team-photo">
+    <div class="row" id="team-member-profiles">
+        <div class="col-xs-6 col-md-3 team-member">
+            <div class="circular" id="circular-1"></div>
+            <h3 class="name">Brittany</h3>
+            <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum voluptate. </p>
+        </div>
+        <div class="col-xs-6 col-md-3 team-member">
+            <div class="circular" id="circular-2"></div>
+            <h3 class="name">Chris</h3>
+            <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum voluptate. </p>
+        </div>
+        <div class="col-xs-6 col-md-3 team-member">
+            <div class="circular" id="circular-3"></div>
+            <h3 class="name">Corey</h3>
+            <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum voluptate. </p>
+        </div>
+        <div class="col-xs-6 col-md-3 team-member">
+            <div class="circular" id="circular-4"></div>
+            <h3 class="name">Timothy</h3>
+            <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum voluptate. </p>
+        </div>
+        <div class="col-xs-12 developers">
+            <h3>Web Developers</h3>
+            <div class="col-xs-6">
+                <h4>Nina</h4>
+                <p>Front End<br>Graphic Designer</p>
+            </div>
+            <div class="col-xs-6">
+                <h4>Daniel</h4>
+                <p>Back End<br>Information Architect</p>
             </div>
         </div>
-        
-        <div class="row" id="team-member-profiles">
-            <div class="col-md-3 team-member">
-                <div class="circular" id="circular-1"></div>
-                <h3 class="name">Brittany</h3>
-                <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum voluptate. </p>
-            </div>
-            <div class="col-md-3 team-member">
-                <div class="circular" id="circular-2"></div>
-                <h3 class="name">Chris</h3>
-                <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum voluptate. </p>
-            </div>
-            <div class="col-md-3 team-member">
-                <div class="circular" id="circular-3"></div>
-                <h3 class="name">Corey</h3>
-                <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum voluptate. </p>
-            </div>
-            <div class="col-md-3 team-member">
-                <div class="circular" id="circular-4"></div>
-                <h3 class="name">Timothy</h3>
-                <p>Ea varias quibusdam. Fugiat arbitrantur occaecat ipsum cernantur te ita ita cillum vptate. I changed something.</p>
-            </div>
-        </div>
-        
-        <div class="row" id="mission">
-            <h1>Our Mission</h1>
-            <h3>No one like's a bad deal, or to land on the lesser side of a trade.</h3>
-            <p>Textrade is a book service like no other. It's built for college students, by college students. Don't settle for selling your books back to the university bookstore or services like Amazon that will only pay you back a fraction of the price.<br><br>Instead, put your books to good use! Trade for books you need or rent your books out to other students and truely earn back your money!</p>
-        </div>
-        
-        <div class="row" id="footer">
-            <footer>
-                <h2>Textrade</h2>
-                <h4>An Educated Book Buying Market</h4>
-                <table id="site-actions">
-                    <tr id="main-actions"><td>About Us</td><td>Services</td><td>Donate</td><td>Log-In</td></tr>
-                    <tr><td>The Team</td><td>Rent</td><td></td><td></td><td></td></tr>
-                    <tr><td>Our Mission</td><td>Trade</td><td></td><td></td><td></td></tr>
-                    <tr><td>Contact</td><td></td><td></td><td></td><td></td></tr>
-                </table>
-                <p id="copyright">This is where the copyright goes</p>
-            </footer>
-        </div>
-    </div><!-- close .container-fluid -->
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</body>
-</html>    
+    </div>
+
+    <div class="row" id="mission">
+        <h1>Our Mission</h1>
+        <hr>
+        <h4>No one like's a bad deal, or to land on the lesser side of a trade. We promise to never put you there or give you one.</h4>
+        <hr>
+        <p>Textrade is a book service like no other. It's built for UML students, by UML students. Instead of selling your books back to the bookstore or to Amazon for a fraction of the price, use Textrade.<br><br>Rent your books out to other students or trade your book in for one you need.</p>
+        <div class="col-sm-6"><button type="button" class="btn btn-default"><a href="rent-your-book.html">Get Started Today</a></button></div>
+        <div class="col-sm-6"><button type="button" class="btn btn-default"><a href="rent-your-book.html">Learn More About Renting & Trading</a></button></div>
+    </div>
+{% endblock %}
