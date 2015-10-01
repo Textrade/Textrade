@@ -81,8 +81,8 @@ class BookCondition(Model):
         return self.condition
 
 
-class Book(Model):
-    """Book model."""
+class BookRent(Model):
+    """BookRent model."""
     name = CharField(max_length=255)
     edition = CharField(max_length=255)
     author = CharField(max_length=255)
@@ -103,8 +103,8 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    book_one = ForeignKeyField(Book, to_field='isbn', related_name='book_one_to_trade')
-    book_two = ForeignKeyField(Book, to_field='isbn', related_name='book_two_to_trade')
+    book_one = ForeignKeyField(BookRent, to_field='isbn', related_name='book_one_to_trade')
+    book_two = ForeignKeyField(BookRent, to_field='isbn', related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -117,7 +117,7 @@ class Trade(Model):
 
 class WishList(Model):
     """WishList model."""
-    book = ForeignKeyField(Book, to_field='isbn')
+    book = ForeignKeyField(BookRent, to_field='isbn')
     username = ForeignKeyField(User, to_field='username')
     status = CharField(max_length=255)
     date = DateTimeField()
@@ -140,7 +140,7 @@ def create_tables():
                 TradeStatus,
                 BookStatus,
                 BookCondition,
-                Book,
+                BookRent,
                 Trade,
                 WishList,
             ],
@@ -166,7 +166,7 @@ def drop_tables():
                 TradeStatus,
                 BookStatus,
                 BookCondition,
-                Book,
+                BookRent,
                 Trade,
                 WishList
             ]
@@ -275,7 +275,7 @@ def init_app():
         BookCondition.insert_many(books_condition).execute()
         TradeStatus.insert_many(trade_status).execute()
         User.insert_many(users).execute()
-        Book.insert_many(books).execute()
+        BookRent.insert_many(books).execute()
     User.create(
         first_name="admin", last_name="admin",
         username="admin", password=generate_password_hash("admin"),
@@ -286,4 +286,4 @@ def init_app():
 if __name__ == '__main__':
     #drop_tables()
     create_tables()
-    #init_app()
+    init_app()

@@ -65,7 +65,7 @@ admin.add_view(TextradeModelView(models.User))
 admin.add_view(TextradeModelView(models.TradeStatus))
 admin.add_view(TextradeModelView(models.Trade))
 admin.add_view(TextradeModelView(models.BookStatus))
-admin.add_view(TextradeModelView(models.Book))
+admin.add_view(TextradeModelView(models.BookRent))
 
 
 @login_manager.user_loader
