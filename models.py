@@ -5,11 +5,16 @@ from peewee import *
 from flask.ext.bcrypt import generate_password_hash
 
 # DATABASE INFO
-HOST = "us-cdbr-iron-east-02.cleardb.net"
-DATABASE_NAME = "heroku_2dd220ea85b707f"
+HOST = "us-cdbr-iron-east-03.cleardb.net"
+DATABASE_NAME = "heroku_b0692bbbba2a643"
 PORT = 3306
-USERNAME = "b3f30e097887ef"
-PASSWORD = "401b1071"
+USERNAME = "b366db0b05b78c"
+PASSWORD = "3a9b0e26"
+#
+# HOST = "localhost"
+# DATABASE_NAME = "textrade2"
+# USERNAME = "root"
+# PASSWORD = ""
 
 db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
                    user=USERNAME, passwd=PASSWORD)
@@ -92,7 +97,7 @@ class BookRent(Model):
     condition_comment = TextField(default="")
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
-    added = DateField(default=datetime.datetime.now)
+    added = DateTimeField(default=datetime.datetime.now)
     image_path = CharField(max_length=255, unique=True)
     
     class Meta:
@@ -106,8 +111,8 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    book_one = ForeignKeyField(BookRent, to_field='id', related_name='book_one_to_trade')
-    book_two = ForeignKeyField(BookRent, to_field='id', related_name='book_two_to_trade')
+    book_one = ForeignKeyField(BookRent, related_name='book_one_to_trade')
+    book_two = ForeignKeyField(BookRent, related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -120,7 +125,7 @@ class Trade(Model):
 
 class WishList(Model):
     """WishList model."""
-    book = ForeignKeyField(BookRent, to_field='id')
+    book = ForeignKeyField(BookRent, related_name='book_wishList')
     username = ForeignKeyField(User, to_field='username')
     status = CharField(max_length=255)
     date = DateTimeField()
@@ -172,7 +177,7 @@ def drop_tables():
                 BookRent,
                 Trade,
                 WishList
-            ]
+            ], safe=True
         )
 
 
@@ -278,21 +283,27 @@ def init_app():
             'image_path': 'empty3',
         },
     ]
-    with db.atomic():
-        UserRole.insert_many(user_role).execute()
-        BookStatus.insert_many(book_status).execute()
-        BookCondition.insert_many(books_condition).execute()
-        TradeStatus.insert_many(trade_status).execute()
-        User.insert_many(users).execute()
-        BookRent.insert_many(books).execute()
-    User.create(
-        first_name="admin", last_name="admin",
-        username="admin", password=generate_password_hash("admin"),
-        university_email="admin@student.uml.edu", role="admin",
-        active=True
-    )
+    try:
+        with db.atomic():
+            UserRole.insert_many(user_role).execute()
+            BookStatus.insert_many(book_status).execute()
+            BookCondition.insert_many(books_condition).execute()
+            TradeStatus.insert_many(trade_status).execute()
+            User.insert_many(users).execute()
+            BookRent.insert_many(books).execute()
+        User.create(
+            first_name="admin", last_name="admin",
+            username="admin", password=generate_password_hash("admin"),
+            university_email="admin@student.uml.edu", role="admin",
+            active=True
+        )
+    except Exception as e:
+        print(e)
+        return
+    print("App initialized successfully")
+
 
 if __name__ == '__main__':
     drop_tables()
-    #create_tables()
-    #init_app()
+    create_tables()
+    init_app()

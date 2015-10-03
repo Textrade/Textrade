@@ -139,7 +139,9 @@ class TextradeModelView(ModelView):
     """ModelView override."""
     form_base_class = flask_wtf.Form
     # Exclude encrypted password from admin view
-    column_exclude_list = ['password', ]
+    column_exclude_list = [
+        'password', 'description', 'image_path'
+    ]
     form_excluded_columns = ['password', ]
     column_details_exclude_list = ['password', ]
 

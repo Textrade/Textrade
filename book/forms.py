@@ -18,8 +18,8 @@ class AddBookRentForm(Form):
         validators=[
             DataRequired(),
             Regexp(
-                r'^[0-9]+$',
-                message="ISBN can only be numbers/"
+                r'^[0-9a-zA-Z-]+$',
+                message="ISBN can only be numbers"
             )
         ]
     )
@@ -31,10 +31,13 @@ class AddBookRentForm(Form):
         'Condition',
         choices=condition_list,
         validators=[
-            DataRequired(),
+            DataRequired(message="Please let us know what is the condition."),
         ]
     )
     condition_comment = TextAreaField()
     img = FileField(
-        'Upload a picture'
+        'Upload a picture',
+        validators=[
+            DataRequired(message="Please provide a picture, people want to see your book.")
+        ]
     )
