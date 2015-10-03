@@ -1,13 +1,19 @@
-from flask_wtf import Form
-from wtforms import StringField, FieldList
-from wtforms.validators import DataRequired, Regexp, ValidationError, Length
 from models import BookRent
 
 
-def check_file(ALLOWED_EXTENSIONS, filename):
+def allowed_file(filename, ALLOWED_EXTENSIONS):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-class AddBookForm(Form):
-    pass
+def create_book_rent(**kwargs):
+    """Create a book for rent."""
+    BookRent.create(
+        name=kwargs['name'],
+        #author=kwargs['author'],
+        isbn=kwargs['isbn'],
+        condition=kwargs['condition'],
+        username=kwargs['username'],
+        available='available',
+        image_path=kwargs['img_path']
+    )

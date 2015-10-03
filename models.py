@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from flask.ext.login import UserMixin
 from peewee import *
@@ -84,13 +85,14 @@ class BookCondition(Model):
 class BookRent(Model):
     """BookRent model."""
     name = CharField(max_length=255)
-    edition = CharField(max_length=255)
-    author = CharField(max_length=255)
+    #edition = CharField(max_length=255)
+    #author = CharField(max_length=255)
     isbn = CharField(max_length=255, unique=True)
     condition = ForeignKeyField(BookCondition, to_field='condition', related_name='book')
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateField(default=datetime.datetime.now)
+    image_path = CharField(max_length=255, unique=True)
     
     class Meta:
         database = db
@@ -225,48 +227,51 @@ def init_app():
     ]
     books_condition = [
         {
-            'condition': 'new',
+            'condition': 'New',
         },
         {
-            'condition': 'like new',
+            'condition': 'Like New',
         },
         {
-            'condition': 'used',
+            'condition': 'Used',
         },
         {
-            'condition': 'good',
+            'condition': 'Good',
         },
         {
-            'condition': 'bad',
+            'condition': 'Bad',
         },
     ]
     books = [
         {
             'name': 'Java How To Program',
-            'edition': '10th',
-            'author': 'Paul Deitel & Harvey Daitel',
+            #'edition': '10th',
+            #'author': 'Paul Deitel & Harvey Daitel',
             'isbn': '9780133807806',
             'username': 'jsmith',
             'available': 'available',
-            'condition': 'good',
+            'condition': 'Good',
+            'image_path': 'empty1',
         },
         {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
-            'edition': '13th',
-            'author': 'William J. Baumol & Alan S. Blinder',
+            #'edition': '13th',
+            #'author': 'William J. Baumol & Alan S. Blinder',
             'isbn': '9781305280618',
             'username': 'myork',
             'available': 'available',
-            'condition': 'used',
+            'condition': 'Used',
+            'image_path': 'empty2',
         },
         {
             'name': 'Physics For Scientist and Engineers',
-            'edition': '3rd',
-            'author': 'Randall D. Knight',
+            #'edition': '3rd',
+            #'author': 'Randall D. Knight',
             'isbn': '978032175291',
             'username': 'jcook',
             'available': 'available',
-            'condition': 'new',
+            'condition': 'New',
+            'image_path': 'empty3',
         },
     ]
     with db.atomic():

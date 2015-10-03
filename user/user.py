@@ -1,8 +1,6 @@
-import datetime
-
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 
-from models import User, db
+from models import User
 
 
 def create_user(**kwargs):
