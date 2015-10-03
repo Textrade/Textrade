@@ -13,12 +13,6 @@ def check_file(ALLOWED_EXTENSIONS, filename):
 
 class AddBookRentForm(Form):
     """Form to add a book for rent"""
-    book_title = StringField(
-        'Book Title',
-        validators=[
-            DataRequired(),
-        ]
-    )
     isbn = StringField(
         'ISBN',
         validators=[

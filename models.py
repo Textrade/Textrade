@@ -1,5 +1,4 @@
 import datetime
-import os
 
 from flask.ext.login import UserMixin
 from peewee import *
@@ -85,10 +84,12 @@ class BookCondition(Model):
 class BookRent(Model):
     """BookRent model."""
     name = CharField(max_length=255)
-    #edition = CharField(max_length=255)
-    #author = CharField(max_length=255)
-    isbn = CharField(max_length=255, unique=True)
+    # edition = CharField(max_length=255)
+    author = CharField(max_length=255)
+    description = TextField()
+    isbn = CharField(max_length=255)
     condition = ForeignKeyField(BookCondition, to_field='condition', related_name='book')
+    condition_comment = TextField(default="")
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateField(default=datetime.datetime.now)
@@ -105,8 +106,8 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    book_one = ForeignKeyField(BookRent, to_field='isbn', related_name='book_one_to_trade')
-    book_two = ForeignKeyField(BookRent, to_field='isbn', related_name='book_two_to_trade')
+    book_one = ForeignKeyField(BookRent, to_field='id', related_name='book_one_to_trade')
+    book_two = ForeignKeyField(BookRent, to_field='id', related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -119,7 +120,7 @@ class Trade(Model):
 
 class WishList(Model):
     """WishList model."""
-    book = ForeignKeyField(BookRent, to_field='isbn')
+    book = ForeignKeyField(BookRent, to_field='id')
     username = ForeignKeyField(User, to_field='username')
     status = CharField(max_length=255)
     date = DateTimeField()
@@ -245,8 +246,9 @@ def init_app():
     books = [
         {
             'name': 'Java How To Program',
-            #'edition': '10th',
-            #'author': 'Paul Deitel & Harvey Daitel',
+            # 'edition': '10th',
+            'author': 'Paul Deitel & Harvey Daitel',
+            'description': 'Init',
             'isbn': '9780133807806',
             'username': 'jsmith',
             'available': 'available',
@@ -255,8 +257,9 @@ def init_app():
         },
         {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
-            #'edition': '13th',
-            #'author': 'William J. Baumol & Alan S. Blinder',
+            # 'edition': '13th',
+            'author': 'William J. Baumol & Alan S. Blinder',
+            'description': 'Init',
             'isbn': '9781305280618',
             'username': 'myork',
             'available': 'available',
@@ -265,8 +268,9 @@ def init_app():
         },
         {
             'name': 'Physics For Scientist and Engineers',
-            #'edition': '3rd',
-            #'author': 'Randall D. Knight',
+            # 'edition': '3rd',
+            'author': 'Randall D. Knight',
+            'description': 'Init',
             'isbn': '978032175291',
             'username': 'jcook',
             'available': 'available',
@@ -289,6 +293,6 @@ def init_app():
     )
 
 if __name__ == '__main__':
-    #drop_tables()
-    create_tables()
-    init_app()
+    drop_tables()
+    #create_tables()
+    #init_app()

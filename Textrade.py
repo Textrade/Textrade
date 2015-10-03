@@ -37,6 +37,8 @@ import flask_login
 #
 from werkzeug.utils import secure_filename
 import uuid
+import requests
+import json
 
 #
 #
@@ -69,7 +71,7 @@ from user.token import *
 #
 #
 from book.forms import (AddBookRentForm, )
-from book.book import create_book_rent, allowed_file
+from book.book import create_book_rent, allowed_file, load_book_info
 
 #
 #
@@ -122,6 +124,15 @@ login_manager.login_view = 'login'
 #
 UPLOAD_FOLDER = '/Users/dsantos/Web Projects/Textrade/Textrade/static/img/books/'
 BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
+
+#
+#
+#
+# GOOGLE'S API CONFIG
+#
+#
+#
+BOOK_API_KEY = "AIzaSyBI_bJjoReQ2WboaqJvA6wA6lDraR9sJ54"
 
 
 class TextradeModelView(ModelView):
@@ -351,25 +362,41 @@ def rent():
 def rent_your_book():
     form = AddBookRentForm()
     if form.validate_on_submit():
-        file = request.files['img']
-        if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
-            filename = secure_filename(
-                "{}-{}.{}".format(
-                    flask_login.current_user.username,
-                    uuid.uuid4(),
-                    file.filename.rsplit('.', 1)[1]
+        # Get ISBN from form after validate
+        isbn = form.isbn.data
+        # Try to load information
+        book = load_book_info(isbn)
+        if book:
+            file = request.files['img']
+            if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
+                # Secure the input file
+                filename = secure_filename(
+                    "{}-{}.{}".format(
+                        flask_login.current_user.username,
+                        uuid.uuid4(),
+                        file.filename.rsplit('.', 1)[1]
+                    )
                 )
-            )
-            img_path = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(img_path)
-            create_book_rent(
-                name=form.book_title.data,
-                isbn=form.isbn.data,
-                condition=form.condition.data,
-                username=flask_login.current_user.username,
-                img_path=img_path
-            )
-            flash("You book have been created!", "success")
+                # Save the image to the server
+                img_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(img_path)
+                # Create a book record in the database
+                create_book_rent(
+                    name=book['title'],
+                    author=book['authors'],
+                    description=book['description'],
+                    isbn=isbn,
+                    condition=form.condition.data,
+                    condition_comment=form.condition_comment.data,
+                    username=flask_login.current_user.username,
+                    img_path=img_path
+                )
+                flash("You book have been created!", "success")
+                return redirect(url_for('rent_your_book'))
+            else:
+                flash("This format of the file is not allowed.", "error")
+        else:
+            flash("We couldn't find this book, check the ISBN number.", "error")
             return redirect(url_for('rent_your_book'))
     return render_template('rent/rent-your-book.html', form=form)
 
