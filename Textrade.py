@@ -1,35 +1,100 @@
-import datetime
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                   #
+#   PROJECT: Textrade                               #
+#   CONTRIBUTORS:   Daniel Santos (Back-End),       #
+#                   Nina Petropoulos (Fron-End)     #
+#   VERSION: 1.0                                    #
+#                                                   #
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-from itsdangerous import URLSafeSerializer, BadSignature
-from flask import (Flask, g, render_template, redirect, url_for, flash, request)
+#
+#
+#   PYTHON IMPORTS
+#
+#
+import datetime
+import os
+
+#
+#
+#
+#   FLASK IMPORTS
+#
+from flask import (Flask, g, render_template, redirect, url_for,
+                   flash, request)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 from flask.ext.mail import Mail, Message
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
 import flask_login
+
+#
+#
+#
+#   TOOLS IMPORTS
+#
+#
+from werkzeug.utils import secure_filename
+import uuid
+import requests
+import json
+
+#
+#
+#   ADMIN IMPORTS
+#
+#
 from flask_admin import Admin
 from flask_admin.contrib.peewee import ModelView
 
+#
+#
+#   MODELS IMPORTS
+#
+#
 import models
-from user.forms import (RegisterForm, LoginForm, ResendToken, ForgotCredentialReset,
-                        ResetPassword)
+
+#
+#
+#   USER IMPORTS
+#
+#
+from user.forms import (RegisterForm, LoginForm, ResendToken,
+                        ForgotCredentialReset,ResetPassword)
 from user.user import create_user
 from user.token import *
 
+#
+#
+#   BOOK IMPORTS
+#
+#
+from book.forms import (AddBookRentForm, )
+from book.book import create_book_rent, allowed_file, load_book_info
 
-# DATABASE CONFIG
-DEBUG = True
-HOST = "127.0.0.1"
-PORT = 5000
-
+#
+#
+#
 # APP CONFIG
+#
+#
+#
 app = Flask(__name__)
 app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
 app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
 app.config['CSRF_ENABLED'] = True
+DEBUG = True
+HOST = "127.0.0.1"
+PORT = 5000
 
+#
+#
+#
 # MAIL CONFIG
+#
+#
+#
 mail = Mail()
 app.config['MAIL_SERVER'] = "smtp.gmail.com"
 app.config['MAIL_PORT'] = 465
@@ -39,17 +104,44 @@ app.config['MAIL_USERNAME'] = "umltextrade@gmail.com"
 app.config['MAIL_PASSWORD'] = "Angell100."
 mail.init_app(app)
 
+#
+#
+#
 # LOGIN MANAGER CONFIG
+#
+#
+#
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+#
+#
+#
+# UPLOAD MANAGER CONFIG
+#
+#
+#
+UPLOAD_FOLDER = '/Users/dsantos/Web Projects/Textrade/Textrade/static/img/books/'
+BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
+
+#
+#
+#
+# GOOGLE'S API CONFIG
+#
+#
+#
+BOOK_API_KEY = "AIzaSyBI_bJjoReQ2WboaqJvA6wA6lDraR9sJ54"
 
 
 class TextradeModelView(ModelView):
     """ModelView override."""
     form_base_class = flask_wtf.Form
     # Exclude encrypted password from admin view
-    column_exclude_list = ['password', ]
+    column_exclude_list = [
+        'password', 'description', 'image_path'
+    ]
     form_excluded_columns = ['password', ]
     column_details_exclude_list = ['password', ]
 
@@ -65,7 +157,8 @@ admin.add_view(TextradeModelView(models.User))
 admin.add_view(TextradeModelView(models.TradeStatus))
 admin.add_view(TextradeModelView(models.Trade))
 admin.add_view(TextradeModelView(models.BookStatus))
-admin.add_view(TextradeModelView(models.Book))
+admin.add_view(TextradeModelView(models.BookRent))
+admin.add_view(TextradeModelView(models.BookCondition))
 
 
 @login_manager.user_loader
@@ -267,9 +360,48 @@ def rent():
     return render_template('rent/rent.html')
 
 
-@app.route('/rent/your-book')
+@app.route('/rent/your-book', methods=('GET', 'POST'))
+@login_required
 def rent_your_book():
-    return render_template('rent/rent-your-book.html')
+    form = AddBookRentForm()
+    if form.validate_on_submit():
+        # Get ISBN from form after validate
+        isbn = form.isbn.data
+        # Try to load information
+        book = load_book_info(isbn)
+        if book:
+            file = request.files['img']
+            if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
+                # Secure the input file
+                filename = secure_filename(
+                    "{}-{}.{}".format(
+                        flask_login.current_user.username,
+                        uuid.uuid4(),
+                        file.filename.rsplit('.', 1)[1]
+                    )
+                )
+                # Save the image to the server
+                img_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(img_path)
+                # Create a book record in the database
+                create_book_rent(
+                    name=book['title'],
+                    author=book['authors'],
+                    description=book['description'],
+                    isbn=isbn,
+                    condition=form.condition.data,
+                    condition_comment=form.condition_comment.data,
+                    username=flask_login.current_user.username,
+                    img_path=img_path
+                )
+                flash("You book have been created!", "success")
+                return redirect(url_for('rent_your_book'))
+            else:
+                flash("This format of the file is not allowed.", "error")
+        else:
+            flash("We couldn't find this book, check the ISBN number.", "error")
+            return redirect(url_for('rent_your_book'))
+    return render_template('rent/rent-your-book.html', form=form)
 
 
 @app.route('/rent/search')

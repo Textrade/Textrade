@@ -11,6 +11,7 @@ def generate_confirmation_token(email):
 
 def confirm_token(token, expiration=3600):
     """Check for the confirmation token."""
+    # TODO: Set expiration time.
     serializer = URLSafeSerializer(app.config['SECRET_KEY'])
     try:
         email = serializer.loads(

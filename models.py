@@ -5,11 +5,16 @@ from peewee import *
 from flask.ext.bcrypt import generate_password_hash
 
 # DATABASE INFO
-HOST = "us-cdbr-iron-east-02.cleardb.net"
-DATABASE_NAME = "heroku_2dd220ea85b707f"
+HOST = "us-cdbr-iron-east-03.cleardb.net"
+DATABASE_NAME = "heroku_b0692bbbba2a643"
 PORT = 3306
-USERNAME = "b3f30e097887ef"
-PASSWORD = "401b1071"
+USERNAME = "b366db0b05b78c"
+PASSWORD = "3a9b0e26"
+#
+# HOST = "localhost"
+# DATABASE_NAME = "textrade2"
+# USERNAME = "root"
+# PASSWORD = ""
 
 db = MySQLDatabase(DATABASE_NAME, host=HOST, port=PORT,
                    user=USERNAME, passwd=PASSWORD)
@@ -70,16 +75,30 @@ class BookStatus(Model):
         return self.status
 
 
-class Book(Model):
-    """Book model."""
-    name = CharField(max_length=255)
-    edition = CharField(max_length=255)
-    author = CharField(max_length=255)
-    isbn = CharField(max_length=255, unique=True)
+class BookCondition(Model):
+    """List of condition for the books."""
     condition = CharField(max_length=255, unique=True)
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return self.condition
+
+
+class BookRent(Model):
+    """BookRent model."""
+    name = CharField(max_length=255)
+    # edition = CharField(max_length=255)
+    author = CharField(max_length=255)
+    description = TextField()
+    isbn = CharField(max_length=255)
+    condition = ForeignKeyField(BookCondition, to_field='condition', related_name='book')
+    condition_comment = TextField(default="")
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
-    added = DateField(default=datetime.datetime.now)
+    added = DateTimeField(default=datetime.datetime.now)
+    image_path = CharField(max_length=255, unique=True)
     
     class Meta:
         database = db
@@ -92,8 +111,8 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    book_one = ForeignKeyField(Book, to_field='isbn', related_name='book_one_to_trade')
-    book_two = ForeignKeyField(Book, to_field='isbn', related_name='book_two_to_trade')
+    book_one = ForeignKeyField(BookRent, related_name='book_one_to_trade')
+    book_two = ForeignKeyField(BookRent, related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -106,7 +125,7 @@ class Trade(Model):
 
 class WishList(Model):
     """WishList model."""
-    book = ForeignKeyField(Book, to_field='isbn')
+    book = ForeignKeyField(BookRent, related_name='book_wishList')
     username = ForeignKeyField(User, to_field='username')
     status = CharField(max_length=255)
     date = DateTimeField()
@@ -128,7 +147,8 @@ def create_tables():
                 User,
                 TradeStatus,
                 BookStatus,
-                Book,
+                BookCondition,
+                BookRent,
                 Trade,
                 WishList,
             ],
@@ -153,10 +173,11 @@ def drop_tables():
                 User,
                 TradeStatus,
                 BookStatus,
-                Book,
+                BookCondition,
+                BookRent,
                 Trade,
                 WishList
-            ]
+            ], safe=True
         )
 
 
@@ -210,47 +231,77 @@ def init_app():
             'active': True,
         }
     ]
+    books_condition = [
+        {
+            'condition': 'New',
+        },
+        {
+            'condition': 'Like New',
+        },
+        {
+            'condition': 'Used',
+        },
+        {
+            'condition': 'Good',
+        },
+        {
+            'condition': 'Bad',
+        },
+    ]
     books = [
         {
             'name': 'Java How To Program',
-            'edition': '10th',
+            # 'edition': '10th',
             'author': 'Paul Deitel & Harvey Daitel',
+            'description': 'Init',
             'isbn': '9780133807806',
             'username': 'jsmith',
             'available': 'available',
-            'condition': 'like new',
+            'condition': 'Good',
+            'image_path': 'empty1',
         },
         {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
-            'edition': '13th',
+            # 'edition': '13th',
             'author': 'William J. Baumol & Alan S. Blinder',
+            'description': 'Init',
             'isbn': '9781305280618',
             'username': 'myork',
             'available': 'available',
-            'condition': 'new',
+            'condition': 'Used',
+            'image_path': 'empty2',
         },
         {
             'name': 'Physics For Scientist and Engineers',
-            'edition': '3rd',
+            # 'edition': '3rd',
             'author': 'Randall D. Knight',
+            'description': 'Init',
             'isbn': '978032175291',
             'username': 'jcook',
             'available': 'available',
-            'condition': 'used',
+            'condition': 'New',
+            'image_path': 'empty3',
         },
     ]
-    with db.atomic():
-        UserRole.insert_many(user_role).execute()
-        BookStatus.insert_many(book_status).execute()
-        TradeStatus.insert_many(trade_status).execute()
-        User.insert_many(users).execute()
-        Book.insert_many(books).execute()
-    User.create(
-        first_name="admin", last_name="admin",
-        username="admin", password=generate_password_hash("admin"),
-        university_email="admin@student.uml.edu", role="admin",
-        active=True
-    )
+    try:
+        with db.atomic():
+            UserRole.insert_many(user_role).execute()
+            BookStatus.insert_many(book_status).execute()
+            BookCondition.insert_many(books_condition).execute()
+            TradeStatus.insert_many(trade_status).execute()
+            User.insert_many(users).execute()
+            BookRent.insert_many(books).execute()
+        User.create(
+            first_name="admin", last_name="admin",
+            username="admin", password=generate_password_hash("admin"),
+            university_email="admin@student.uml.edu", role="admin",
+            active=True
+        )
+    except Exception as e:
+        print(e)
+        return
+    print("App initialized successfully")
+
 
 if __name__ == '__main__':
     drop_tables()
