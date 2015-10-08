@@ -1,33 +1,147 @@
-from flask import (Flask, g, render_template, redirect, url_for, flash, request)
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                   #
+#   PROJECT: Textrade                               #
+#   CONTRIBUTORS:   Daniel Santos (Back-End),       #
+#                   Nina Petropoulos (Fron-End)     #
+#   VERSION: 1.0                                    #
+#                                                   #
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+#
+#
+#   PYTHON IMPORTS
+#
+#
+import datetime
+import os
+
+#
+#
+#
+#   FLASK IMPORTS
+#
+from flask import (Flask, g, render_template, redirect, url_for,
+                   flash, request)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
+from flask.ext.mail import Mail, Message
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
 import flask_login
+
+#
+#
+#
+#   TOOLS IMPORTS
+#
+#
+from werkzeug.utils import secure_filename
+import uuid
+import requests
+import json
+
+#
+#
+#   ADMIN IMPORTS
+#
+#
 from flask_admin import Admin
 from flask_admin.contrib.peewee import ModelView
 
+#
+#
+#   MODELS IMPORTS
+#
+#
 import models
-from user.forms import RegisterForm, LoginForm
-from user.user import create_user
 
+#
+#
+#   USER IMPORTS
+#
+#
+from user.forms import (RegisterForm, LoginForm, ResendToken,
+                        ForgotCredentialReset,ResetPassword)
+from user.user import create_user
+from user.token import *
+
+#
+#
+#   BOOK IMPORTS
+#
+#
+from book.forms import (AddBookRentForm, )
+from book.book import create_book_rent, allowed_file, load_book_info
+
+#
+#
+#
+# APP CONFIG
+#
+#
+#
+app = Flask(__name__)
+app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
+app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
+app.config['CSRF_ENABLED'] = True
 DEBUG = True
 HOST = "127.0.0.1"
 PORT = 5000
 
-app = Flask(__name__)
-app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
-app.config['CSRF_ENABLED'] = True
+#
+#
+#
+# MAIL CONFIG
+#
+#
+#
+mail = Mail()
+app.config['MAIL_SERVER'] = "smtp.gmail.com"
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_SENDER'] = "Textrade <umltextrade@gmail.com>"
+app.config['MAIL_USERNAME'] = "umltextrade@gmail.com"
+app.config['MAIL_PASSWORD'] = "Angell100."
+mail.init_app(app)
+
+#
+#
+#
+# LOGIN MANAGER CONFIG
+#
+#
+#
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+#
+#
+#
+# UPLOAD MANAGER CONFIG
+#
+#
+#
+UPLOAD_FOLDER = '/Users/dsantos/Web Projects/Textrade/Textrade/static/img/books/'
+BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
+
+#
+#
+#
+# GOOGLE'S API CONFIG
+#
+#
+#
+BOOK_API_KEY = "AIzaSyBI_bJjoReQ2WboaqJvA6wA6lDraR9sJ54"
 
 
 class TextradeModelView(ModelView):
     """ModelView override."""
     form_base_class = flask_wtf.Form
     # Exclude encrypted password from admin view
-    column_exclude_list = ['password', ]
+    column_exclude_list = [
+        'password', 'description', 'image_path'
+    ]
     form_excluded_columns = ['password', ]
     column_details_exclude_list = ['password', ]
 
@@ -38,12 +152,13 @@ class TextradeModelView(ModelView):
         return redirect(url_for('login', next=request.url))
 
 admin = Admin(app, name="Textrade", template_mode="bootstrap3")
-admin.add_view(ModelView(models.UserRole))
+admin.add_view(TextradeModelView(models.UserRole))
 admin.add_view(TextradeModelView(models.User))
-# admin.add_view(TextradeModelView(models.TradeStatus))
-# admin.add_view(TextradeModelView(models.Trade))
-# admin.add_view(TextradeModelView(models.BookStatus))
-# admin.add_view(TextradeModelView(models.Book))
+admin.add_view(TextradeModelView(models.TradeStatus))
+admin.add_view(TextradeModelView(models.Trade))
+admin.add_view(TextradeModelView(models.BookStatus))
+admin.add_view(TextradeModelView(models.BookRent))
+admin.add_view(TextradeModelView(models.BookCondition))
 
 
 @login_manager.user_loader
@@ -53,14 +168,6 @@ def load_user(userid):
         return models.User.get(models.User.id == userid)
     except models.DoesNotExist:
         return None
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash("You've been successfully logged out.")
-    return redirect(url_for('index'))
 
 
 @app.before_request
@@ -79,7 +186,6 @@ def after_request(response):
 
 @app.route('/')
 def index():
-    print(flask_login.current_user)
     return render_template('default/index.html')
 
 
@@ -92,24 +198,46 @@ def team():
 def login():
     # Login form in login view
     login_form = LoginForm()
-    if login_form.validate_on_submit():
-        try:
-            log_user = models.User.get(models.User.username == login_form.username.data)
-        except models.DoesNotExist:
-            flash("Your username  or password doesn't match!", "error")
-        else:
-            if check_password_hash(log_user.password, login_form.password.data):
-                login_user(log_user)
-                flash("You've been logged in!", "success")
-                return redirect(url_for('dashboard'))
+    if not flask_login.current_user.is_authenticated():
+
+        if login_form.validate_on_submit():
+            username = login_form.username.data
+            current_user = models.User.get(models.User.username == username)
+            if current_user.active:
+                try:
+                    log_user = models.User.get(models.User.username == username)
+                except models.DoesNotExist:
+                    flash("Your username  or password doesn't match!", "error")
+                else:
+                    if check_password_hash(log_user.password, login_form.password.data):
+                        login_user(log_user)
+                        flash("You've been logged in!", "success")
+                        _next = request.args.get('next')
+                        if _next:
+                            return redirect(_next)
+                        else:
+                            return redirect(url_for('dashboard'))
+                    else:
+                        flash("Your username  or password doesn't match!", "error")
             else:
-                flash("Your username  or password doesn't match!", "error")
-    return render_template(
-        'user/login.html',
-        section="user",
-        title="Login",
-        log_form=login_form
-    )
+                flash("You account is not active yet, please check you email.", "no-active")
+        return render_template(
+            'user/login.html',
+            section="user",
+            title="Login",
+            log_form=login_form
+        )
+    # TODO: Find why this has been printing twice!
+    flash("You are logged in already.", "success")
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You've been successfully logged out.")
+    return redirect(url_for('index'))
 
 
 @app.route('/register', methods=('GET', 'POST'))
@@ -127,21 +255,104 @@ def register():
                 personal_email=reg_form.personal_email.data
             )
             flash("User created successfully!", "success")
+            token = generate_confirmation_token(reg_form.university_email.data)
+            html = render_template('user/email_verification.html', token=token)
+            subject = "Confirm email and activate your account!"
+            send_email(
+                to=reg_form.university_email.data,
+                subject=subject,
+                template=html
+            )
+            flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
-        return render_template(
-            'user/register.html',
-            reg_form=reg_form,
-            section="user",
-            title="Register"
-        )
+        return render_template('user/register.html', reg_form=reg_form, section="user", title="Register")
     flash("You are logged in.")
     return redirect(url_for('dashboard'))
+
+
+@app.route('/user/activate/<token>')
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except BadSignature:
+        flash("The confirmation link is invalid or has expired.", "error")
+        return redirect(url_for('index'))
+    user = models.User.get(models.User.university_email == email)
+    if user.active:
+        flash("You email is already confirmed. Please login.", "success")
+        return redirect(url_for('login'))
+    else:
+        user.update(
+            active=True,
+            activated_on=datetime.datetime.now()
+        ).execute()
+        flash("Your email have been confirmed.", "success")
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/user/forgot', methods=('POST', 'GET'))
+def forgot_credentials():
+    form = ForgotCredentialReset()
+    if form.validate_on_submit():
+        email = form.university_email.data
+        token = generate_confirmation_token(email)
+        html = render_template('user/reset_password_email.html', token=token)
+        subject = "Reset password request"
+        send_email(
+            to=email,
+            subject=subject,
+            template=html
+        )
+        flash("We've sent you an email with a link to reset your password.")
+        return redirect(url_for('login'))
+    return render_template('user/forgot_credentials.html', form=form)
+
+
+@app.route('/user/forgot/<token>', methods=('POST', 'GET'))
+def change_credentials(token):
+    email = confirm_token(token)
+    if email:
+        try:
+            user = models.User.get(models.User.university_email == email)
+        except models.DoesNotExist:
+            flash("Something went wrong with your username.")
+            return redirect(url_for('login'))
+        form = ResetPassword()
+        if form.validate_on_submit():
+            user.update(
+                password=generate_password_hash(form.password.data)
+            ).execute()
+            flash("Your password was reset successfully")
+            return redirect(url_for('login'))
+        return render_template('user/reset_password.html', form=form)
+    else:
+        flash("The confirmation link is invalid or has expired.", "error")
+        return redirect(url_for('forgot_credentials'))
+
+
+@app.route('/user/activate/resend', methods=('GET', 'POST'))
+def resend_token():
+    form = ResendToken()
+    if form.validate_on_submit():
+        email = form.university_email.data
+        token = generate_confirmation_token(email)
+        html = render_template('user/email_verification.html', token=token)
+        subject = "Confirm email and activate your account!"
+        send_email(
+            to=email,
+            subject=subject,
+            template=html
+        )
+        flash("The activation link have been resend!")
+        return redirect(url_for('login'))
+    return render_template('user/resend_token.html', form=form)
 
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('default/dashboard.html')
+    c_user = flask_login.current_user
+    return render_template('default/dashboard.html', c_user=c_user)
 
 
 @app.route('/rent')
@@ -149,14 +360,53 @@ def rent():
     return render_template('rent/rent.html')
 
 
-@app.route('/rent/your-book')
+@app.route('/rent/your-book', methods=('GET', 'POST'))
+@login_required
 def rent_your_book():
-    return render_template('rent/rent-your-book.html')
+    form = AddBookRentForm()
+    if form.validate_on_submit():
+        # Get ISBN from form after validate
+        isbn = form.isbn.data
+        # Try to load information
+        book = load_book_info(isbn)
+        if book:
+            file = request.files['img']
+            if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
+                # Secure the input file
+                filename = secure_filename(
+                    "{}-{}.{}".format(
+                        flask_login.current_user.username,
+                        uuid.uuid4(),
+                        file.filename.rsplit('.', 1)[1]
+                    )
+                )
+                # Save the image to the server
+                img_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(img_path)
+                # Create a book record in the database
+                create_book_rent(
+                    name=book['title'],
+                    author=book['authors'],
+                    description=book['description'],
+                    isbn=isbn,
+                    condition=form.condition.data,
+                    condition_comment=form.condition_comment.data,
+                    username=flask_login.current_user.username,
+                    img_path=img_path
+                )
+                flash("You book have been created!", "success")
+                return redirect(url_for('rent_your_book'))
+            else:
+                flash("This format of the file is not allowed.", "error")
+        else:
+            flash("We couldn't find this book, check the ISBN number.", "error")
+            return redirect(url_for('rent_your_book'))
+    return render_template('rent/rent-your-book.html', form=form)
 
 
 @app.route('/rent/search')
 def rent_search():
-    return render_template('rent/rent-books-search.html')
+    return render_template('rent/rental-books-search.html')
 
 
 if __name__ == '__main__':
