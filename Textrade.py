@@ -363,45 +363,57 @@ def rent():
 @app.route('/rent/your-book', methods=('GET', 'POST'))
 @login_required
 def rent_your_book():
-    form = AddBookRentForm()
-    if form.validate_on_submit():
-        # Get ISBN from form after validate
-        isbn = form.isbn.data
-        # Try to load information
-        book = load_book_info(isbn)
-        if book:
-            file = request.files['img']
-            if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
-                # Secure the input file
-                filename = secure_filename(
-                    "{}-{}.{}".format(
-                        flask_login.current_user.username,
-                        uuid.uuid4(),
-                        file.filename.rsplit('.', 1)[1]
-                    )
-                )
-                # Save the image to the server
-                img_path = os.path.join(UPLOAD_FOLDER, filename)
-                file.save(img_path)
-                # Create a book record in the database
-                create_book_rent(
-                    name=book['title'],
-                    author=book['authors'],
-                    description=book['description'],
-                    isbn=isbn,
-                    condition=form.condition.data,
-                    condition_comment=form.condition_comment.data,
-                    username=flask_login.current_user.username,
-                    img_path=img_path
-                )
-                flash("You book have been created!", "success")
-                return redirect(url_for('rent_your_book'))
-            else:
-                flash("This format of the file is not allowed.", "error")
-        else:
-            flash("We couldn't find this book, check the ISBN number.", "error")
-            return redirect(url_for('rent_your_book'))
-    return render_template('rent/rent-your-book.html', form=form)
+    rent_book_form = AddBookRentForm()
+
+    if request.method == "POST":
+
+        # Check which form was submitted
+        which_form = request.form['hidden']
+
+        if which_form is "0":
+            # Add a book for rent
+            if rent_book_form.validate_on_submit():
+                # Get ISBN from form after validate
+                isbn = rent_book_form.isbn.data
+                # Try to load information
+                book = load_book_info(isbn)
+                if book:
+                    file = request.files['img']
+                    if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
+                        # Secure the input file
+                        filename = secure_filename(
+                            "{}-{}.{}".format(
+                                flask_login.current_user.username,
+                                uuid.uuid4(),
+                                file.filename.rsplit('.', 1)[1]
+                            )
+                        )
+                        # Save the image to the server
+                        img_path = os.path.join(UPLOAD_FOLDER, filename)
+                        file.save(img_path)
+                        # Create a book record in the database
+                        create_book_rent(
+                            name=book['title'],
+                            author=book['authors'],
+                            description=book['description'],
+                            isbn=isbn,
+                            condition=rent_book_form.condition.data,
+                            condition_comment=rent_book_form.condition_comment.data,
+                            username=flask_login.current_user.username,
+                            img_path=img_path
+                        )
+                        flash("You book have been created!", "success")
+                        return redirect(url_for('rent_your_book'))
+                    else:
+                        flash("This format of the file is not allowed.", "error")
+                else:
+                    flash("We couldn't find this book, check the ISBN number.", "error")
+                    return redirect(url_for('rent_your_book'))
+        elif which_form is "1":
+            # Add a book to trade
+            print("Trading")
+
+    return render_template('rent/rent-your-book.html', form=rent_book_form)
 
 
 @app.route('/rent/search')
