@@ -360,9 +360,9 @@ def rent():
     return render_template('rent/rent.html')
 
 
-@app.route('/rent/your-book', methods=('GET', 'POST'))
+@app.route('/book/add', methods=('GET', 'POST'))
 @login_required
-def rent_your_book():
+def add_book():
     form = AddBookRentForm()
     if form.validate_on_submit():
         # Get ISBN from form after validate
@@ -395,12 +395,12 @@ def rent_your_book():
                     img_path=img_path
                 )
                 flash("You book have been created!", "success")
-                return redirect(url_for('rent_your_book'))
+                return redirect(url_for('add_book'))
             else:
                 flash("This format of the file is not allowed.", "error")
         else:
             flash("We couldn't find this book, check the ISBN number.", "error")
-            return redirect(url_for('rent_your_book'))
+            return redirect(url_for('add_book'))
     return render_template('rent/rent-your-book.html', form=form)
 
 
