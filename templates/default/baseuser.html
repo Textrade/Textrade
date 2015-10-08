@@ -1,0 +1,72 @@
+{% extends 'default/base.html' %}
+    {% block content %}
+        {% block content-child %}
+        {% endblock %}
+        <!-- Modal: Create Account -->
+        <div class="modal fade" id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title" id="myModalLabel">Register</h3>
+                    </div>
+                    <div class="modal-body form-horizontal" id=
+        "register-form">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Name</label>
+                                <input type="firstName" class="form-control" id="firstName" placeholder="First">
+                                <input type="lastName" class="form-control" id="lastName" placeholder="Last">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">UML Student Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                                <p class="note">*You must have a UML email to register with Textrade</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Username</label>
+                                <input type="username" class="form-control" id="username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password-create" class="form-control" id="password-create" placeholder="Password">
+                                <input type="password-confirm" class="form-control" id="password-confirm" placeholder="Confirm Password">
+                            </div>
+                        </form>
+                    </div><!-- close form container -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal: Forgot Password -->
+        <div class="modal fade" id="forgot-password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title" id="myModalLabel">Forgot Password</h3>
+                    </div>
+                    <div class="modal-body form-horizontal" id=
+        "register-form">
+                        <form>
+                            <p>Enter your email address to reset your password.</p>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="email">
+
+                            </div>
+
+                        </form>
+                    </div><!-- close form container -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}

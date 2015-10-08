@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+{% extends 'default/baseuser.html' %}
+{% block content %}
+<div class="row" id="login-page-row">
+    <div id="login-wrap">
+        <div id="login-dialog">
+            <h3>Login</h3>
+                <form>
+                    <input type="text" name="user" placeholder="username">
+                    <input type="password" name="pass" placeholder="password">
+                    <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Login">
+                    <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account</a><span> | </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
+                </form>
+=======
 {% extends 'default/base.html' %}
 {% from 'default/macros.html' import render_field %}
 {% block content %}
@@ -30,6 +44,7 @@
                 </div>
             </div>
             <!-- #include virtual="test.html" -->
+>>>>>>> master
         </div>
     </div>
 </div>
