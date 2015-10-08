@@ -15,6 +15,15 @@
 <h2><a href="{{ url_for('logout') }}">LOG OUT!</a></h2>
 
 <h3>Book Listed for Rent</h3>
-
+<ul>
+    {% for book in book_for_rent %}
+        <div>
+            <div>
+                <img src="{{ book.image_path }}">
+            </div>
+            <li>{{ book.name }}</li>
+        </div>
+    {% endfor %}
+</ul>
 <h3>Book Listed To Trade</h3>
 <h3>Book Wanted</h3>

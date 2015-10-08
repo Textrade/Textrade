@@ -410,7 +410,9 @@ def resend_token():
 @login_required
 def dashboard():
     c_user = flask_login.current_user
-    return render_template('default/dashboard.html', c_user=c_user)
+    book_rent = models.BookRent.select().where(models.BookRent.username == c_user.username)
+
+    return render_template('default/dashboard.html', c_user=c_user, book_for_rent=book_rent)
 
 
 @app.route('/rent')
@@ -418,9 +420,9 @@ def rent():
     return render_template('rent/rent.html')
 
 
-@app.route('/rent/your-book', methods=('GET', 'POST'))
+@app.route('/book/create', methods=('GET', 'POST'))
 @login_required
-def rent_your_book():
+def add_book():
     rent_book_form = AddBookRentForm()
     trade_book_form = AddBookTradeForm()
 
@@ -460,12 +462,12 @@ def rent_your_book():
                             img_path=img_path
                         )
                         flash("You book have been created!", "success")
-                        return redirect(url_for('rent_your_book'))
+                        return redirect(url_for('add_book'))
                     else:
                         flash("This format of the file is not allowed.", "error")
                 else:
                     flash("We couldn't find this book, check the ISBN number.", "error")
-                    return redirect(url_for('rent_your_book'))
+                    return redirect(url_for('add_book'))
         elif which_form is "1":
             # Add a book to trade
             if trade_book_form.validate_on_submit():

@@ -21,7 +21,7 @@
                             <p>Fill out the form below based on the details of the book you would like to register as a rental. After submitting the form and sending in your book for official review, your book will be listed on the Textrade site.</p>
                         </div>
                         <div class="col-xs-12">
-                            <form method="post" action="">
+                            <form method="post" action="" enctype="multipart/form-data">
                                 {{ rent_form.hidden_tag() }}
                                 {% for field in rent_form %}
                                     {{ render_field(field) }}
