@@ -22,8 +22,8 @@
                         </div>
                         <div class="col-xs-12">
                             <form method="post" action="">
-                                {{ form.hidden_tag() }}
-                                {% for field in form %}
+                                {{ rent_form.hidden_tag() }}
+                                {% for field in rent_form %}
                                     {{ render_field(field) }}
                                 {% endfor %}
                                 <input type="hidden" name="hidden" value="0">
@@ -76,16 +76,13 @@
                         </div>
                         <div class="col-xs-12" id="trade-form">
                             <form method="post" action="" class="form-horizontal">
+                                {{ trade_form.hidden_tag() }}
                                 <input type="hidden" name="hidden" value="1">
                                 <div class="col-sm-6" id="books-to-trade">
                                     <h3>Books You Have to Trade</h3>
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
+                                            {{ trade_form.want_book(placeholder="ISBN", class="form-control") }}
                                         </div>
                                     </div>
                                 </div>
@@ -93,14 +90,15 @@
                                     <h3>Books You Want</h3>
                                     <div class="form-group">
                                         <div class="col-xs-12">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
-                                            <input type="text" class="form-control" id="inputPassword3" placeholder="ISBN">
+                                            {{ trade_form.have_book(placeholder="ISBN", class="form-control") }}
                                         </div>
                                     </div>
                                 </div>
+                                {% if trade_form.errors %}
+                                    {% for error in trade_form.errors %}
+                                        <div class="notification error "><p style="color: red; margin: 0;">{{ error }}</p></div>
+                                    {% endfor %}
+                                {% endif %}
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
                         </div><!-- close rent form -->

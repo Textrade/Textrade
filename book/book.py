@@ -1,7 +1,7 @@
 import requests
 import json
 
-from models import BookRent
+from models import BookRent, BookTradeWant, BookTradeHave
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
@@ -21,6 +21,18 @@ def create_book_rent(**kwargs):
         username=kwargs['username'],
         available='available',
         image_path=kwargs['img_path']
+    )
+
+
+def create_book_trade(**kwargs):
+    """Crate a book to trade"""
+    BookTradeWant.create(
+        want_isbn=kwargs['want_isbn'],
+        user=kwargs['user'],
+    )
+    BookTradeHave.create(
+        have_isbn=kwargs['have_isbn'],
+        user=kwargs['user']
     )
 
 

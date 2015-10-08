@@ -70,8 +70,9 @@ from user.token import *
 #   BOOK IMPORTS
 #
 #
-from book.forms import (AddBookRentForm, )
-from book.book import create_book_rent, allowed_file, load_book_info
+from book.forms import (AddBookRentForm, AddBookTradeForm)
+from book.book import (create_book_rent, allowed_file, load_book_info,
+                       create_book_trade)
 
 #
 #
@@ -135,6 +136,13 @@ BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
 BOOK_API_KEY = "AIzaSyBI_bJjoReQ2WboaqJvA6wA6lDraR9sJ54"
 
 
+#
+#
+#
+# FLASK ADMIN CONFIG
+#
+#
+#
 class TextradeModelView(ModelView):
     """ModelView override."""
     form_base_class = flask_wtf.Form
@@ -152,13 +160,63 @@ class TextradeModelView(ModelView):
         return redirect(url_for('login', next=request.url))
 
 admin = Admin(app, name="Textrade", template_mode="bootstrap3")
-admin.add_view(TextradeModelView(models.UserRole))
-admin.add_view(TextradeModelView(models.User))
-admin.add_view(TextradeModelView(models.TradeStatus))
-admin.add_view(TextradeModelView(models.Trade))
-admin.add_view(TextradeModelView(models.BookStatus))
-admin.add_view(TextradeModelView(models.BookRent))
-admin.add_view(TextradeModelView(models.BookCondition))
+
+#
+#   USERS
+#
+admin.add_view(
+    TextradeModelView(
+        name="Users", model=models.User, endpoint="users", category="User"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="User Role", model=models.UserRole, endpoint="user-role", category="User"
+    )
+)
+
+#
+#   TRADES
+#
+admin.add_view(
+    TextradeModelView(
+        name="Trades", model=models.Trade, endpoint="trades", category="Trade",
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Trade Status", model=models.TradeStatus, endpoint="trade-status", category="Trade"
+    )
+)
+
+#
+#   BOOKS
+#
+admin.add_view(
+    TextradeModelView(
+        name="Book for Rent", model=models.BookRent, endpoint='book-rent', category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book to Trade Wanted", model=models.BookTradeWant, endpoint="book-trade-wanted", category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book to Trade Have", model=models.BookTradeHave, endpoint="book-trade-have", category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book Status", model=models.BookStatus, endpoint="book-status", category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book Condition", model=models.BookCondition, endpoint="book-condition", category="Book"
+    )
+)
 
 
 @login_manager.user_loader
@@ -364,12 +422,11 @@ def rent():
 @login_required
 def rent_your_book():
     rent_book_form = AddBookRentForm()
+    trade_book_form = AddBookTradeForm()
 
     if request.method == "POST":
-
         # Check which form was submitted
         which_form = request.form['hidden']
-
         if which_form is "0":
             # Add a book for rent
             if rent_book_form.validate_on_submit():
@@ -411,9 +468,20 @@ def rent_your_book():
                     return redirect(url_for('rent_your_book'))
         elif which_form is "1":
             # Add a book to trade
-            print("Trading")
+            if trade_book_form.validate_on_submit():
+                have_book_isbn = trade_book_form.have_book.data
+                want_book_isbn = trade_book_form.want_book.data
+                create_book_trade(
+                    want_isbn=want_book_isbn,
+                    have_isbn=have_book_isbn,
+                    user=flask_login.current_user.username
+                )
 
-    return render_template('rent/rent-your-book.html', form=rent_book_form)
+    return render_template(
+        'rent/rent-your-book.html',
+        rent_form=rent_book_form,
+        trade_form=trade_book_form
+    )
 
 
 @app.route('/rent/search')
