@@ -123,7 +123,8 @@ login_manager.login_view = 'login'
 #
 #
 #
-UPLOAD_FOLDER = '/Users/dsantos/Web Projects/Textrade/Textrade/static/img/books/'
+DOMAIN_NAME = "http://127.0.0.1:5000"
+UPLOAD_FOLDER = os.path.realpath('.') + '/static/img/books/'
 BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
 
 #
@@ -420,7 +421,7 @@ def rent():
     return render_template('rent/rent.html')
 
 
-@app.route('/book/create', methods=('GET', 'POST'))
+@app.route('/book/add', methods=('GET', 'POST'))
 @login_required
 def add_book():
     rent_book_form = AddBookRentForm()
@@ -448,8 +449,8 @@ def add_book():
                             )
                         )
                         # Save the image to the server
-                        img_path = os.path.join(UPLOAD_FOLDER, filename)
-                        file.save(img_path)
+                        img_path = DOMAIN_NAME + '/static/img/books/' + filename
+                        file.save(os.path.join(UPLOAD_FOLDER, filename))
                         # Create a book record in the database
                         create_book_rent(
                             name=book['title'],
