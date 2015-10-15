@@ -1,54 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Textrade | Rent Your Book</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/sass/main.css">
-</head>
-
-<body>
-    <div class="container-fluid" id="page-wrap">
-    
-        <nav class="navbar navbar-default navbar-fixed-top container-fluid">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Brand</a>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">Home</a></li>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="our-services.html">Our Services</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rent <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="rent.html">Rent</a></li>
-                                <li><a href="rent-your-book.html">Rent Out A Book</a></li>
-                                <li><a href="rental-books-serach.html">Search Boots to Rent</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="the-team.html">The Team <span class="sr-only">(current)</span></a></li>
-                        <li><a href="trade.html">Trade</a></li>
-                        <li><a href="donate.html">Donate</a></li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav> 
-        
+{% extends 'default/base.html' %}
+{% block content %}
         <div class="row searchbar" id="rent-search-header">
             <h2>Search</h2>
             <div class="col-xs-12" id="search-form">
@@ -64,12 +15,12 @@
         <div class="row">
             <div class="col-xs-4" id="item-image">
                 <div class="image-container">
-                    <img src="img/shopping.jpeg">
+                    <img src="{{ book.image_path }}" alt="Book Picture">
                 </div>    
             </div>
             <div class="col-xs-8" id="item-description">
-                <h4>Advanced Mathematics, 4th Edition</h4>
-                <p>By <span class="username">A User Known as Joe</span></p>
+                <h4>{{ book.name }}</h4>
+                <p>By <span class="username"><a href="{{ url_for('user_page', username=user.username) }}">{{ user.username }}</a></span></p>
                 <hr>
                 <div class="col-xs-4">
                     <div class="title-types">
@@ -87,7 +38,7 @@
                     </div>
                 </div>
                 <hr>
-                <p>Cillum ea ex nulla commodo te si velit varias ad voluptate eu duis id commodo ad fore, ita iis magna irure lorem hic cupidatat do quid tempor te nam ipsum irure malis mentitum, quae quamquam excepteur ubi si deserunt instituendarum. Ne quem tempor, deserunt qui tamen.</p>
+                <p>{{ book.description[0:450] }}...</p>
             </div>
         </div>
         
@@ -145,65 +96,5 @@
                 </div>
                 <!-- /.col-lg-12 -->
         </div>
-        
-        <div class="row" id="footer">
-            <footer>
-                <h2>Textrade</h2>
-                <h4>An Educated Book Buying Market</h4>
-                <table id="site-actions">
-                    <tr id="main-actions"><td>About Us</td><td>Services</td><td>Donate</td><td>Log-In</td></tr>
-                    <tr><td>The Team</td><td>Rent</td><td></td><td></td><td></td></tr>
-                    <tr><td>Our Mission</td><td>Trade</td><td></td><td></td><td></td></tr>
-                    <tr><td>Contact</td><td></td><td></td><td></td><td></td></tr>
-                </table>
-                <p id="copyright">This is where the copyright goes</p>
-            </footer>
-        </div>
-        
-        <!-- Modal For Account Creation-->
-                <div class="modal fade" id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h3 class="modal-title" id="myModalLabel">Register</h3>   
-                                        </div>
-                                        <div class="modal-body form-horizontal" id=
-"register-form">
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Name</label>
-                                                    <input type="firstName" class="form-control" id="firstName" placeholder="First">
-                                                    <input type="lastName" class="form-control" id="lastName" placeholder="Last">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputPassword1">UML Student Email</label>
-                                                    <input type="email" class="form-control" id="email" placeholder="Email">
-                                                    <p class="note">*You must have a UML email to register with Textrade</p>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputPassword1">Username</label>
-                                                    <input type="username" class="form-control" id="username" placeholder="Username">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputPassword1">Password</label>
-                                                    <input type="password-create" class="form-control" id="password-create" placeholder="Password">
-                                                    <input type="password-confirm" class="form-control" id="password-confirm" placeholder="Confirm Password">
-                                                </div>
-                                            </form>
-                                        </div><!-- close form container -->
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-    </div><!-- close .container-fluid -->
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</body>
-</html>    
+
+{% endblock %}

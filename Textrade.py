@@ -124,7 +124,7 @@ login_manager.login_view = 'login'
 #
 #
 DOMAIN_NAME = "http://127.0.0.1:5000"
-UPLOAD_FOLDER = os.path.realpath('.') + '/static/img/books/'
+UPLOAD_FOLDER = '/Users/dsantos/Web Projects/Textrade/Textrade/static/img/books/'
 BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
 
 #
@@ -238,7 +238,7 @@ def before_request():
 
 @app.after_request
 def after_request(response):
-    """Close the database connection after everything request."""
+    """Close the database connection after every request."""
     g.db.close()
     return response
 
@@ -407,12 +407,18 @@ def resend_token():
     return render_template('user/resend_token.html', form=form)
 
 
+@app.route('/user/<string:username>')
+def user_page(username):
+    user = models.User.get(models.User.username == username)
+    user_rent_books = models.BookRent.select().where(models.BookRent.username == username)
+    return render_template('user/user-page.html', user=user, rent_book=user_rent_books)
+
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
     c_user = flask_login.current_user
     book_rent = models.BookRent.select().where(models.BookRent.username == c_user.username)
-
     return render_template('default/dashboard.html', c_user=c_user, book_for_rent=book_rent)
 
 
@@ -490,6 +496,24 @@ def add_book():
 @app.route('/rent/search')
 def rent_search():
     return render_template('rent/rental-books-search.html')
+
+
+@app.route('/books/<string:username>/<int:book_pk>')
+def books(username, book_pk):
+    user = models.User.get(models.User.username == username)
+    user_books = models.BookRent.select().where(models.BookRent.username == username)
+
+    book_ = models.BookRent.get(models.BookRent.id == book_pk)
+
+    other_equal_books = models.BookRent.select().where(models.BookRent.isbn == book_.isbn)
+
+    return render_template(
+        'book/book-template.html',
+        user=user,
+        user_books=user_books,
+        book=book_,
+        other_equal_books=other_equal_books,
+    )
 
 
 if __name__ == '__main__':
