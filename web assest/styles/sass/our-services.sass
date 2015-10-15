@@ -1,0 +1,72 @@
+#service-list
+    h2, h4
+        font-family: Oswald, sans-serif
+    img
+        max-height: 200px
+    #rent-service
+        border-left: solid 5px $sea-foam
+    #trade-service
+        border-right: solid 5px $light-blue
+        padding-left: 20%
+    #rent-service, #trade-service
+        margin: 50px 0
+        .col-xs-12
+            padding: 0
+            .btn
+                text-align: center
+                align-content: center
+                margin: auto    
+    .explainer
+        margin-top: 40px
+        padding-bottom: 15px  
+        
+    // once we hit tablet size...    
+    @media (min-width: 768px) 
+        img
+            width: 70%
+            height: auto
+            margin: 0 15%
+            border-bottom: solid 5px $sea-foam
+        #rent-service, #trade-service
+            width: 40%
+            margin: 0 5%
+            border-left: none
+            .explainer
+                padding-left: 5%
+        #trade-service
+            border-right: none
+            padding-left: 0
+        
+#testimonials
+    background: $blue
+    color: white
+    h2, h3
+        font-family: Oswald, sans-serif 
+    h2
+        border-bottom: 25px
+    p    
+        font-size: 13px
+        padding-left: 5px
+    .quote-author
+        text-align: right
+        font-style: italic
+    .col-xs-6
+        padding: 0 25px
+    .even
+        border-left: 5px solid $sea-green
+    .odd
+        border-right: 5px solid $sea-foam
+    @media (min-width: 768px) 
+        h2
+            text-align: center
+            margin-bottom: 25px
+        .even
+            border-top: 5px solid $sea-green
+            border-left: 0
+        .odd
+            border-top: 5px solid $sea-foam
+            border-right: 0    
+    
+   
+    
+    

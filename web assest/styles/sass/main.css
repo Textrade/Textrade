@@ -5,30 +5,32 @@
   height: 400px;
   margin-top: 75px; }
 
-#quick-blurbs .blurb {
-  padding: 5%;
-  text-align: center;
-  height: 300px;
-  display: table; }
-  #quick-blurbs .blurb img {
-    height: 100px;
-    width: auto;
-    margin: auto; }
-  #quick-blurbs .blurb .blurb-text {
-    height: 125px; }
-    #quick-blurbs .blurb .blurb-text h3 {
-      color: #028090; }
-  #quick-blurbs .blurb button {
-    display: table-cell;
-    vertical-align: bottom;
-    margin-top: 20px; }
-
 #quick-about {
   text-align: center;
-  background: #68b0ab;
+  background: #028090;
   color: white; }
-  #quick-about #incentive {
-    margin: 65px 0 50px 0; }
+  #quick-about h2 {
+    font-family: Oswald, sans-serif; }
+  #quick-about h3 {
+    font-weight: 300; }
+  #quick-about button {
+    margin-top: 15px; }
+
+#quick-blurbs {
+  border-top: solid 5px #02c39a;
+  border-bottom: solid 5px #02c39a; }
+  #quick-blurbs .blurb {
+    text-align: center; }
+    #quick-blurbs .blurb img {
+      height: 100px;
+      margin: auto; }
+    #quick-blurbs .blurb h3 {
+      font-family: Oswald, sans-serif; }
+    #quick-blurbs .blurb p {
+      padding: 0 20%; }
+    @media (min-width: 768px) {
+      #quick-blurbs .blurb p {
+        padding: 0; } }
 
 #create-account-modal {
   color: black;
@@ -67,29 +69,41 @@
     #create-account-modal .modal-body form {
       width: 350px; }
 
+#login-page-row {
+  background: url(../../img/books-magazines-building-school.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative; }
+
 #login-wrap {
   margin: auto;
   margin-top: 100px;
   margin-bottom: 100px;
   width: 350px;
-  padding: 15px;
+  padding: 20px 0px;
   height: auto;
   background: #f2f2f2;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
-  border-radius: 2px; }
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  opacity: 1; }
   #login-wrap #login-dialog {
     background: white;
-    border-radius: 2px;
+    border-radius: 5px;
     width: 90%;
     margin: auto;
-    padding: 5%; }
+    padding: 10% 5%;
+    opacity: 1; }
     #login-wrap #login-dialog h3 {
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
       font-weight: 300;
-      color: #05668d; }
+      color: #02c39a;
+      font-family: Open Sans, sans-serif; }
     #login-wrap #login-dialog form {
       margin: auto;
+      margin-top: 40px;
       width: 90%;
       height: 200px; }
       #login-wrap #login-dialog form input {
@@ -98,7 +112,6 @@
         font-size: 1.3em;
         -webkit-appearance: none;
         background: #fff;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
         border: none;
         padding: 0 8px;
         box-sizing: border-box;
@@ -108,7 +121,8 @@
       #login-wrap #login-dialog form #submit {
         width: 100%;
         display: block;
-        margin: 10px 0;
+        margin: 15px 0;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
         position: relative;
         background: #02c39a;
         color: white;
@@ -125,19 +139,19 @@
       width: 350px; }
 
 .page-header {
-  text-align: center;
-  padding: 20px 0; }
-  .page-header #team-photo {
-    width: 80%;
-    height: auto;
-    margin: auto; }
+  text-align: center; }
+  .page-header h1 {
+    font-family: Oswald, sans-serif; }
 
 #team-member-profiles {
-  background: #02c39a;
-  color: white; }
+  color: #323232;
+  background: #eaeaea;
+  background: -webkit-linear-gradient(top, white, white, #d6d6d6);
+  background: -o-linear-gradient(top, white, white, #d6d6d6);
+  background: -moz-linear-gradient(top, white, white, #d6d6d6);
+  background: linear-gradient(to bottom, white, white, #d6d6d6); }
   #team-member-profiles .team-member {
-    padding: 10px;
-    text-align: center; }
+    text-align: left; }
     #team-member-profiles .team-member .circular {
       width: 160px;
       height: 160px;
@@ -154,135 +168,245 @@
         border-radius: 150px;
         -webkit-border-radius: 150px;
         -moz-border-radius: 150px; }
+    #team-member-profiles .team-member h3 {
+      font-family: Oswald, sans-serif; }
+  #team-member-profiles .developers {
+    text-align: center;
+    padding-top: 25px; }
+    #team-member-profiles .developers h3, #team-member-profiles .developers h4 {
+      font-family: Oswald, sans-serif; }
 
 #mission {
-  text-align: center;
-  color: #05668d; }
+  color: #323232; }
+  @media (min-width: 768px) {
+    #mission {
+      padding: 10% 20%; } }
   #mission h1 {
     margin-bottom: 25px;
     font-weight: 300;
-    font-family: Oswald, sans-serif; }
-  #mission h3 {
-    margin-bottom: 15px; }
-  #mission p {
-    margin: 0 10%;
-    font-weight: 300; }
+    font-family: Oswald, sans-serif;
+    text-align: center; }
+    @media (min-width: 768px) {
+      #mission h1 {
+        margin-top: 0; } }
+  #mission h4 {
+    padding: 0 5%; }
+  #mission .btn {
+    background: none;
+    border: solid 3px #323232;
+    margin-top: 5%;
+    padding: 5px 25px;
+    color: #323232; }
+    #mission .btn:hover {
+      opacity: 0.9; }
+    #mission .btn a {
+      color: #323232;
+      font-weight: 500;
+      font-family: Oswald, sans-serif;
+      font-size: 18px; }
 
 #footer {
   text-align: center;
   color: white;
-  background: #05668d;
+  background: #323232;
   padding-bottom: 15px;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  font-size: 12px; }
   #footer h2 {
     font-family: Oswald, sans-serif;
     font-weight: 300; }
-  #footer h4 {
+  #footer p {
     font-weight: 300; }
   #footer #site-actions {
     width: 80%;
     margin: auto;
     margin-top: 35px;
     margin-bottom: 15px;
-    font-weight: 300; }
+    font-weight: 300;
+    font-size: 12px; }
     #footer #site-actions td {
       width: 25%;
-      text-align: center;
-      padding: 5px 0; }
+      text-align: left;
+      padding: 3px 0; }
     #footer #site-actions #main-actions {
-      font-size: 16px;
-      font-weight: 500; }
+      font-size: 14px;
+      font-weight: 500;
+      color: white; }
   #footer #copyright {
-    margin-top: 50px;
-    margin-bottom: 0;
-    padding-bottom: 0;
-    font-weight: 300;
-    font-size: 10px; }
+    margin-top: 10px; }
 
 .navbar, .navbar-default, .navbar-fixed-top {
-  background: #05668d;
-  color: white;
+  background: white;
+  color: black;
   border: none;
-  margin-bottom: 50px; }
+  margin-bottom: 50px;
+  box-shadow: 0 4px 3px -3px #b2b2b2; }
   .navbar .container-fluid, .navbar-default .container-fluid, .navbar-fixed-top .container-fluid {
-    background: #05668d;
-    color: white; }
+    background: white;
+    color: black; }
     .navbar .container-fluid .navbar-header, .navbar-default .container-fluid .navbar-header, .navbar-fixed-top .container-fluid .navbar-header {
-      background: #05668d;
-      color: white; }
+      background: white;
+      color: black; }
       .navbar .container-fluid .navbar-header button, .navbar-default .container-fluid .navbar-header button, .navbar-fixed-top .container-fluid .navbar-header button {
-        background: #05668d; }
+        background: white; }
         .navbar .container-fluid .navbar-header button span, .navbar-default .container-fluid .navbar-header button span, .navbar-fixed-top .container-fluid .navbar-header button span {
-          background: white; }
+          background: black; }
       .navbar .container-fluid .navbar-header .navbar-brand, .navbar-default .container-fluid .navbar-header .navbar-brand, .navbar-fixed-top .container-fluid .navbar-header .navbar-brand {
-        color: white;
+        color: black;
         width: 200px; }
     .navbar .container-fluid navbar-collapse ul li a, .navbar .container-fluid #bs-example-navbar-collapse-1 ul li a, .navbar-default .container-fluid navbar-collapse ul li a, .navbar-default .container-fluid #bs-example-navbar-collapse-1 ul li a, .navbar-fixed-top .container-fluid navbar-collapse ul li a, .navbar-fixed-top .container-fluid #bs-example-navbar-collapse-1 ul li a {
-      background: #05668d;
-      color: white;
+      background: white;
+      color: black;
       font-family: Open Sans, sans-serif;
       font-weight: 300; }
 
-#rent-page-header {
-  text-align: left;
-  height: 500px;
-  width: auto;
-  padding: 0;
-  margin-top: 50px;
-  background: url(../../img/lib.jpg) center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  margin: 0; }
-  #rent-page-header .header-text-wrap {
-    background: -webkit-linear-gradient(left, #ffe1e1, rgba(255, 225, 225, 0));
-    background: -o-linear-gradient(right, #ffe1e1, rgba(255, 225, 225, 0));
-    background: -moz-linear-gradient(right, #ffe1e1, rgba(255, 225, 225, 0));
-    background: linear-gradient(to right, #ffe1e1, rgba(255, 225, 225, 0));
-    padding-top: 100px;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    color: white; }
-  #rent-page-header h1 {
-    font-weight: 600;
-    font-size: 6em;
-    margin-left: 200px; }
-  #rent-page-header h3, #rent-page-header h4 {
-    font-weight: 300;
-    margin-left: 200px; }
-
 #rent-actions-wrap {
-  background: #02c39a;
-  color: white; }
-  #rent-actions-wrap .rent-actions p {
-    padding-right: 10%; }
+  background: url(../../img/blur-old-antique-book.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative; }
+  #rent-actions-wrap .rent-actions {
+    color: #4c4c4c;
+    margin-top: 55px;
+    padding: 0 5%; }
+    @media (min-width: 768px) {
+      #rent-actions-wrap .rent-actions {
+        margin-top: 70px; } }
+    #rent-actions-wrap .rent-actions .text-wrap {
+      height: 200px;
+      /* Small devices (tablets, 768px and up) */
+      /* Medium devices (desktops, 992px and up) */ }
+      @media (min-width: 768px) {
+        #rent-actions-wrap .rent-actions .text-wrap {
+          height: 180px; } }
+      @media (min-width: 992px) {
+        #rent-actions-wrap .rent-actions .text-wrap {
+          height: 120px; } }
+      #rent-actions-wrap .rent-actions .text-wrap h2 {
+        font-family: Oswald, sans-serif;
+        margin-bottom: 15px;
+        color: #323232; }
+    #rent-actions-wrap .rent-actions .btn {
+      background: none;
+      border: solid 3px white;
+      margin-top: 5%;
+      padding: 5px 25px;
+      color: white; }
+      #rent-actions-wrap .rent-actions .btn:hover {
+        opacity: 0.9; }
+      #rent-actions-wrap .rent-actions .btn a {
+        color: white;
+        font-weight: 500;
+        font-family: Oswald, sans-serif;
+        font-size: 18px; }
+      @media (min-width: 992px) {
+        #rent-actions-wrap .rent-actions .btn {
+          border: solid 3px #323232;
+          color: #323232;
+          margin-top: 0; }
+          #rent-actions-wrap .rent-actions .btn a {
+            color: #323232; } }
 
 .create-account-include {
   text-align: center;
-  padding-top: 5%;
-  font-weight: 300; }
+  padding-top: 10%;
+  font-weight: 300;
+  color: white; }
   .create-account-include a {
-    color: inherit;
+    color: white;
     text-decoration: underline; }
 
-#rent-form-wrap #image-select #book-cover-image {
-  height: 250px;
-  width: 175px;
-  border: solid 1px grey;
-  margin: auto; }
-#rent-form-wrap #image-select button {
-  margin: auto; }
-#rent-form-wrap .fix-margin input {
-  margin: 10px 0; }
-#rent-form-wrap textarea {
-  margin: 10px 0; }
-#rent-form-wrap h2 {
-  margin-top: 50px; }
-#rent-form-wrap p {
-  margin-bottom: 35px; }
+#rent-FAQ .panel-group .panel-heading {
+  background: #e5e5e5; }
+#rent-FAQ .panel-group .panel-collapse {
+  border: #e5e5e5; }
+
+#rent-page-header {
+  background: url(../../img/blur-old-antique-book.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative;
+  height: 200px; }
+
+.form-dialog {
+  padding: 2% 5%;
+  background: white;
+  border-radius: 5px;
+  /* Small devices (tablets, 768px and up) */ }
+  @media (min-width: 768px) {
+    .form-dialog {
+      max-width: 700px;
+      margin: auto; } }
+  .form-dialog #form-explainer h2 {
+    font-family: Oswald, sans-serif;
+    color: #00a896; }
+  .form-dialog #form-explainer p {
+    color: grey; }
+  .form-dialog .btn {
+    float: right; }
+  .form-dialog .form-group {
+    padding: 15px 0 5px 0; }
+    @media (min-width: 768px) {
+      .form-dialog .form-group label {
+        padding-left: 15%;
+        text-align: right; } }
+    .form-dialog .form-group input, .form-dialog .form-group select {
+      margin-bottom: 10px; }
+      @media (min-width: 768px) {
+        .form-dialog .form-group input, .form-dialog .form-group select {
+          max-width: 300px; } }
+    .form-dialog .form-group button {
+      margin: auto; }
+  .form-dialog #rent-form form {
+    width: auto;
+    margin: auto; }
+  .form-dialog #rent-form .fix-margin input {
+    margin: 10px 0; }
+  .form-dialog #rent-form textarea {
+    margin: 10px 0; }
+  .form-dialog #rent-form h2 {
+    margin-top: 50px; }
+  .form-dialog #rent-form p {
+    margin-bottom: 35px; }
+  .form-dialog #trade-form form #books-to-trade h3, .form-dialog #trade-form form #books-you-want h3 {
+    font-family: Oswald, sans-serif; }
+  @media (min-width: 768px) {
+    .form-dialog #trade-form form #books-to-trade h3, .form-dialog #trade-form form #books-you-want h3 {
+      height: 50px; }
+    .form-dialog #trade-form form #books-to-trade .form-group, .form-dialog #trade-form form #books-you-want .form-group {
+      padding-right: 10%; } }
+  @media (min-width: 768px) {
+    .form-dialog #trade-form form #books-to-trade {
+      border-left: solid 5px #02c39a; } }
+  @media (min-width: 768px) {
+    .form-dialog #trade-form form #books-you-want {
+      border-left: solid 5px #ff7373; } }
+
+.FAQ {
+  /* Small devices (tablets, 768px and up) */ }
+  .FAQ h2 {
+    font-family: Oswald, sans-serif;
+    color: #323232; }
+  .FAQ .panel .panel-heading {
+    background: #efefef;
+    color: #323232; }
+    .FAQ .panel .panel-heading .panel-title {
+      font-weight: 500;
+      border: none; }
+  @media (min-width: 768px) {
+    .FAQ {
+      padding: 0 5%; } }
 
 #rent-search-header {
   text-align: center; }
+  #rent-search-header form {
+    width: 90%; }
+    #rent-search-header form input {
+      width: 400px; }
 
 #search-results .search-keywords {
   font-style: italic;
@@ -315,15 +439,176 @@
     #search-results #results .result-instance a {
       color: #05668d; }
 
+#trade-actions-wrap {
+  background: url(../../img/blur-old-antique-book.jpg) center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  top: 0;
+  position: relative;
+  height: 200px; }
+
+.step {
+  margin: 50px 0 30px 0; }
+  .step span {
+    color: #02c39a; }
+  .step p {
+    margin-right: 55%;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #b2b2b2; }
+
+.trade-column {
+  /* Small devices (tablets, 768px and up) */ }
+  .trade-column .add-line {
+    height: 50px; }
+    .trade-column .add-line .add-button {
+      height: 20px;
+      width: 20px;
+      border-radius: 10px;
+      margin: 15px 0;
+      background: #02c39a;
+      color: white;
+      text-align: center; }
+  .trade-column input {
+    height: 40px;
+    margin: 5px 0; }
+  @media (min-width: 786px) {
+    .trade-column {
+      padding: 0 10%; }
+      .trade-column form {
+        padding-left: 5%; }
+        .trade-column form input {
+          width: 200px; } }
+
+#books-to-trade {
+  border-right: solid 1px #efefef; }
+
+#trade-request-confirmation .alert {
+  width: 450px;
+  margin: auto; }
+
+#service-list h2, #service-list h4 {
+  font-family: Oswald, sans-serif; }
+#service-list img {
+  max-height: 200px; }
+#service-list #rent-service {
+  border-left: solid 5px #02c39a; }
+#service-list #trade-service {
+  border-right: solid 5px #68b0ab;
+  padding-left: 20%; }
+#service-list #rent-service, #service-list #trade-service {
+  margin: 50px 0; }
+  #service-list #rent-service .col-xs-12, #service-list #trade-service .col-xs-12 {
+    padding: 0; }
+    #service-list #rent-service .col-xs-12 .btn, #service-list #trade-service .col-xs-12 .btn {
+      text-align: center;
+      align-content: center;
+      margin: auto; }
+#service-list .explainer {
+  margin-top: 40px;
+  padding-bottom: 15px; }
+@media (min-width: 768px) {
+  #service-list img {
+    width: 70%;
+    height: auto;
+    margin: 0 15%;
+    border-bottom: solid 5px #02c39a; }
+  #service-list #rent-service, #service-list #trade-service {
+    width: 40%;
+    margin: 0 5%;
+    border-left: none; }
+    #service-list #rent-service .explainer, #service-list #trade-service .explainer {
+      padding-left: 5%; }
+  #service-list #trade-service {
+    border-right: none;
+    padding-left: 0; } }
+
+#testimonials {
+  background: #05668d;
+  color: white; }
+  #testimonials h2, #testimonials h3 {
+    font-family: Oswald, sans-serif; }
+  #testimonials h2 {
+    border-bottom: 25px; }
+  #testimonials p {
+    font-size: 13px;
+    padding-left: 5px; }
+  #testimonials .quote-author {
+    text-align: right;
+    font-style: italic; }
+  #testimonials .col-xs-6 {
+    padding: 0 25px; }
+  #testimonials .even {
+    border-left: 5px solid #00a896; }
+  #testimonials .odd {
+    border-right: 5px solid #02c39a; }
+  @media (min-width: 768px) {
+    #testimonials h2 {
+      text-align: center;
+      margin-bottom: 25px; }
+    #testimonials .even {
+      border-top: 5px solid #00a896;
+      border-left: 0; }
+    #testimonials .odd {
+      border-top: 5px solid #02c39a;
+      border-right: 0; } }
+
+.dashboard-wrap span {
+  margin-left: 10px;
+  background-color: #05668d; }
+.dashboard-wrap .money {
+  background-color: #02c39a; }
+.dashboard-wrap #dashboard-menu {
+  float: left; }
+  .dashboard-wrap #dashboard-menu h3 {
+    font-family: Oswald, sans-serif; }
+  .dashboard-wrap #dashboard-menu a {
+    width: 100%;
+    display: inline-block;
+    margin: 8px 0; }
+  .dashboard-wrap #dashboard-menu button {
+    margin: 8px 0; }
+.dashboard-wrap h3, .dashboard-wrap h4 {
+  font-family: Oswald, sans-serif; }
+.dashboard-wrap .dash-box {
+  margin: 10px 0;
+  float: right; }
+  .dashboard-wrap .dash-box p {
+    margin-left: 5%;
+    padding-right: 15%;
+    color: grey; }
+  .dashboard-wrap .dash-box table {
+    width: 90%;
+    margin-left: 10%;
+    margin-top: 15px;
+    height: auto; }
+    .dashboard-wrap .dash-box table td {
+      padding-top: 5px; }
+    .dashboard-wrap .dash-box table #table-heading td {
+      color: #05668d;
+      border-bottom: solid 1px #efefef; }
+    .dashboard-wrap .dash-box table .title {
+      font-style: italic; }
+    .dashboard-wrap .dash-box table .remove {
+      color: red; }
+
+.searchbar {
+  background: #323232; }
+
 body {
-  font-family: Open Sans, sans-serif; }
+  font-family: Open Sans, sans-serif;
+  padding: 0;
+  margin: 0; }
+
+#page-wrap {
+  padding: 0;
+  margin: 0; }
 
 nav {
   width: 100%; }
 
 .row {
-  padding: 5% 10%;
-  background: white; }
+  padding: 5% 10%; }
 
 .row-special {
   padding: 5% 0; }

@@ -1,19 +1,81 @@
-#rent-form-wrap    
-    // wraps the image box and the browse button
-    #image-select
-        #book-cover-image
-            height: 250px
-            width: 175px
-            border: solid 1px grey
-            margin: auto
+#rent-page-header
+    background: url(../../img/blur-old-antique-book.jpg) center 
+    background-size: cover
+    background-repeat: no-repeat
+    text-align: center
+    top: 0
+    position: relative
+    height: 200px
+.form-dialog
+    padding: 2% 5%
+    background: white
+    border-radius: 5px
+    @media (min-width: 768px) 
+        max-width: 700px
+        margin: auto
+    #form-explainer
+        h2
+            font-family: Oswald, sans-serif
+            color: $sea-green
+        p
+            color: grey
+    /* Small devices (tablets, 768px and up) */
+    .btn 
+        float: right
+        
+    .form-group,
+        padding: 15px 0 5px 0
+        label
+            @media (min-width: 768px) 
+                padding-left: 15%
+                text-align: right
+        input, select
+            margin-bottom: 10px
+            @media (min-width: 768px) 
+                max-width: 300px
         button
             margin: auto
-    .fix-margin
-        input
+    #rent-form 
+        form
+            width: auto
+            margin: auto
+        .fix-margin
+            input
+                margin: 10px 0
+        textarea
             margin: 10px 0
-    textarea
-        margin: 10px 0
-    h2
-        margin-top: 50px
-    p
-        margin-bottom: 35px    
+        h2
+            margin-top: 50px
+        p
+            margin-bottom: 35px 
+    #trade-form
+        form
+            #books-to-trade, #books-you-want
+                h3
+                    font-family: $font-stack
+                @media (min-width: 768px)
+                    h3
+                        height: 50px
+                    .form-group
+                        padding-right: 10%
+            #books-to-trade
+                @media (min-width: 768px)  
+                    border-left: solid 5px $sea-foam
+            #books-you-want
+                @media (min-width: 768px)  
+                    border-left: solid 5px #ff7373       
+
+.FAQ
+    h2 
+        font-family: Oswald, sans-serif
+        color: $black
+    .panel
+        .panel-heading
+            background: #efefef
+            color: $black
+            .panel-title
+                font-weight: 500
+                border: none
+    /* Small devices (tablets, 768px and up) */
+    @media (min-width: 768px)             
+        padding: 0 5%

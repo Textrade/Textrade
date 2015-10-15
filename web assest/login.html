@@ -30,29 +30,36 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="index.html">Home</a></li>
                         <li><a href="login.html">Login</a></li>
                         <li><a href="our-services.html">Our Services</a></li>
-                        <li><a href="rent.html">Rent</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rent <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="rent.html">Rent</a></li>
+                                <li><a href="rent-your-book.html">Rent Out A Book</a></li>
+                                <li><a href="rental-books-serach.html">Search Boots to Rent</a></li>
+                            </ul>
+                        </li>
                         <li><a href="the-team.html">The Team <span class="sr-only">(current)</span></a></li>
                         <li><a href="trade.html">Trade</a></li>
                         <li><a href="donate.html">Donate</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
-        </nav> 
+        </nav>
         
-        <div class="row">
+        <div class="row" id="login-page-row">
             <div id="login-wrap">
                 <div id="login-dialog">
-                    <h3>Login</h3>
+                    <h3>Account Login</h3>
                         <form>
                             <input type="text" name="user" placeholder="username">
                             <input type="password" name="pass" placeholder="password">
                             <input id="submit" type="submit" name="login" class="login loginmodal-submit" value="Login">
-                            <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account</a><span> | </span><a href="#">Forgot Password</a></p>
+                            <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account</a><span> | </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
                             
-                            <!-- Modal -->
+                            <!-- Modal Creat Account -->
                             <div class="modal fade" id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -91,12 +98,36 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Modal Forgot Password -->
+                            <div class="modal fade" id="forgot-password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h3 class="modal-title" id="myModalLabel">Forgot Password</h3>   
+                                        </div>
+                                        <div class="modal-body form-horizontal" id=
+"register-form">
+                                            <form>
+                                                <p>Enter your email address to reset your password.</p>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Email</label>
+                                                    <input type="email" class="form-control" id="email" placeholder="email">
+                                                    
+                                                </div>
+                                                
+                                            </form>
+                                        </div><!-- close form container -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                 </div>
-            </div>
-            
-            <!-- #include virtual="test.html" -->
-            
+            </div>            
         </div>
         
         <div class="row" id="footer">
