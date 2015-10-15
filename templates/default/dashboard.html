@@ -1,3 +1,10 @@
+<style>
+    .book{
+        width: 78px;
+        height: 102px;
+        display: inline;
+    }
+</style>
 <h2>Welcome {{ c_user.first_name }} {{ c_user.last_name }}</h2>
 <h3>You are an {% if c_user.active %}active{% else %}inactive{% endif %} user.</h3>
 <h3>Your University Email is {{ c_user.university_email }}</h3>
@@ -17,9 +24,9 @@
 <h3>Book Listed for Rent</h3>
 <ul>
     {% for book in book_for_rent %}
-        <div>
+        <div class="stack">
             <div>
-                <img src="{{ book.image_path }}">
+                <img class="book" src="{{ book.image_path }}">
             </div>
             <li>{{ book.name }}</li>
         </div>
