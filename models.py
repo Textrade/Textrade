@@ -277,7 +277,7 @@ def init_app():
             'condition': 'Bad',
         },
     ]
-    books = [
+    rent_books = [
         {
             'name': 'Java How To Program',
             # 'edition': '10th',
@@ -319,7 +319,7 @@ def init_app():
             BookCondition.insert_many(books_condition).execute()
             TradeStatus.insert_many(trade_status).execute()
             User.insert_many(users).execute()
-            BookRent.insert_many(books).execute()
+            BookRent.insert_many(rent_books).execute()
         User.create(
             first_name="admin", last_name="admin",
             username="admin", password=generate_password_hash("admin"),
