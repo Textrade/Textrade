@@ -61,7 +61,7 @@ import models
 #
 from user.forms import (RegisterForm, LoginForm, ResendToken,
                         ForgotCredentialReset, ResetPassword)
-from user.user import create_user
+from user.user import create_user, get_user
 from user.token import *
 
 #
@@ -530,7 +530,7 @@ def rent_user_book(username):
 @app.route('/rent/book/<string:username>/<int:book_pk>/')
 def rent_book(username, book_pk):
     try:
-        user = models.User.get(models.User.username == username)
+        user = get_user(username)
     except peewee.DoesNotExist:
         abort(404)
 

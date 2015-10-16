@@ -37,3 +37,9 @@ def delete_user(username, password):
         user.delete_instance()
     else:
         raise PermissionError("Invalid password.")
+
+
+def get_user(username):
+    """This funtion get an user object from the database."""
+    __user = User.get(User.username == username)
+    return __user
