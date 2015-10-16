@@ -2,7 +2,7 @@
 #                                                   #
 #   PROJECT: Textrade                               #
 #   CONTRIBUTORS:   Daniel Santos (Back-End),       #
-#                   Nina Petropoulos (Fron-End)     #
+#                   Nina Petropoulos (Front-End)     #
 #   VERSION: 1.0                                    #
 #                                                   #
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -21,9 +21,9 @@ import os
 #   FLASK IMPORTS
 #
 from flask import (Flask, g, render_template, redirect, url_for,
-                   flash, request)
+                   flash, request, abort)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
-from flask.ext.mail import Mail, Message
+from flask.ext.mail import Mail
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
@@ -37,8 +37,7 @@ import flask_login
 #
 from werkzeug.utils import secure_filename
 import uuid
-import requests
-import json
+import peewee
 
 #
 #
@@ -61,7 +60,7 @@ import models
 #
 #
 from user.forms import (RegisterForm, LoginForm, ResendToken,
-                        ForgotCredentialReset,ResetPassword)
+                        ForgotCredentialReset, ResetPassword)
 from user.user import create_user
 from user.token import *
 
@@ -243,17 +242,27 @@ def after_request(response):
     return response
 
 
+@app.errorhandler(404)
+def page_not_page(e):
+    return "The no found page!", 404
+
+
+@app.errorhandler(500)
+def internal_error(e):
+    return "We have a internal error =(", 500
+
+
 @app.route('/')
 def index():
     return render_template('default/index.html')
 
 
-@app.route('/team')
+@app.route('/team/')
 def team():
     return render_template('misc/the-team.html')
 
 
-@app.route('/login', methods=('GET', 'POST'))
+@app.route('/login/', methods=('GET', 'POST'))
 def login():
     # Login form in login view
     login_form = LoginForm()
@@ -291,7 +300,7 @@ def login():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
     logout_user()
@@ -299,7 +308,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/register', methods=('GET', 'POST'))
+@app.route('/register/', methods=('GET', 'POST'))
 def register():
     # Registration form in login view
     if not flask_login.current_user.is_authenticated():
@@ -329,7 +338,7 @@ def register():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/user/activate/<token>')
+@app.route('/user/activate/<token>/')
 def confirm_email(token):
     try:
         email = confirm_token(token)
@@ -349,7 +358,25 @@ def confirm_email(token):
     return redirect(url_for('dashboard'))
 
 
-@app.route('/user/forgot', methods=('POST', 'GET'))
+@app.route('/user/activate/resend/', methods=('GET', 'POST'))
+def resend_token():
+    form = ResendToken()
+    if form.validate_on_submit():
+        email = form.university_email.data
+        token = generate_confirmation_token(email)
+        html = render_template('user/email_verification.html', token=token)
+        subject = "Confirm email and activate your account!"
+        send_email(
+            to=email,
+            subject=subject,
+            template=html
+        )
+        flash("The activation link have been resend!")
+        return redirect(url_for('login'))
+    return render_template('user/resend_token.html', form=form)
+
+
+@app.route('/user/forgot/', methods=('POST', 'GET'))
 def forgot_credentials():
     form = ForgotCredentialReset()
     if form.validate_on_submit():
@@ -367,7 +394,7 @@ def forgot_credentials():
     return render_template('user/forgot_credentials.html', form=form)
 
 
-@app.route('/user/forgot/<token>', methods=('POST', 'GET'))
+@app.route('/user/forgot/<token>/', methods=('POST', 'GET'))
 def change_credentials(token):
     email = confirm_token(token)
     if email:
@@ -389,32 +416,18 @@ def change_credentials(token):
         return redirect(url_for('forgot_credentials'))
 
 
-@app.route('/user/activate/resend', methods=('GET', 'POST'))
-def resend_token():
-    form = ResendToken()
-    if form.validate_on_submit():
-        email = form.university_email.data
-        token = generate_confirmation_token(email)
-        html = render_template('user/email_verification.html', token=token)
-        subject = "Confirm email and activate your account!"
-        send_email(
-            to=email,
-            subject=subject,
-            template=html
-        )
-        flash("The activation link have been resend!")
-        return redirect(url_for('login'))
-    return render_template('user/resend_token.html', form=form)
-
-
-@app.route('/user/<string:username>')
+@app.route('/user/<string:username>/')
 def user_page(username):
-    user = models.User.get(models.User.username == username)
+    user = None
+    try:
+        user = models.User.get(models.User.username == username)
+    except peewee.DoesNotExist:
+        abort(404)
     user_rent_books = models.BookRent.select().where(models.BookRent.username == username)
     return render_template('user/user-page.html', user=user, rent_book=user_rent_books)
 
 
-@app.route('/dashboard')
+@app.route('/dashboard/')
 @login_required
 def dashboard():
     c_user = flask_login.current_user
@@ -422,12 +435,12 @@ def dashboard():
     return render_template('default/dashboard.html', c_user=c_user, book_for_rent=book_rent)
 
 
-@app.route('/rent')
+@app.route('/rent/')
 def rent():
     return render_template('rent/rent.html')
 
 
-@app.route('/book/add', methods=('GET', 'POST'))
+@app.route('/book/add/', methods=('GET', 'POST'))
 @login_required
 def add_book():
     rent_book_form = AddBookRentForm()
@@ -493,17 +506,40 @@ def add_book():
     )
 
 
-@app.route('/rent/search')
+@app.route('/rent/book/')
+def rent_all_book():
+    book = models.BookRent.select()
+    return "All book for rent available..."
+
+
+@app.route('/rent/book/search/')
 def rent_search():
     return render_template('rent/rental-books-search.html')
 
 
-@app.route('/books/<string:username>/<int:book_pk>')
-def books(username, book_pk):
-    user = models.User.get(models.User.username == username)
+@app.route('/rent/book/<string:username>/')
+def rent_user_book(username):
+    try:
+        user = models.User.get(models.User.username == username)
+    except peewee.DoesNotExist:
+        abort(404)
+    book_for_rent = models.User.select().where(models.BookRent.username == username)
+    return "Book for rent for a particular user."
+
+
+@app.route('/rent/book/<string:username>/<int:book_pk>/')
+def rent_book(username, book_pk):
+    try:
+        user = models.User.get(models.User.username == username)
+    except peewee.DoesNotExist:
+        abort(404)
+
     user_books = models.BookRent.select().where(models.BookRent.username == username)
 
-    book_ = models.BookRent.get(models.BookRent.id == book_pk)
+    try:
+        book_ = models.BookRent.get(models.BookRent.id == book_pk)
+    except peewee.DoesNotExist:
+        abort(404)
 
     other_equal_books = models.BookRent.select().where(models.BookRent.isbn == book_.isbn)
 
