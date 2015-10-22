@@ -151,8 +151,7 @@ class WishList(Model):
     """WishList model."""
     book = ForeignKeyField(BookRent, related_name='book_wishList')
     username = ForeignKeyField(User, to_field='username')
-    status = CharField(max_length=255)
-    date = DateTimeField()
+    date = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = db

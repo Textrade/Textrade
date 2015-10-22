@@ -11,7 +11,13 @@
                 </form> 
             </div>     
         </div>
-        
+        {% with messeages = get_flashed_messages(with_categories=True) %}
+                    {% if messeages %}
+                        {% for msg in messeages %}
+                            <p>{{ msg[1] }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
         <div class="row">
             <div class="col-xs-4" id="item-image">
                 <div class="image-container">
@@ -34,7 +40,7 @@
                 </div>
                 <div class="col-xs-4">    
                     <div class="title-types">
-                        <button class="btn btn-default">Wishlist</button>
+                        <a href="{{ url_for('wishlist_add', book_pk=book.id) }}"><button class="btn btn-default">Wishlist</button></a>
                     </div>
                 </div>
                 <hr>

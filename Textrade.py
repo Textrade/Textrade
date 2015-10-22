@@ -70,8 +70,7 @@ from user.token import *
 #
 #
 from book.forms import (AddBookRentForm, AddBookTradeForm)
-from book.book import (create_book_rent, allowed_file, load_book_info,
-                       create_book_trade)
+from book.book import *
 
 #
 #
@@ -440,9 +439,15 @@ def rent():
     return render_template('rent/rent.html')
 
 
-@app.route('/book/add/', methods=('GET', 'POST'))
+@app.route('/rent/book/')
+def rent_all_book():
+    book = models.BookRent.select()
+    return "All book for rent available..."
+
+
+@app.route('/rent/book/add/', methods=('GET', 'POST'))
 @login_required
-def add_book():
+def add_rent_book():
     rent_book_form = AddBookRentForm()
     trade_book_form = AddBookTradeForm()
 
@@ -506,12 +511,6 @@ def add_book():
     )
 
 
-@app.route('/rent/book/')
-def rent_all_book():
-    book = models.BookRent.select()
-    return "All book for rent available..."
-
-
 @app.route('/rent/book/search/')
 def rent_search():
     return render_template('rent/rental-books-search.html')
@@ -551,6 +550,23 @@ def rent_book(username, book_pk):
         other_equal_books=other_equal_books,
     )
 
+
+@login_required
+@app.route('/rent/book/wishlist/add/<int:book_pk>/')
+def wishlist_add(book_pk):
+    c_user = flask_login.current_user.username
+    try:
+        add_to_wishlist(book_pk, c_user)
+    except peewee.DoesNotExist:
+        abort(404)
+    except DuplicateEntry:
+        flash("This book is already in your wishlist!", "error")
+        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+    except SelfBook:
+        flash("This is your own book, you can't add it", "error")
+        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+    flash("Book added to your wishlist!", "success")
+    return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)
