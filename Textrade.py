@@ -218,6 +218,10 @@ admin.add_view(
 )
 
 
+def get_current_user():
+    return flask_login.current_user
+
+
 @login_manager.user_loader
 def load_user(userid):
     """Return a passed user."""
@@ -549,6 +553,22 @@ def rent_book(book_pk):
         book=book_,
         other_equal_books=other_equal_books,
     )
+
+
+@login_required
+@app.route('/rent/book/delete/<int:book_pk>')
+def delete_book(book_pk):
+    book_onwer = get_user(book_pk)
+    # Check if the user logged in match the book onwer.
+    if book_onwer.username == get_current_user():
+        try:
+            models.BookRent.get(BookRent.id == book_pk).delete_instance()
+        except models.DoesNotExist:
+            flash("This book doesn't exists.")
+        flash("The book have been deleted.")
+        return redirect(url_for('dashboard'))
+    flash("You are not the owner of this book.", "error")
+    return redirect(url_for('rent_book', book_pk=book_pk))
 
 
 @login_required
