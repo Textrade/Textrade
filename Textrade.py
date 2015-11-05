@@ -526,14 +526,14 @@ def rent_user_book(username):
     return "Book for rent for a particular user."
 
 
-@app.route('/rent/book/<string:username>/<int:book_pk>/')
-def rent_book(username, book_pk):
+@app.route('/rent/book/<int:book_pk>/')
+def rent_book(book_pk):
     try:
-        user = get_user(username)
+        user = get_user(book_pk)
     except peewee.DoesNotExist:
         abort(404)
 
-    user_books = models.BookRent.select().where(models.BookRent.username == username)
+    user_books = models.BookRent.select().where(models.BookRent.username == user.username)
 
     try:
         book_ = models.BookRent.get(models.BookRent.id == book_pk)

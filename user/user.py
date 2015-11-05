@@ -1,6 +1,6 @@
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 
-from models import User
+from models import User, BookRent
 
 
 def create_user(**kwargs):
@@ -39,7 +39,7 @@ def delete_user(username, password):
         raise PermissionError("Invalid password.")
 
 
-def get_user(username):
-    """This funtion get an user object from the database."""
-    __user = User.get(User.username == username)
+def get_user(book_id):
+    """This funtion get an user object from the rent book object in the database."""
+    __user = BookRent.get(BookRent.id == book_id)
     return __user
