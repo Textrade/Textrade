@@ -487,12 +487,12 @@ def add_rent_book():
                             img_path=img_path
                         )
                         flash("You book have been created!", "success")
-                        return redirect(url_for('add_book'))
+                        return redirect(url_for('add_rent_book'))
                     else:
                         flash("This format of the file is not allowed.", "error")
                 else:
                     flash("We couldn't find this book, check the ISBN number.", "error")
-                    return redirect(url_for('add_book'))
+                    return redirect(url_for('add_rent_book'))
         elif which_form is "1":
             # Add a book to trade
             if trade_book_form.validate_on_submit():
