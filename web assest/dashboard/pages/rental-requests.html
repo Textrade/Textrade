@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Rent | Your Rentals</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -287,10 +287,10 @@
                             <a href="#"><i class="fa fa-book fa-fw"></i> Rent<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="rent-listings.html">Your Listings</a>
+                                    <a href="rentals.html">Your Rentals</a>
                                 </li>
                                 <li>
-                                    <a href="rentals.html">Your Rentals</a>
+                                    <a href="rental-requests.html">Rentals Requests</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -299,10 +299,10 @@
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Trade<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="trade/listings.html">Your Listings</a>
+                                    <a href="trades.html">Trade Listings</a>
                                 </li>
                                 <li>
-                                    <a href="trade/matches.html">Trade Matches</a>
+                                    <a href="trade-requests.html">Trade Requests</a>
                                 </li>
                             </ul>
                         </li>
@@ -385,18 +385,19 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Trade Listings</h1>
-                    <p style="margin-bottom:50px;">Below are the books that you have listed as avialable for trade, as well as the books you would like to receive through the trades. You can edit listed books, and <a href="#add">add additional titles</a> below.</p>
+                    <h1 class="page-header">Rental Requests</h1>
+					<h3>Incoming Requests</h3>
+                    <p style="margin-bottom:50px;">The following people have requested to rent your listed books! Approve the requests to start collecting rent today.</p>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             <div class="row">
-                <!-- Books users are offering in trades -->
-                <div class="col-xs-12 col-lg-6">
+                <!-- Books users is trying to rent -->
+                <div class="col-xs-12" style="margin-bottom:30px;">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-book fa-fw"></i> Books You've Listed as <strong>Available for Trade</strong>
+                            <i class="fa fa-book fa-fw"></i> <strong>Incoming</strong>Rental Requests
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -408,25 +409,60 @@
                                                 <tr>
                                                     <th>Date</th>
                                                     <th>Title</th>
-                                                    <th>Action</th>
+<th>Rental Cost</th>													
+                                                    <th>Renting To</th>
+													
+<th>Action</th>													
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>10/21/2013</td>
                                                     <td>{Smothing really long that takes a while to say.}</td>
-                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></i></button></td>
+													<td>$50</td>
+                                                    <td>@username</td>
+<td><div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Approve/Decline
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
+    <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
+  </ul>
+</div></td>													
                                                 </tr>
                                                 <tr>
                                                     <td>10/21/2013</td>
                                                     <td>3:20 PM</td>
-                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
+<td>$50</td>                                                    <td>@username</td>
+<td><div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Approve/Decline
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
+    <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
+  </ul>
+</div></td>														
                                                 </tr>
                                                 <tr>
                                                     <td>10/21/2013</td>
                                                     <td>3:03 PM</td>
-                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
+<td>$50</td>                                                    <td>@username</td>
+<td><div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Approve/Decline
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
+    <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
+  </ul>
+</div></td>													
                                                 </tr>
+												<tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -439,11 +475,13 @@
                         <!-- /.panel-body -->
                     </div>
                 </div>
+				<h3>Pending Rental Requests</h3>
+                    <p style="margin-bottom:50px;">Below are the books that you have asked to rent. You will be notified via email when a rental request has been accepted. Until then, you can check the status of your rental request, or delete your request from the table below.</p>
                 <!-- Books users want in return for trades -->
-                <div class="col-xs-12 col-lg-6">
+                <div class="col-xs-12" style="margin-bottom:30px;">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-book fa-fw"></i> Books You're Looking to <strong>Recieve In Trades</strong>
+                            <i class="fa fa-book fa-fw"></i> <strong>Pending</strong> Rental Requests
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -455,25 +493,57 @@
                                                 <tr>
                                                     <th>Date</th>
                                                     <th>Title</th>
-                                                    <th>Action</th>
+<th>Rental Cost</th>													
+                                                    <th>Renting From</th>
+													
+<th>Action</th>													
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td>10/21/2013</td>
                                                     <td>{Smothing really long that takes a while to say.}</td>
-                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></i></button></td>
+													<td>$50</td>
+                                                    <td>@username</td>
+<td><div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Action
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a data-toggle="modal" data-target="#delete-rental-request">Delete Request</a></li>
+  </ul>
+</div></td>													
                                                 </tr>
                                                 <tr>
                                                     <td>10/21/2013</td>
                                                     <td>3:20 PM</td>
-                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
+<td>$50</td>                                                    <td>@username</td>
+<td><div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Action
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a data-toggle="modal" data-target="#delete-rental-request">Delete Request</a></li>
+  </ul>
+</div></td>													
                                                 </tr>
                                                 <tr>
                                                     <td>10/21/2013</td>
                                                     <td>3:03 PM</td>
-                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
+<td>$50</td>                                                    <td>@username</td>
+<td><div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Action
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a data-toggle="modal" data-target="#delete-rental-request">Delete Request</a></li>
+  </ul>
+</div></td>													
                                                 </tr>
+												<tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -487,68 +557,65 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <h1 class="page-header"><a name="add" style="color:black; text-decoration:none;">Make A New Listing</a></h1>
-                <div class="col-xs-12 col-md-6" style="padding-right: 50px;">
-                    <div class="section-heading" style="margin-bottom: 25px;">
-                        <h3 style="padding-bottom: 10px;">List an Additional Book for Trade</h3>
-                        <p style="margin-bottom:50px;">Add an additional book that you have avialable for trade. Fill out the form below to add it to your list.</p>
-                    </div>
-                    <div class="form-group col-xs-12" style="max-width:450px;">
-                        <label for="list-book-for-trade" class="col-xs-4 control-label">Book ISBN</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control" id="list-book-for-trade" placeholder="ISBN">
-                        </div>
-                        <div class="col-xs-2">
-                            <button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#add-listing-confirmation-modal"><i class="fa fa-check"></i></button>    
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-md-6" style="padding-left: 50px;">
-                    <div class="section-heading" style="margin-bottom: 25px;">
-                        <h3 style="padding-bottom: 10px;">List What You'd Like to Recieve</h3>
-                        <p style="margin-bottom:50px;">Have a new book that you'd like to get out of a trade deal? Add it below!</p>
-                    </div>
-                    <div class="form-group col-xs-12" style="max-width:450px;">
-                        <label for="list-book-for-trade" class="col-xs-4 control-label">Book ISBN</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control" id="list-book-for-trade" placeholder="ISBN">
-                        </div>
-                        <div class="col-xs-2">
-                            <button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#add-listing-confirmation-modal"><i class="fa fa-check"></i></button>    
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Modal: Remove Listing Confirmation -->
-            <div class="modal fade" id="removal-listing-confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- Modal: Accept Rental Request -->
+            <div class="modal fade" id="accept-rental-request" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h3 class="modal-title" id="myModalLabel">Confirmation</h3>   
+                                <h3 class="modal-title" id="myModalLabel">Accept Rental Request: Confirmation</h3>   
                         </div>
-                        <p style="padding: 20px;">Are you sure you want to remove {BOOK TITLE} from your available books for trade?</p>
+                        <p style="padding: 20px;">Are you sure you want accept the following rental request?</p>
+						<ul>
+							<li><strong>Title:</strong> Advanced Mathematics</li>
+							<li><strong>Cost:</strong> $55/semester</li>
+							<li><strong>To:</strong> @username</li>
+						</ul>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Remove Listing</button>
+                            <button type="button" class="btn btn-primary">Confirm Rental</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /#removal-listing-confirmation-modal -->
-            <!-- Modal: Add Listing Confirmation -->
-            <div class="modal fade" id="add-listing-confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <!-- Modal: Decline Rental Request -->
+            <div class="modal fade" id="decline-rental-request" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h3 class="modal-title" id="myModalLabel">Confirmation</h3>   
+                                <h3 class="modal-title" id="myModalLabel">Decline Rental Request: Confirmation</h3>   
                         </div>
-                        <p style="padding: 20px;">Are you sure you want to add {BOOK TITLE} to your available books for trade?</p>
+                        <p style="padding: 20px;">Are you sure you want to decline the following rental request?</p>
+						<ul>
+							<li><strong>Title:</strong> Advanced Mathematics</li>
+							<li><strong>Cost:</strong> $55/semester</li>
+							<li><strong>To:</strong> @username</li>
+						</ul>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Remove Listing</button>
+                            <button type="button" class="btn btn-primary">Yes, Decline Request</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- Modal: Delete Rental Request -->
+            <div class="modal fade" id="delete-rental-request" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h3 class="modal-title" id="myModalLabel">Delete Rental Request: Confirmation</h3>   
+                        </div>
+                        <p style="padding: 20px;">Are you sure you want to delete the following rental request?</p>
+						<ul>
+							<li><strong>Title:</strong> Advanced Mathematics</li>
+							<li><strong>Cost:</strong> $55/semester</li>
+							<li><strong>To:</strong> @username</li>
+						</ul>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Yes, Delete Request</button>
                         </div>
                     </div>
                 </div>
