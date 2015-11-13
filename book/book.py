@@ -37,11 +37,13 @@ def create_book_rent(**kwargs):
 def create_book_trade(**kwargs):
     """Crate a book to trade"""
     BookTradeWant.create(
-        want_isbn=kwargs['want_isbn'],
+        name=kwargs['want_name'],
+        isbn=kwargs['want_isbn'],
         user=kwargs['user'],
     )
     BookTradeHave.create(
-        have_isbn=kwargs['have_isbn'],
+        name=kwargs['have_name'],
+        isbn=kwargs['have_isbn'],
         user=kwargs['user']
     )
 

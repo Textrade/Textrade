@@ -434,8 +434,16 @@ def user_page(username):
 @login_required
 def dashboard():
     c_user = flask_login.current_user
-    book_rent = models.BookRent.select().where(models.BookRent.username == c_user.username)
-    return render_template('default/dashboard.html', c_user=c_user, book_for_rent=book_rent)
+    book_rent = models.BookRent.select().where(models.BookRent.username == get_current_user())
+    wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
+    have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
+    return render_template(
+        'default/dashboard.html',
+        c_user=c_user,
+        book_for_rent=book_rent,
+        w_books=wanted_books,
+        h_books=have_books,
+    )
 
 
 @app.route('/rent/')
@@ -449,9 +457,9 @@ def rent_all_book():
     return "All book for rent available..."
 
 
-@app.route('/rent/book/add/', methods=('GET', 'POST'))
+@app.route('/book/add/', methods=('GET', 'POST'))
 @login_required
-def add_rent_book():
+def add_books():
     rent_book_form = AddBookRentForm()
     trade_book_form = AddBookTradeForm()
 
@@ -491,22 +499,25 @@ def add_rent_book():
                             img_path=img_path
                         )
                         flash("You book have been created!", "success")
-                        return redirect(url_for('add_rent_book'))
+                        return redirect(url_for('add_books'))
                     else:
                         flash("This format of the file is not allowed.", "error")
                 else:
                     flash("We couldn't find this book, check the ISBN number.", "error")
-                    return redirect(url_for('add_rent_book'))
+                    return redirect(url_for('add_books'))
         elif which_form is "1":
             # Add a book to trade
             if trade_book_form.validate_on_submit():
                 have_book_isbn = trade_book_form.have_book.data
                 want_book_isbn = trade_book_form.want_book.data
                 create_book_trade(
+                    have_name=load_book_info(have_book_isbn)['title'],
+                    want_name=load_book_info(want_book_isbn)['title'],
                     want_isbn=want_book_isbn,
                     have_isbn=have_book_isbn,
-                    user=flask_login.current_user.username
+                    user=get_current_user(),
                 )
+                flash("Books for trade added successfully.", "success")
 
     return render_template(
         'rent/rent-your-book.html',

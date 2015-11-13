@@ -109,7 +109,9 @@ class BookRent(Model):
 
 class BookTradeHave(Model):
     """BookTradeHave model."""
-    have_isbn = CharField(max_length=255)
+    name = CharField(max_length=255)
+    isbn = CharField(max_length=255)
+    # TODO: Change to username
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_have")
 
     class Meta:
@@ -121,7 +123,9 @@ class BookTradeHave(Model):
 
 class BookTradeWant(Model):
     """BookTradeWant model."""
-    want_isbn = CharField(max_length=255)
+    name = CharField(max_length=255)
+    isbn = CharField(max_length=255)
+    # TODO: Change to username convention
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_want")
 
     class Meta:
