@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Textrade | Rent Your Book</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/sass/main.css">
+</head>
+
+<body>
+    <div class="container-fluid" id="page-wrap" style="background:#efefef;">
+        <nav class="navbar navbar-default navbar-fixed-top container-fluid">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Brand</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="our-services.html">Our Services</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rent <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="rent.html">Rent</a></li>
+                                <li><a href="rent-your-book.html">Rent Out A Book</a></li>
+                                <li><a href="rental-books-serach.html">Search Boots to Rent</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="the-team.html">The Team <span class="sr-only">(current)</span></a></li>
+                        <li><a href="trade.html">Trade</a></li>
+                        <li><a href="donate.html">Donate</a></li>
+						<form class="navbar-form navbar-left" role="search">
+							<div class="form-group">
+							  	<input type="text" class="form-control" placeholder="Search">
+							</div>
+							<button type="submit" class="btn btn-default">Submit</button>
+						</form>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav> 
+		<div class="row">
+			<div class="col-xs-12 col-md-3" id="user-aside">
+				<div class="aside-block">
+					<h2>Username</h2>
+					<p>Real name, if given</p>
+					<hr>
+					<p>Textrade Member Since Oct. 8, 2015</p>
+					<hr>
+					<div class="rating" style="display: inline;">
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+						<p>45% Positive Ratings</p>
+					</div>
+				</div>
+				<div class="aside-block">
+					<p>Want to me</p>
+				</div>	
+			</div>
+			<div class="col-xs-12 col-md-3" id="user-aside">
+			</div>	
+			<div class="col-xs-12 col-md-8 col-md-offset-1" id="user-main">
+				<div class="block">
+					<h3>Log In to Register</h3>
+				</div>
+				<div class="block">
+					<!-- table to show books the user is currently offering for rent -->
+					<div class="panel panel-default">
+						<div class="panel-heading for-rent">
+							Books Listed for Rent
+						</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="dataTable_wrapper">
+								<table class="table table-striped table-bordered table-hover" id="dataTables-example">
+									<thead>
+										<tr>
+											<th>Title</th>
+											<th>Condition</th>
+											<th>Rental Price</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="odd gradeX">
+											<td>Advanced Mathematics 2nd Edition</td>
+											<td>Very Good</td>
+											<td>$35/semester</td>
+											<td class="center"><button type="button" class="btn btn-primary">Rent Now</button></td>
+										</tr>
+										<tr class="even gradeC">
+											<td>Advanced Mathematics 2nd Edition</td>
+											<td>Very Good</td>
+											<td>$33/semester</td>
+											<td class="center"><button type="button" class="btn btn-primary">Rent Now</button></td>
+										</tr>
+										<tr class="odd gradeA">
+											<td>Advanced Mathematics 2nd Edition</td>
+											<td>Good</td>
+											<td>$30/semester</td>
+											<td class="center"><button type="button" class="btn btn-primary">Rent Now</button></td>
+										</tr>
+										<tr class="even gradeA">
+											<td>Advanced Mathematics 2nd Edition</td>
+											<td>Fair</td>
+											<td>$25/semester</td>
+											<td class="center"><button type="button" class="btn btn-primary">Rent Now</button></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.table-responsive -->
+						</div>
+						<!-- /.panel-body -->
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="row" id="footer">
+            <footer>
+                <h2>Textrade</h2>
+                <h4>An Educated Book Buying Market</h4>
+                <table id="site-actions">
+                    <tr id="main-actions"><td>About Us</td><td>Services</td><td>Donate</td><td>Log-In</td></tr>
+                    <tr><td>The Team</td><td>Rent</td><td></td><td></td><td></td></tr>
+                    <tr><td>Our Mission</td><td>Trade</td><td></td><td></td><td></td></tr>
+                    <tr><td>Contact</td><td></td><td></td><td></td><td></td></tr>
+                </table>
+                <p id="copyright">This is where the copyright goes</p>
+            </footer>
+        </div>
+    </div><!-- close .container-fluid -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>    

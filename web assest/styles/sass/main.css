@@ -145,11 +145,7 @@
 
 #team-member-profiles {
   color: #323232;
-  background: #eaeaea;
-  background: -webkit-linear-gradient(top, white, white, #d6d6d6);
-  background: -o-linear-gradient(top, white, white, #d6d6d6);
-  background: -moz-linear-gradient(top, white, white, #d6d6d6);
-  background: linear-gradient(to bottom, white, white, #d6d6d6); }
+  background: blue; }
   #team-member-profiles .team-member {
     text-align: left; }
     #team-member-profiles .team-member .circular {
@@ -337,9 +333,9 @@
   background: white;
   border-radius: 5px;
   /* Small devices (tablets, 768px and up) */ }
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     .form-dialog {
-      max-width: 700px;
+      max-width: 950px;
       margin: auto; } }
   .form-dialog #form-explainer h2 {
     font-family: Oswald, sans-serif;
@@ -438,54 +434,6 @@
       margin: auto; }
     #search-results #results .result-instance a {
       color: #05668d; }
-
-#trade-actions-wrap {
-  background: url(../../img/blur-old-antique-book.jpg) center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  text-align: center;
-  top: 0;
-  position: relative;
-  height: 200px; }
-
-.step {
-  margin: 50px 0 30px 0; }
-  .step span {
-    color: #02c39a; }
-  .step p {
-    margin-right: 55%;
-    padding-bottom: 10px;
-    border-bottom: solid 1px #b2b2b2; }
-
-.trade-column {
-  /* Small devices (tablets, 768px and up) */ }
-  .trade-column .add-line {
-    height: 50px; }
-    .trade-column .add-line .add-button {
-      height: 20px;
-      width: 20px;
-      border-radius: 10px;
-      margin: 15px 0;
-      background: #02c39a;
-      color: white;
-      text-align: center; }
-  .trade-column input {
-    height: 40px;
-    margin: 5px 0; }
-  @media (min-width: 786px) {
-    .trade-column {
-      padding: 0 10%; }
-      .trade-column form {
-        padding-left: 5%; }
-        .trade-column form input {
-          width: 200px; } }
-
-#books-to-trade {
-  border-right: solid 1px #efefef; }
-
-#trade-request-confirmation .alert {
-  width: 450px;
-  margin: auto; }
 
 #service-list h2, #service-list h4 {
   font-family: Oswald, sans-serif; }
@@ -594,6 +542,20 @@
 
 .searchbar {
   background: #323232; }
+
+#user-aside {
+  margin: 0;
+  padding: 0; }
+  #user-aside .aside-block {
+    background: white;
+    border-radius: 5px;
+    margin: 0 0 20px 0;
+    padding: 15px; }
+
+#user-main {
+  background: white;
+  border-radius: 5px;
+  padding: 0 40px; }
 
 body {
   font-family: Open Sans, sans-serif;
