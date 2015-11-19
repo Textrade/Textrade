@@ -2,7 +2,7 @@
 #                                                   #
 #   PROJECT: Textrade                               #
 #   CONTRIBUTORS:   Daniel Santos (Back-End),       #
-#                   Nina Petropoulos (Fron-End)     #
+#                   Nina Petropoulos (Front-End)     #
 #   VERSION: 1.0                                    #
 #                                                   #
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -21,9 +21,9 @@ import os
 #   FLASK IMPORTS
 #
 from flask import (Flask, g, render_template, redirect, url_for,
-                   flash, request)
+                   flash, request, abort)
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
-from flask.ext.mail import Mail, Message
+from flask.ext.mail import Mail
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
@@ -37,8 +37,7 @@ import flask_login
 #
 from werkzeug.utils import secure_filename
 import uuid
-import requests
-import json
+import peewee
 
 #
 #
@@ -61,8 +60,8 @@ import models
 #
 #
 from user.forms import (RegisterForm, LoginForm, ResendToken,
-                        ForgotCredentialReset,ResetPassword)
-from user.user import create_user
+                        ForgotCredentialReset, ResetPassword)
+from user.user import create_user, get_user
 from user.token import *
 
 #
@@ -70,8 +69,8 @@ from user.token import *
 #   BOOK IMPORTS
 #
 #
-from book.forms import (AddBookRentForm, )
-from book.book import create_book_rent, allowed_file, load_book_info
+from book.forms import (AddBookRentForm, AddBookTradeForm)
+from book.book import *
 
 #
 #
@@ -122,6 +121,7 @@ login_manager.login_view = 'login'
 #
 #
 #
+DOMAIN_NAME = "http://127.0.0.1:5000"
 UPLOAD_FOLDER = '/Users/dsantos/Web Projects/Textrade/Textrade/static/img/books/'
 BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
 
@@ -135,6 +135,13 @@ BOOK_IMG_EXTENTIONS = {'jpg', 'png', 'jpeg'}
 BOOK_API_KEY = "AIzaSyBI_bJjoReQ2WboaqJvA6wA6lDraR9sJ54"
 
 
+#
+#
+#
+# FLASK ADMIN CONFIG
+#
+#
+#
 class TextradeModelView(ModelView):
     """ModelView override."""
     form_base_class = flask_wtf.Form
@@ -152,13 +159,67 @@ class TextradeModelView(ModelView):
         return redirect(url_for('login', next=request.url))
 
 admin = Admin(app, name="Textrade", template_mode="bootstrap3")
-admin.add_view(TextradeModelView(models.UserRole))
-admin.add_view(TextradeModelView(models.User))
-admin.add_view(TextradeModelView(models.TradeStatus))
-admin.add_view(TextradeModelView(models.Trade))
-admin.add_view(TextradeModelView(models.BookStatus))
-admin.add_view(TextradeModelView(models.BookRent))
-admin.add_view(TextradeModelView(models.BookCondition))
+
+#
+#   USERS
+#
+admin.add_view(
+    TextradeModelView(
+        name="Users", model=models.User, endpoint="users", category="User"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="User Role", model=models.UserRole, endpoint="user-role", category="User"
+    )
+)
+
+#
+#   TRADES
+#
+admin.add_view(
+    TextradeModelView(
+        name="Trades", model=models.Trade, endpoint="trades", category="Trade",
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Trade Status", model=models.TradeStatus, endpoint="trade-status", category="Trade"
+    )
+)
+
+#
+#   BOOKS
+#
+admin.add_view(
+    TextradeModelView(
+        name="Book for Rent", model=models.BookRent, endpoint='book-rent', category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book to Trade Wanted", model=models.BookTradeWant, endpoint="book-trade-wanted", category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book to Trade Have", model=models.BookTradeHave, endpoint="book-trade-have", category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book Status", model=models.BookStatus, endpoint="book-status", category="Book"
+    )
+)
+admin.add_view(
+    TextradeModelView(
+        name="Book Condition", model=models.BookCondition, endpoint="book-condition", category="Book"
+    )
+)
+
+
+def get_current_user():
+    return flask_login.current_user
 
 
 @login_manager.user_loader
@@ -179,9 +240,19 @@ def before_request():
 
 @app.after_request
 def after_request(response):
-    """Close the database connection after everything request."""
+    """Close the database connection after every request."""
     g.db.close()
     return response
+
+
+@app.errorhandler(404)
+def page_not_page(e):
+    return "The no found page!", 404
+
+
+@app.errorhandler(500)
+def internal_error(e):
+    return "We have a internal error =(", 500
 
 
 @app.route('/')
@@ -189,12 +260,12 @@ def index():
     return render_template('default/index.html')
 
 
-@app.route('/team')
+@app.route('/team/')
 def team():
     return render_template('misc/the-team.html')
 
 
-@app.route('/login', methods=('GET', 'POST'))
+@app.route('/login/', methods=('GET', 'POST'))
 def login():
     # Login form in login view
     login_form = LoginForm()
@@ -232,7 +303,7 @@ def login():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
     logout_user()
@@ -240,7 +311,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/register', methods=('GET', 'POST'))
+@app.route('/register/', methods=('GET', 'POST'))
 def register():
     # Registration form in login view
     if not flask_login.current_user.is_authenticated():
@@ -270,7 +341,7 @@ def register():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/user/activate/<token>')
+@app.route('/user/activate/<token>/')
 def confirm_email(token):
     try:
         email = confirm_token(token)
@@ -290,7 +361,25 @@ def confirm_email(token):
     return redirect(url_for('dashboard'))
 
 
-@app.route('/user/forgot', methods=('POST', 'GET'))
+@app.route('/user/activate/resend/', methods=('GET', 'POST'))
+def resend_token():
+    form = ResendToken()
+    if form.validate_on_submit():
+        email = form.university_email.data
+        token = generate_confirmation_token(email)
+        html = render_template('user/email_verification.html', token=token)
+        subject = "Confirm email and activate your account!"
+        send_email(
+            to=email,
+            subject=subject,
+            template=html
+        )
+        flash("The activation link have been resend!")
+        return redirect(url_for('login'))
+    return render_template('user/resend_token.html', form=form)
+
+
+@app.route('/user/forgot/', methods=('POST', 'GET'))
 def forgot_credentials():
     form = ForgotCredentialReset()
     if form.validate_on_submit():
@@ -308,7 +397,7 @@ def forgot_credentials():
     return render_template('user/forgot_credentials.html', form=form)
 
 
-@app.route('/user/forgot/<token>', methods=('POST', 'GET'))
+@app.route('/user/forgot/<token>/', methods=('POST', 'GET'))
 def change_credentials(token):
     email = confirm_token(token)
     if email:
@@ -330,36 +419,39 @@ def change_credentials(token):
         return redirect(url_for('forgot_credentials'))
 
 
-@app.route('/user/activate/resend', methods=('GET', 'POST'))
-def resend_token():
-    form = ResendToken()
-    if form.validate_on_submit():
-        email = form.university_email.data
-        token = generate_confirmation_token(email)
-        html = render_template('user/email_verification.html', token=token)
-        subject = "Confirm email and activate your account!"
-        send_email(
-            to=email,
-            subject=subject,
-            template=html
-        )
-        flash("The activation link have been resend!")
-        return redirect(url_for('login'))
-    return render_template('user/resend_token.html', form=form)
+@app.route('/user/<string:username>/')
+def user_page(username):
+    user = None
+    try:
+        user = models.User.get(models.User.username == username)
+    except peewee.DoesNotExist:
+        abort(404)
+    user_rent_books = models.BookRent.select().where(models.BookRent.username == username)
+    return render_template('user/user-page.html', user=user, rent_book=user_rent_books)
 
 
-@app.route('/dashboard')
+@app.route('/dashboard/')
 @login_required
 def dashboard():
     c_user = flask_login.current_user
-    return render_template('default/dashboard.html', c_user=c_user)
+    book_rent = models.BookRent.select().where(models.BookRent.username == get_current_user())
+    wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
+    have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
+    return render_template(
+        'default/dashboard.html',
+        c_user=c_user,
+        book_for_rent=book_rent,
+        w_books=wanted_books,
+        h_books=have_books,
+    )
 
 
-@app.route('/rent')
+@app.route('/rent/')
 def rent():
     return render_template('rent/rent.html')
 
 
+<<<<<<< HEAD
 @app.route('/book/add', methods=('GET', 'POST'))
 @login_required
 def add_book():
@@ -402,12 +494,155 @@ def add_book():
             flash("We couldn't find this book, check the ISBN number.", "error")
             return redirect(url_for('add_book'))
     return render_template('rent/rent-your-book.html', form=form)
+=======
+@app.route('/rent/book/')
+def rent_all_book():
+    book = models.BookRent.select()
+    return "All book for rent available..."
 
 
-@app.route('/rent/search')
+@app.route('/book/add/', methods=('GET', 'POST'))
+@login_required
+def add_books():
+    rent_book_form = AddBookRentForm()
+    trade_book_form = AddBookTradeForm()
+
+    if request.method == "POST":
+        # Check which form was submitted
+        which_form = request.form['hidden']
+        if which_form is "0":
+            # Add a book for rent
+            if rent_book_form.validate_on_submit():
+                # Get ISBN from form after validate
+                isbn = rent_book_form.isbn.data
+                # Try to load information
+                book = load_book_info(isbn)
+                if book:
+                    file = request.files['img']
+                    if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
+                        # Secure the input file
+                        filename = secure_filename(
+                            "{}-{}.{}".format(
+                                flask_login.current_user.username,
+                                uuid.uuid4(),
+                                file.filename.rsplit('.', 1)[1]
+                            )
+                        )
+                        # Save the image to the server
+                        img_path = DOMAIN_NAME + '/static/img/books/' + filename
+                        file.save(os.path.join(UPLOAD_FOLDER, filename))
+                        # Create a book record in the database
+                        create_book_rent(
+                            name=book['title'],
+                            author=book['authors'],
+                            description=book['description'],
+                            isbn=isbn,
+                            condition=rent_book_form.condition.data,
+                            condition_comment=rent_book_form.condition_comment.data,
+                            username=flask_login.current_user.username,
+                            img_path=img_path
+                        )
+                        flash("You book have been created!", "success")
+                        return redirect(url_for('add_books'))
+                    else:
+                        flash("This format of the file is not allowed.", "error")
+                else:
+                    flash("We couldn't find this book, check the ISBN number.", "error")
+                    return redirect(url_for('add_books'))
+        elif which_form is "1":
+            # Add a book to trade
+            if trade_book_form.validate_on_submit():
+                have_book_isbn = trade_book_form.have_book.data
+                want_book_isbn = trade_book_form.want_book.data
+                create_book_trade(
+                    have_name=load_book_info(have_book_isbn)['title'],
+                    want_name=load_book_info(want_book_isbn)['title'],
+                    want_isbn=want_book_isbn,
+                    have_isbn=have_book_isbn,
+                    user=get_current_user(),
+                )
+                flash("Books for trade added successfully.", "success")
+>>>>>>> book
+
+    return render_template(
+        'rent/rent-your-book.html',
+        rent_form=rent_book_form,
+        trade_form=trade_book_form
+    )
+
+
+@app.route('/rent/book/search/')
 def rent_search():
     return render_template('rent/rental-books-search.html')
 
+
+@app.route('/rent/book/<string:username>/')
+def rent_user_book(username):
+    try:
+        user = models.User.get(models.User.username == username)
+    except peewee.DoesNotExist:
+        abort(404)
+    book_for_rent = models.User.select().where(models.BookRent.username == username)
+    return "Book for rent for a particular user."
+
+
+@app.route('/rent/book/<int:book_pk>/')
+def rent_book(book_pk):
+    try:
+        user = get_user(book_pk)
+    except peewee.DoesNotExist:
+        abort(404)
+
+    user_books = models.BookRent.select().where(models.BookRent.username == user.username)
+
+    try:
+        book_ = models.BookRent.get(models.BookRent.id == book_pk)
+    except peewee.DoesNotExist:
+        abort(404)
+
+    other_equal_books = models.BookRent.select().where(models.BookRent.isbn == book_.isbn)
+
+    return render_template(
+        'book/book-template.html',
+        user=user,
+        user_books=user_books,
+        book=book_,
+        other_equal_books=other_equal_books,
+    )
+
+
+@login_required
+@app.route('/rent/book/delete/<int:book_pk>')
+def delete_book(book_pk):
+    book_owner = get_user(book_pk)
+    # Check if the user logged in match the book onwer.
+    if book_owner.username == get_current_user():
+        try:
+            models.BookRent.get(BookRent.id == book_pk).delete_instance()
+        except models.DoesNotExist:
+            flash("This book doesn't exists.")
+        flash("The book have been deleted.")
+        return redirect(url_for('dashboard'))
+    flash("You are not the owner of this book.", "error")
+    return redirect(url_for('rent_book', book_pk=book_pk))
+
+
+@login_required
+@app.route('/rent/book/wishlist/add/<int:book_pk>/')
+def wishlist_add(book_pk):
+    c_user = flask_login.current_user.username
+    try:
+        add_to_wishlist(book_pk, c_user)
+    except peewee.DoesNotExist:
+        abort(404)
+    except DuplicateEntry:
+        flash("This book is already in your wishlist!", "error")
+        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+    except SelfBook:
+        flash("This is your own book, you can't add it", "error")
+        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+    flash("Book added to your wishlist!", "success")
+    return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)

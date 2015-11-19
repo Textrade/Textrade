@@ -41,3 +41,27 @@ class AddBookRentForm(Form):
             DataRequired(message="Please provide a picture, people want to see your book.")
         ]
     )
+
+
+class AddBookTradeForm(Form):
+    """BookTradeForm"""
+    want_book = StringField(
+        'ISBN',
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[0-9a-zA-Z-]+$',
+                message="ISBN can only be numbers"
+            )
+        ]
+    )
+    have_book = StringField(
+        'ISBN',
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[0-9a-zA-Z-]+$',
+                message="ISBN can only be numbers"
+            )
+        ]
+    )

@@ -1,3 +1,10 @@
+<style>
+    .book{
+        width: 78px;
+        height: 102px;
+        display: inline;
+    }
+</style>
 <h2>Welcome {{ c_user.first_name }} {{ c_user.last_name }}</h2>
 <h3>You are an {% if c_user.active %}active{% else %}inactive{% endif %} user.</h3>
 <h3>Your University Email is {{ c_user.university_email }}</h3>
@@ -12,4 +19,48 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
+
+<h3>Book Listed for Rent</h3>
+<ul>
+    {% if book_for_rent[0] %}
+        {% for book in book_for_rent %}
+            <a href="{{ url_for('rent_book', book_pk=book.id) }}">
+                <div class="stack">
+                    <div>
+                        <img class="book" src="{{ book.image_path }}">
+                    </div>
+                    <ul>
+                        <li>{{ book.name }}</li>
+                    </ul>
+                </div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <a href="{{ url_for('add_books') }}"><p>Add book to rent</p></a>
+    {% endif %}
+</ul>
+<h3>Book Listed To Trade</h3>
+    {% if h_books[0] %}
+        {% for have in h_books %}
+            <div class="stack">
+                <ul>
+                    <li>{{ have.name }}</li>
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <a href="{{ url_for('add_books') }}"><p>Add book to trade</p></a>
+    {% endif %}
+<h3>Book Wanted</h3>
+    {% if w_books[0] %}
+        {% for want in w_books %}
+            <div class="stack">
+                <ul>
+                    <li>{{ want.name }}</li>
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <a href="{{ url_for('add_books') }}"><p>Add book to trade</p></a>
+    {% endif %}
 <h2><a href="{{ url_for('logout') }}">LOG OUT!</a></h2>

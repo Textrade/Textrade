@@ -1,7 +1,17 @@
 import requests
 import json
 
-from models import BookRent
+from peewee import DoesNotExist
+
+from models import BookRent, BookTradeWant, BookTradeHave, WishList
+
+
+class DuplicateEntry(Exception):
+    pass
+
+
+class SelfBook(Exception):
+    pass
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
@@ -24,6 +34,20 @@ def create_book_rent(**kwargs):
     )
 
 
+def create_book_trade(**kwargs):
+    """Crate a book to trade"""
+    BookTradeWant.create(
+        name=kwargs['want_name'],
+        isbn=kwargs['want_isbn'],
+        user=kwargs['user'],
+    )
+    BookTradeHave.create(
+        name=kwargs['have_name'],
+        isbn=kwargs['have_isbn'],
+        user=kwargs['user']
+    )
+
+
 def load_book_info(isbn):
     """Get an ISBN and return a dictionary with book information."""
     data = requests.get("https://www.googleapis.com/books/v1/volumes?q={}".format(isbn)).json()
@@ -40,3 +64,24 @@ def load_book_info(isbn):
         }
         return book
     return None
+
+
+def get_book_rent(book_pk):
+    return BookRent.get(BookRent.id == book_pk)
+
+
+def add_to_wishlist(book_pk, username):
+    """This function add a book to the wish if not duplicate."""
+    try:
+        wishlist = WishList.get((WishList.username == username) & (WishList.book == book_pk))
+    except DoesNotExist:
+        book = BookRent.get(BookRent.id == book_pk)
+        if not book.username.username == username:
+            WishList.create(
+                book=book_pk,
+                username=username,
+            )
+        else:
+            raise SelfBook
+    else:
+        raise DuplicateEntry

@@ -50,7 +50,7 @@ class User(UserMixin, Model):
         database = db
 
     def __str__(self):
-        return "{} {}".format(self.first_name, self.last_name)
+        return self.username
 
 
 class TradeStatus(Model):
@@ -107,6 +107,34 @@ class BookRent(Model):
         return self.name
 
 
+class BookTradeHave(Model):
+    """BookTradeHave model."""
+    name = CharField(max_length=255)
+    isbn = CharField(max_length=255)
+    # TODO: Change to username
+    user = ForeignKeyField(User, to_field='username', related_name="book_trade_have")
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return self.isbn
+
+
+class BookTradeWant(Model):
+    """BookTradeWant model."""
+    name = CharField(max_length=255)
+    isbn = CharField(max_length=255)
+    # TODO: Change to username convention
+    user = ForeignKeyField(User, to_field='username', related_name="book_trade_want")
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return self.isbn
+
+
 class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
@@ -127,8 +155,7 @@ class WishList(Model):
     """WishList model."""
     book = ForeignKeyField(BookRent, related_name='book_wishList')
     username = ForeignKeyField(User, to_field='username')
-    status = CharField(max_length=255)
-    date = DateTimeField()
+    date = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = db
@@ -149,6 +176,8 @@ def create_tables():
                 BookStatus,
                 BookCondition,
                 BookRent,
+                BookTradeWant,
+                BookTradeHave,
                 Trade,
                 WishList,
             ],
@@ -175,10 +204,13 @@ def drop_tables():
                 BookStatus,
                 BookCondition,
                 BookRent,
+                BookTradeWant,
+                BookTradeHave,
                 Trade,
                 WishList
             ], safe=True
         )
+    print("Tables deleted.")
 
 
 def init_app():
@@ -248,7 +280,7 @@ def init_app():
             'condition': 'Bad',
         },
     ]
-    books = [
+    rent_books = [
         {
             'name': 'Java How To Program',
             # 'edition': '10th',
@@ -290,7 +322,7 @@ def init_app():
             BookCondition.insert_many(books_condition).execute()
             TradeStatus.insert_many(trade_status).execute()
             User.insert_many(users).execute()
-            BookRent.insert_many(books).execute()
+            BookRent.insert_many(rent_books).execute()
         User.create(
             first_name="admin", last_name="admin",
             username="admin", password=generate_password_hash("admin"),
@@ -300,7 +332,7 @@ def init_app():
     except Exception as e:
         print(e)
         return
-    print("App initialized successfully")
+    print("App initialized successfully.")
 
 
 if __name__ == '__main__':

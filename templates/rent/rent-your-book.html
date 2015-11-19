@@ -1,7 +1,11 @@
 {% extends 'default/base.html' %}
 {% from 'default/macros.html' import render_field %}
 {% block content %}
+<<<<<<< HEAD
 <div class="row row-special" id="rent-page-header">
+=======
+    <div class="row row-special" id="rent-page-header">
+>>>>>>> book
         </div>
         <!-- wrap for entire form -->
         <div class="row" id="rent-form-wrap">
@@ -12,12 +16,17 @@
                     <li role="presentation" class="active"><a href="#rent-form-dialog" aria-controls="rent-form-dialog" role="tab" data-toggle="tab">Rent</a></li>
                     <li role="presentation"><a href="#trade-form-dialog" aria-controls="trade-form-dialog" role="tab" data-toggle="tab">Trade</a></li>
                 </ul>
+<<<<<<< HEAD
+=======
+
+>>>>>>> book
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active form-dialog" id="rent-form-dialog">
                         <div id="form-explainer">
                             <h2>Rental Book Request Form</h2>
                             <p>Fill out the form below based on the details of the book you would like to register as a rental. After submitting the form and sending in your book for official review, your book will be listed on the Textrade site.</p>
+<<<<<<< HEAD
                         </div>
                         <div class="col-xs-12">
                             <form>
@@ -135,6 +144,90 @@
                                 </div>
                                 <button type="button" class="btn btn-primary">Submit</button>
                             </form>
+=======
+                        </div>
+                        <div class="col-xs-12">
+                            <form method="post" action="" enctype="multipart/form-data">
+                                {{ rent_form.hidden_tag() }}
+                                {% for field in rent_form %}
+                                    {{ render_field(field) }}
+                                {% endfor %}
+                                <input type="hidden" name="hidden" value="0">
+                                <button type="submit">Submit</button>
+                                {% with messeages = get_flashed_messages(with_categories=True) %}
+                                        {% if messeages %}
+                                            {% for msg in messeages %}
+                                                <p>{{ msg[1] }}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                {% endwith %}
+                            </form>
+                            <!-- should create text field to pull from url that hosts image -->
+                        </div>
+                        <!-- RENT FAQs -->
+                        <div class="col-xs-12 FAQ" id="rent-FAQ">
+                            <h2>Rent FAQs</h2>
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">How does the rental process work?</a></h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingTwo">
+                                        <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Am I renting through Textrade or UML Students?</a></h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="headingThree">
+                                        <h4 class="panel-title"><a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">What happens if I damage my rental?</a></h4>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div class="panel-body">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane form-dialog" id="trade-form-dialog">
+                        <div id="form-explainer">
+                            <h2>Trade Book Request Form</h2>
+                            <p>Fill out the form below with the ISBN numbers for books you have to trade and books you would like to trade for.</p>
+                        </div>
+                        <div class="col-xs-12" id="trade-form">
+                            <form method="post" action="" class="form-horizontal">
+                                {{ trade_form.hidden_tag() }}
+                                <input type="hidden" name="hidden" value="1">
+                                <div class="col-sm-6" id="books-to-trade">
+                                    <h3>Books You Have to Trade</h3>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            {{ trade_form.have_book(placeholder="ISBN", class="form-control") }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" id="books-you-want">
+                                    <h3>Books You Want</h3>
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            {{ trade_form.want_book(placeholder="ISBN", class="form-control") }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if trade_form.errors %}
+                                    {% for error in trade_form.errors %}
+                                        <div class="notification error "><p style="color: red; margin: 0;">{{ error }}</p></div>
+                                    {% endfor %}
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+>>>>>>> book
                         </div><!-- close rent form -->
                         <!-- TRADE FAQs -->
                         <div class="col-xs-12 FAQ" id="trade-FAQ">
