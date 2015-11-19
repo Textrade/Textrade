@@ -569,9 +569,9 @@ def rent_book(book_pk):
 @login_required
 @app.route('/rent/book/delete/<int:book_pk>')
 def delete_book(book_pk):
-    book_onwer = get_user(book_pk)
+    book_owner = get_user(book_pk)
     # Check if the user logged in match the book onwer.
-    if book_onwer.username == get_current_user():
+    if book_owner.username == get_current_user():
         try:
             models.BookRent.get(BookRent.id == book_pk).delete_instance()
         except models.DoesNotExist:
