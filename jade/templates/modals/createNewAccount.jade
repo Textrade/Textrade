@@ -1,0 +1,35 @@
+// Modal Creat Account
+#create-account-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+        h3#myModalLabel.modal-title Register with Textrade
+      .modal-body
+        p Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.
+        br
+        form.form-horizontal
+          .form-group
+            label.col-sm-3.control-label(for='newAccountName') Name
+            .col-sm-9
+              input#newAccountName.form-control(type='text', placeholder='John Smith')
+          .form-group
+            label.col-sm-3.control-label(for='newAccountEmail') UML Email
+            .col-sm-9
+              input#newAccountEmail.form-control(type='email', placeholder='john_smith@student.uml.edu')   
+          .form-group
+            label.col-sm-3.control-label(for='newAccountUsername') Username
+            .col-sm-9
+              input#newAccountUsername.form-control(type='text', placeholder='johnSmith93')
+          .form-group
+            label.col-sm-3.control-label(for='newAccountPassword') Password
+            .col-sm-9
+              input#newAccountPassword.form-control(type='password', placeholder='password')
+          .form-group
+            .col-sm-offset-3.col-sm-9
+              input#newAccountPasswordConfirmation.form-control(type='password', placeholder='confirm password')    
+      // close form container
+      .modal-footer
+        button.btn.btn-default(type='button', data-dismiss='modal') Close
+        button.btn.btn-primary(type='button') Save changes

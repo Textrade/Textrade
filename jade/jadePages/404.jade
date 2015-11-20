@@ -1,0 +1,15 @@
+extends ../templates/default.jade
+
+block content
+  .row.page-header.even
+    .col-xs-12.col-sm-6
+      h1.page-title 404 
+      h2 Page Not Found
+      br
+      p Oh my, how embarassing. We both seem to be a little lost. 
+      br
+      p Let's have a fresh start. 
+      br  
+      a(href='index.html') Return home.
+  .row.fill      
+  include ../templates/modals/createNewAccount.jade

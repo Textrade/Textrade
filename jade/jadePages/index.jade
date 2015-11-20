@@ -1,0 +1,79 @@
+extends ../templates/default.jade
+
+block content
+  #carousel-example-generic.carousel.slide.row(data-ride='carousel')
+    // Indicators
+    ol.carousel-indicators
+      li.active(data-target='#carousel-example-generic', data-slide-to='0')
+      li(data-target='#carousel-example-generic', data-slide-to='1')
+      li(data-target='#carousel-example-generic', data-slide-to='2')
+    // Wrapper for slides
+    .carousel-inner(role='listbox')
+      .item.active
+        img(src='./assets/img/books-colorful-harry-potter.jpg', alt='...')
+        .carousel-caption
+          | ...
+      .item
+        img(src='./assets/img/books-magazines-building-school.jpg', alt='...')
+        .carousel-caption
+          | ...
+      .item
+        img(src='./assets/img/calculator-scientific.jpg', alt='...')
+        .carousel-caption
+          | ...
+      |                 ...
+    // Controls
+    a.left.carousel-control(href='#carousel-example-generic', role='button', data-slide='prev')
+      span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
+      span.sr-only Previous
+    a.right.carousel-control(href='#carousel-example-generic', role='button', data-slide='next')
+      span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
+      span.sr-only Next
+  #quick-about.row
+    .col-xs-12
+      h1 Welcome to Textrade
+      h3 A new way to buy, sell and rent textbooks.
+      br
+      button.btn.btn-default
+        a(href='#', data-toggle='modal', data-target='#create-account-modal') Create An Account Today
+  #quick-blurbs.row.odd
+    //- set of rows that describe benefits and mission of textrade
+    .col-xs-6.quick-img
+      img(src='./assets/img/mission.png')
+    .col-xs-6.quick-text
+      h2 Our Mission
+      p No one like's a bad deal, so we'll never give you one.
+      br
+      p Textrade offers a solution by giving the power back to the students. Why sell your books back to Amazon of the school bookstore at a fraction of the price when you can rent out your books to other UML students or trade them for the books you need.
+      br
+      a.pull-right(href='#', data-toggle='modal', data-target='#create-account-modal') Get Started, Create an Account Today
+      br
+      br
+      a.pull-right(href='our-services.html') Learn More
+  #quick-blurbs.row.even  
+    .col-xs-6.quick-img
+      img(src='./assets/img/trade.png')
+    .col-xs-6.quick-text
+      h2 Benefits of Trade
+      p Books are like apples and oranges, but sometimes you need that orange.
+      br
+      p The only thing worse than buying a book for class that you barely use, is having to buy another one the next semester. This year, use Textrade to trade in the books you don't need for the ones you do without having to spend any more money! 
+      br
+      a.pull-right(href='#', data-toggle='modal', data-target='#create-account-modal') Get Started, Create an Account Today
+      br
+      br
+      a.pull-right(href='our-services.html') Learn More
+  #quick-blurbs.row.odd  
+    .col-xs-6.quick-img
+      img(src='./assets/img/benefits.png')
+    .col-xs-6.quick-text
+      h2 Benefits of Rent
+      p Profit like the kings do! Earn money off the books you own.    
+      br
+      p It's no secret that renting from the Bookstore and Amazon is a rip off. End the cycle! Rent books from UML students with the books you need or rent out your own books and grab your piece of the pie!
+      br
+      a.pull-right(href='#', data-toggle='modal', data-target='#create-account-modal') Get Started, Create an Account Today
+      br
+      br
+      a.pull-right(href='our-services.html') Learn More
+  include ../templates/modals/createNewAccount.jade

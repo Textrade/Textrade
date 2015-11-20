@@ -1,0 +1,15 @@
+doctype
+html(lang="en")
+  include includes/header.jade
+body
+  #page-wrap.container-fluid
+    include includes/nav.jade
+    .row.push-down
+      // sidebar for filters
+      #filterBar.col-xs-12.col-sm-4
+        include includes/filters.jade
+      // contains listings, also has top bar that says what the search terms were and how many results
+      #resultsWrap.col-xs-12.col-sm-8.col-sm-offset-4
+        include includes/results.jade
+        block content
+    include includes/footer.jade

@@ -1,0 +1,18 @@
+extends ../templates/default.jade
+
+block content
+  .row.login-page-row
+    #login-wrap
+      #login-dialog
+        h3 Account Login 
+        form
+          input(type='text', name='user', placeholder='username')
+          input(type='password', name='pass', placeholder='password')
+          button#submit.login.loginmodal-submit.btn.btn-default(type='submit', name='login', value='Login') Login
+          p#login-help
+            a(href='#', data-toggle='modal', data-target='#create-account-modal') Create an Account |
+            span  
+            a(href='#', data-toggle='modal', data-target='#forgot-password-modal') Forgot Password
+  
+  include ../templates/modals/createNewAccount.jade
+  include ../templates/modals/forgotPassword.jade
