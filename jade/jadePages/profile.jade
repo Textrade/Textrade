@@ -1,0 +1,32 @@
+extends ../templates/bookOrPerson.jade
+
+block content
+  .col-xs-12.whiteBlock
+    .col-xs-12 
+      h1 @Username 
+      p.text-success 
+        strong 91% Positive reviews 
+      p Member since Nov. 2015
+    .col-xs-12
+      hr
+      p
+        strong Awards and Badges
+      .col-xs-6
+        img.smallIMG(src='./assets/img/award.png')
+        p.text-muted Excellence in Quality
+      .col-xs-6
+        img.smallIMG(src='./assets/img/positive.png')
+        p.text-muted 90% Positive Reviews
+  .col-xs-12.whiteBlock
+    h2 Available Rentals
+    - for (var x = 0; x < 3; x++)
+      .col-xs-12.col-md-6.col-lg-4
+        hr
+        p 
+          strong Advanced Algebra and Counting
+        p.text-muted ISBN: 123456789
+        p Good Condition
+        p 45$ per semester
+        a(href='#', data-toggle='modal', data-target='#rentRequestConfirmation' style='text-align:right') Rent Now
+  include ../templates/modals/rentRequestConfirmation.jade        
+        

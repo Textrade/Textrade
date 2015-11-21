@@ -1,0 +1,34 @@
+extends ../templates/bookOrPerson.jade
+
+block content
+  .col-xs-12.whiteBlock
+    .col-xs-12
+      h1 Advanced Algebra and Math Things
+      p.text-muted ISBN: 123456789
+      hr
+    .col-xs-12.col-md-6  
+      p.text-success 
+        strong Excellent Condition 
+      p 45$ per semester
+      p Offered by @Username
+    .col-xs-12.col-md-6 
+      a.pull-right(href='#', data-toggle='modal', data-target='#rentRequestConfirmation') Rent Now  
+  .col-xs-12.whiteBlock
+    h2 About @Username
+    .col-xs-12 
+      h3 @Username 
+      p.text-success 
+        strong 91% Positive reviews 
+      p Member since Nov. 2015
+    .col-xs-12
+      hr
+      p
+        strong Awards and Badges
+      .col-xs-6
+        img.smallIMG(src='./assets/img/award.png')
+        p.text-muted Excellence in Quality
+      .col-xs-6
+        img.smallIMG(src='./assets/img/positive.png')
+        p.text-muted 90% Positive Reviews 
+  include ../templates/modals/rentRequestConfirmation.jade        
+        

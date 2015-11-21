@@ -61,7 +61,7 @@ nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse 
 
 .center-all {
   padding: 25px 0;
-  height: 60vh;
+  height: 70vh;
   border-top: solid 1px #F5F5F5;
   border-bottom: solid 1px #F5F5F5;
   text-align: center;
@@ -69,7 +69,6 @@ nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse 
 
 .center-all .col-xs-12 {
   float: none;
-  max-width: 550px;
   margin: auto;
   position: relative;
   top: 50%;
@@ -94,8 +93,8 @@ nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse 
 }
 
 .center-some {
-  padding: 25px;
-  height: 60vh;
+  padding: 50px 25px;
+  min-height: 60vh;
   border-top: solid 1px #F5F5F5;
   border-bottom: solid 1px #F5F5F5;
   text-align: center;
@@ -112,11 +111,11 @@ nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse 
   height: 200px;
 }
 
-.center-some .affect h2 {
+.center-some h2 {
   font-weight: 300;
 }
 
-.center-some .affect p.grow {
+.center-some p.grow {
   font-size: 18px;
   color: #64B5F6;
 }
@@ -233,12 +232,6 @@ nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse 
   text-align: center;
 }
 
-@media (min-width: 786px) {
-  #filterBar {
-    position: fixed;
-  }
-}
-
 #filterBar form .col-xs-12 {
   margin: 2px 0;
 }
@@ -263,7 +256,7 @@ nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse 
   font-weight: bold;
 }
 
-#resultsWrap .listing {
+#resultsWrap .listing, #resultsWrap .whiteBlock {
   background: #fafafa;
   border-top-right-radius: 5px;
   border-top-bottom-radius: 5px;
@@ -294,14 +287,24 @@ nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse 
   padding: 15px 20px;
 }
 
-body {
-  background: #fafafa;
-  color: #212121;
-  font-family: "Roboto", sans-serif;
+.gray {
+  background: #EEEEEE;
 }
 
-body .container-fluid {
-  max-width: 1080px;
+.whiteBlock {
+  background: #fafafa;
+}
+
+.smallIMG {
+  height: 50px;
+  text-align: center;
+  margin: 0 0 10px 0;
+}
+
+body {
+  background: white;
+  color: #212121;
+  font-family: "Roboto", sans-serif;
 }
 
 body .page-header {
@@ -410,6 +413,10 @@ body #quick-blurbs.even {
 
 .even {
   background: white;
+}
+
+.odd {
+  background: #fafafa;
 }
 
 .odd, .even {

@@ -1,0 +1,15 @@
+// Modal: Rent Request Confirmation
+#rentRequestConfirmation.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+        h3#myModalLabel.modal-title Rent Request Confirmation
+      .modal-body
+        p All set! We'll let @Username know that you're intered in renting their book. You'll receive an email when they accept your offer.
+        br
+      // close form container
+      .modal-footer
+        button.btn.btn-default(type='button', data-dismiss='modal') Close
+        button.btn.btn-primary(type='button' data-dismiss='modal') Okay
