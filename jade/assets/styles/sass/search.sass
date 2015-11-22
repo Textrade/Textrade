@@ -1,4 +1,13 @@
 #filterBar
+  background: white
+  color: #424242
+  @media (min-width: 1050px)
+    border-right: 5px solid #E0E0E0
+    height: 100%
+  span
+    color: #424242
+    &:hover
+      color: #616161
   form
     .col-xs-12
       margin: 2px 0
@@ -10,10 +19,12 @@
   background: #EEEEEE
   height: 100%
   #resultsBar
-    color: $Blue
+    background: #EEEEEE
+    color: $lightBlue
     padding-top: 10px
-    background: white
-    font-weight: bold
+    border-bottom: 3px solid #03A9F4
+    border-bottom-left-radius: 2px
+    border-bottom-right-radius: 2px
   .listing, .whiteBlock
     background: #fafafa
     +radiusButLeft(5px)

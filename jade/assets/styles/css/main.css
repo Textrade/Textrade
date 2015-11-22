@@ -32,6 +32,12 @@ nav {
   color: black;
 }
 
+@media (min-width: 786px) {
+  .navbar .container-fluid .navbar-header form, .navbar .container-fluid .navbar-collapse form {
+    float: right;
+  }
+}
+
 #footer {
   background: #1976D2;
   color: white;
@@ -162,7 +168,7 @@ nav {
   -moz-border-radius: 150px;
 }
 
-#login-page-row {
+.login-page-row {
   background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.5)), url(../../img/books-magazines-building-school.jpg) center center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -236,6 +242,26 @@ nav {
   text-align: center;
 }
 
+#filterBar {
+  background: white;
+  color: #424242;
+}
+
+@media (min-width: 1050px) {
+  #filterBar {
+    border-right: 5px solid #E0E0E0;
+    height: 100%;
+  }
+}
+
+#filterBar span {
+  color: #424242;
+}
+
+#filterBar span:hover {
+  color: #616161;
+}
+
 #filterBar form .col-xs-12 {
   margin: 2px 0;
 }
@@ -254,10 +280,12 @@ nav {
 }
 
 #resultsWrap #resultsBar {
-  color: #1976D2;
+  background: #EEEEEE;
+  color: #64B5F6;
   padding-top: 10px;
-  background: white;
-  font-weight: bold;
+  border-bottom: 3px solid #03A9F4;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 #resultsWrap .listing, #resultsWrap .whiteBlock {
@@ -342,7 +370,9 @@ body .page-header {
   height: 300px;
   margin-top: 100px;
   padding-left: 50px;
-  background: white;
+  background: linear-gradient(to right, #1976D2, #0277BD);
+  color: white;
+  border-bottom: 15px solid #64B5F6;
 }
 
 body .page-header .col-xs-12, body .page-header .col-xs-6 {
@@ -361,14 +391,16 @@ body .page-header .col-xs-2 img {
   max-width: 150px;
 }
 
-body .theTeam {
-  background: linear-gradient(to right, #1976D2, #0277BD);
-  color: white;
-  border-bottom: 15px solid #64B5F6;
+@media (max-width: 1050px) {
+  body .push-down {
+    margin-top: 100px;
+  }
 }
 
-body .push-down {
-  margin-top: 100px;
+@media (min-width: 1050px) {
+  body .push-down {
+    margin-top: 100px;
+  }
 }
 
 body #quick-about {
@@ -434,7 +466,7 @@ body #quick-blurbs.even {
 }
 
 .odd {
-  background: #fafafa;
+  background: #f5f5f5;
 }
 
 .odd, .even {

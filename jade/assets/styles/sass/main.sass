@@ -31,7 +31,9 @@ body
     height: 300px
     margin-top: 100px
     padding-left: 50px
-    background: white
+    background: linear-gradient(to right, $Blue, #0277BD)
+    color: white
+    border-bottom: 15px solid $lightBlue
     .col-xs-12, .col-xs-6
       position: relative
       top: 75%
@@ -43,12 +45,11 @@ body
     .col-xs-2
       img
         max-width: 150px
-  .theTeam
-    background: linear-gradient(to right, $Blue, #0277BD)
-    color: white
-    border-bottom: 15px solid $lightBlue
   .push-down
-    margin-top:100px
+    @media (max-width: 1050px)
+      margin-top: 100px
+    @media (min-width: 1050px)
+      margin-top: 100px
   #quick-about
     text-align: center
     padding: 25px 0
@@ -93,7 +94,7 @@ body
 .even
   background: white
 .odd
-  background: #fafafa
+  background: #f5f5f5
 .odd, .even
   padding: 20px 0
 ol

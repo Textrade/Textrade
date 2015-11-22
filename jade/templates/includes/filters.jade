@@ -1,48 +1,56 @@
 // #filterBar.col-xs-12.col-sm-4
-h3.col-xs-12 Filters
-  hr
-// filter 1: Availability Type
-form.col-xs-4.col-sm-12
-  p.filter-type Availabile Via
-  hr
-  .checkbox
-    label.col-xs-12
-      input(type='checkbox')
-      |  Rent
-    label.col-xs-12
-      input(type='checkbox')
-      |  For Sale 
-// filter 2: Condition       
-form.col-xs-4.col-sm-12
-  p.filter-type Condition
-  hr
-  .checkbox
-    label.col-xs-12
-      input(type='checkbox')
-      |  Like New
-    label.col-xs-12
-      input(type='checkbox')
-      |  Good    
-    label.col-xs-12
-      input(type='checkbox')
-      |  Fair   
-    label.col-xs-12
-      input(type='checkbox')
-      |  Poor   
-// filter 3: Price Restrictions
-form.form-inline.col-xs-4.col-sm-12
-  p.filter-type Maximum Price
-  hr
-  .form-group
-    label.sr-only(for='exampleInputAmount') Amount (in dollars)
-    .input-group
-      .input-group-addon $
-      input#exampleInputAmount.form-control(type='text', placeholder='Amount')
-// notifications if a listing is registered that meets this criteria
-form.col-xs-12
-  p.filter-type Subscribe to this Listing
-  hr
-  .checkbox
-    label.col-xs-12
-      input(type='checkbox')
-      |  Notify me via email if a new book is registered with Textrade and matches these filters
+.col-xs-12
+  h3 Filters
+    span.glyphicon.glyphicon-menu-hamburger.collapsed.pull-right(type='button', data-toggle='collapse', data-target='#filter-collapse', aria-expanded='false', aria-hidden='true')
+    hr
+#filter-collapse.collapse 
+  // filter 1: Availability Type
+  form.col-xs-4.col-sm-12
+    p.filter-type Availabile Via
+    hr
+    .checkbox
+      label.col-xs-12
+        input(type='checkbox')
+        |  Rent
+      label.col-xs-12
+        input(type='checkbox')
+        |  For Sale 
+  // filter 2: Condition       
+  form.col-xs-4.col-sm-12
+    p.filter-type Condition
+    hr
+    .checkbox
+      label.col-xs-12
+        input(type='checkbox')
+        |  Like New
+      label.col-xs-12
+        input(type='checkbox')
+        |  Very Good    
+      label.col-xs-12
+        input(type='checkbox')
+        |  Good  
+      label.col-xs-12
+        input(type='checkbox')
+        |  Fair   
+      label.col-xs-12
+        input(type='checkbox')
+        |  Poor   
+  // filter 3: Price Restrictions
+  form.form-inline.col-xs-4.col-sm-12
+    p.filter-type Maximum Price
+    hr
+    .form-group
+      label.sr-only(for='exampleInputAmount') Amount (in dollars)
+      .input-group
+        .input-group-addon $
+        input#exampleInputAmount.form-control(type='text', placeholder='Amount')
+  // notifications if a listing is registered that meets this criteria
+  form.col-xs-12
+    p.filter-type Subscribe to this Listing
+    hr
+    .checkbox
+      label.col-xs-12
+        input(type='checkbox')
+        |  Notify me via email if a new book is registered with Textrade and matches these filters
+        // need to have a script 
+        // if a user checks this box but is not logged in they need to be prompted to login
