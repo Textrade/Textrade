@@ -318,174 +318,163 @@
       </nav>
 
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Rentals</h1>
-                    <h3>Books Available to Rent</h3>
-                    <p style="margin-bottom:50px;">The following books are one you have registered with Textrade as available to rent. They are currently viewable on the Textrade market. You can <strong>add or remove a textbook</strong> using the table below.</p>
-                    <div class="col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-book fa-fw"></i><strong> Books You Have On The Market For Rent</strong>
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-hover table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Date Listed</th>
-                                                        <th>Title</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>10/21/2013</td>
-                                                        <td>Advanced Math in Daily Life</td>
-                                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10/21/2013</td>
-                                                        <td>Science in The Modern Age</td>
-                                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10/21/2013</td>
-                                                        <td>Reading Rainbod 2nd Edition</td>
-                                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
-                                                    </tr>
-                            <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td><button class="btn btn-success" data-toggle="modal" data-target="#addBookForRent">Add Another Book</button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!-- /.table-responsive -->
-                                    </div>
-                                    <!-- /.col-lg-8 (nested) -->
-                                </div>
-                                <!-- /.row -->
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                    </div>
-
-                    <h3>Titles You Are Currently Renting Out</h3>
-                    <p style="margin-bottom:50px;">Below are the books that you are currently renting out to other TextTrade users. <a href="#add">List a new title available to rent</a>.</p>
-                    <div class="col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <i class="fa fa-book fa-fw"></i> Books You're Are Currently <strong>Renting Out</strong>
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered table-hover table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Due Date</th>
-                                                        <th>Title</th>
-                                                        <th>Renting To</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>10/21/2013</td>
-                                                        <td>{Smothing really long that takes a while to say.}</td>
-                                                        <td style="text-align:center;">@username</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10/21/2013</td>
-                                                        <td>3:20 PM</td>
-                                                        <td style="text-align:center;">@username</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>10/21/2013</td>
-                                                        <td>3:03 PM</td>
-                                                        <td style="text-align:center;">@username</td>
-                                                    </tr>
-    												<tr>
-                                                        <td></td>
-                                                        <td><input type="text" class="form-control" id="list-book-for-rent-confirmation" placeholder="Add a book by typing in the ISBN"></td>
-                                                        <td style="text-align:center;"><button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#list-book-for-rent-confirmation"><i class="fa fa-check"></i></button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!-- /.table-responsive -->
-                                    </div>
-                                    <!-- /.col-lg-8 (nested) -->
-                                </div>
-                                <!-- /.row -->
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                    </div>
-
-					          <h3>Titles You Are Currently Renting</h3>
-                    <p style="margin-bottom:50px;">Below are the books that you are currently renting from other TextTrade users. <a href="#add">add a new trade listing</a> below.</p>
-                </div>
-                <!-- /.col-lg-12 -->
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="page-header">Rentals</h1>
             </div>
-            <!-- /.row -->
-            <div class="row">
-                <!-- Books users is currently renting -->
-                <div class="col-xs-12" style="margin-bottom:30px;">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-book fa-fw"></i> Books You <strong>Are Currently Renting</strong>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Due Date</th>
-                                                    <th>Title</th>
-                                                    <th>Renting From</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>10/21/2013</td>
-                                                    <td>{Smothing really long that takes a while to say.}</td>
-                                                    <td>@username</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:20 PM</td>
-                                                    <td>@username</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:03 PM</td>
-                                                    <td>@username</td>
-                                                </tr>
-												<tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.table-responsive -->
-                                </div>
-                                <!-- /.col-lg-8 (nested) -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <h3>Books Available to Rent</h3>
+              <p style="margin-bottom:50px;">The following books are one you have registered with Textrade as available to rent. They are currently viewable on the Textrade market. You can <strong>add or remove a textbook</strong> using the table below.</p>
+              <div class="col-xs-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <i class="fa fa-book fa-fw"></i><strong> Books You Have On The Market For Rent</strong>
                     </div>
+                  <!-- /.panel-heading -->
+                  <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="table-responsive">
+                              <table class="table table-bordered table-hover table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th>Date Listed</th>
+                                      <th>Title</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                        <td>10/21/2013</td>
+                                        <td>Advanced Math in Daily Life</td>
+                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
+                                      </tr>
+                                      <tr>
+                                        <td>10/21/2013</td>
+                                        <td>Science in The Modern Age</td>
+                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
+                                      </tr>
+                                      <tr>
+                                        <td>10/21/2013</td>
+                                        <td>Reading Rainbod 2nd Edition</td>
+                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
+                                      </tr>
+                                      <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><button class="btn btn-success" data-toggle="modal" data-target="#addBookForRent">Add Another Book</button></td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                          </div>
+                          <!-- /.col-lg-12 (nested) -->
+                        </div><!-- /.row -->
+                    </div><!-- /.panel-body -->
                 </div>
-				                    </div>
-            <!-- Modal: Remove Listing Confirmation -->
+              </div>
+            </div><!-- /.col-xs-12 -->
+          </div><!-- /.row -->
+          <div class="row">
+            <div class="col-xs-12">
+              <!-- "Your Rentals" -->
+              <hr class="col-xs-12">
+              <div class="col-xs-12 col-md-6">
+                <h3 class="col-xs-12">Your Rentals</h3>
+                <p style="margin-bottom:50px;" class="col-md-9">You are currently renting the following books from various Textrade renters. To change your payment preferences, or notification settings, please visit <a href="account-settings.html">Account Settings</a>.</p>
+                <div class="panel panel-default col-xs-12">
+                    <div class="panel-heading">
+                      <i class="fa fa-book fa-fw"></i><strong> Books You're Renting</strong>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                  <tr>
+                                    <th>Due Date</th>
+                                    <th>Title</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                      <td>10/21/2013</td>
+                                      <td>The Title of This Book is Very Elaborate</td>
+                                    </tr>
+                                    <tr>
+                                      <td>10/21/2013</td>
+                                      <td>A Lot of Stuff About Math</td>
+                                    </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                          <!-- /.table-responsive -->
+                        </div>
+                          <!-- /.col-lg-8 (nested) -->
+                      </div>
+                      <!-- /.row -->
+                    </div>
+                    <!-- /.panel-body -->
+                  </div>
+              </div>
+              <!-- "Renting Out" -->
+              <div class="col-xs-12 col-md-6">
+                <h3 class="col-xs-12">Renting Out</h3>
+                <p style="margin-bottom:50px;" class="col-md-9">Below are the books that you are currently renting out to other TextTrade users and collecting rent on. To list a new book as available for rent, click <a href="#" data-toggle="modal" data-target="#addBookForRent">here</a>.</p>
+                <div class="panel panel-default col-xs-12">
+                      <div class="panel-heading">
+                        <i class="fa fa-book fa-fw"></i> Books You're Are Currently <strong>Renting Out</strong>
+                      </div>
+                      <!-- /.panel-heading -->
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="table-responsive">
+                              <table class="table table-bordered table-hover table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th>Due Date</th>
+                                      <th>Title</th>
+                                      <th>Renting To</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr>
+                                        <td>10/21/2013</td>
+                                        <td>This is the first book you're renting out</td>
+                                        <td>@username</td>
+                                      </tr>
+                                      <tr>
+                                        <td>10/21/2013</td>
+                                        <td>Material Design Foundations</td>
+                                        <td>@username</td>
+                                      </tr>
+                                      <tr>
+                                        <td>10/21/2013</td>
+                                        <td>This is the Third Book You're Renting Out</td>
+                                        <td>@username</td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                          </div>
+                            <!-- /.col-lg-8 (nested) -->
+                        </div>
+                        <!-- /.row -->
+                      </div>
+                      <!-- /.panel-body -->
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- Modal: Remove Listing Confirmation -->
             <div class="modal fade" id="removeRentalListing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">

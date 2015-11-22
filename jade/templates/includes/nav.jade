@@ -1,4 +1,4 @@
-nav.navbar.navbar-default.navbar-fixed-top.container-fluid.row
+nav.navbar.navbar-default.navbar-fixed-top.container-fluid.col-xs-12
   .container-fluid
     // Brand and toggle get grouped for better mobile display
     .navbar-header
@@ -22,11 +22,11 @@ nav.navbar.navbar-default.navbar-fixed-top.container-fluid.row
         li
           a(href='donate.html') Dashboard
         li
-          a(href='login.html', style='text-align:right') Login  
+          a(href='login.html') Login  
           // should change to "username" and "logout" after successful login
-      form.navbar-form.pull-right(role='search')
+      form.navbar-form(role='search')
         .form-group
-          input.form-control(type='text', placeholder='Search Book Titles by Name or ISBN', style='width:350px;margin-right:25px')
+          input.form-control(type='text', placeholder='Search Book Titles by Name or ISBN', style='width:350px')
         button.btn.btn-default(type='submit', aria-label='Left Align')
           span.glyphicon.glyphicon-search(aria-hidden='true')
 

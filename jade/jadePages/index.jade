@@ -1,41 +1,14 @@
 extends ../templates/default.jade
 
 block content
-  #carousel-example-generic.carousel.slide.row(data-ride='carousel')
-    // Indicators
-    ol.carousel-indicators
-      li.active(data-target='#carousel-example-generic', data-slide-to='0')
-      li(data-target='#carousel-example-generic', data-slide-to='1')
-      li(data-target='#carousel-example-generic', data-slide-to='2')
-    // Wrapper for slides
-    .carousel-inner(role='listbox')
-      .item.active
-        img(src='./assets/img/books-colorful-harry-potter.jpg', alt='...')
-        .carousel-caption
-          | ...
-      .item
-        img(src='./assets/img/books-magazines-building-school.jpg', alt='...')
-        .carousel-caption
-          | ...
-      .item
-        img(src='./assets/img/calculator-scientific.jpg', alt='...')
-        .carousel-caption
-          | ...
-      |                 ...
-    // Controls
-    a.left.carousel-control(href='#carousel-example-generic', role='button', data-slide='prev')
-      span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
-      span.sr-only Previous
-    a.right.carousel-control(href='#carousel-example-generic', role='button', data-slide='next')
-      span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
-      span.sr-only Next
-  #quick-about.row
-    .col-xs-12
-      h1 Welcome to Textrade this
+  .row.push-down
+    .jumbo
+      img(src='./assets/img/logo.png') 
       h3 A new way to buy, sell and rent textbooks.
       br
       button.btn.btn-default
         a(href='#', data-toggle='modal', data-target='#create-account-modal') Create An Account Today
+      
   #quick-blurbs.row.odd
     //- set of rows that describe benefits and mission of textrade
     .col-xs-6.quick-img.col-md-4.col-md-offset-2

@@ -5,26 +5,30 @@ nav {
   margin-bottom: 150px;
 }
 
-nav .container-fluid {
+.navbar {
+  background: white;
+}
+
+.navbar .container-fluid {
   background: white;
   max-width: 1080px;
 }
 
-nav .container-fluid .navbar-header, nav .container-fluid .navbar-collapse {
+.navbar .container-fluid .navbar-header, .navbar .container-fluid .navbar-collapse {
   background: white;
 }
 
-nav .container-fluid .navbar-header button, nav .container-fluid .navbar-header a, nav .container-fluid .navbar-collapse button, nav .container-fluid .navbar-collapse a {
+.navbar .container-fluid .navbar-header button, .navbar .container-fluid .navbar-header a, .navbar .container-fluid .navbar-collapse button, .navbar .container-fluid .navbar-collapse a {
   color: black;
 }
 
 @media (min-width: 786px) {
-  nav .container-fluid .navbar-header ul, nav .container-fluid .navbar-collapse ul {
+  .navbar .container-fluid .navbar-header ul, .navbar .container-fluid .navbar-collapse ul {
     margin-left: 50px;
   }
 }
 
-nav .container-fluid .navbar-header ul a, nav .container-fluid .navbar-collapse ul a {
+.navbar .container-fluid .navbar-header ul a, .navbar .container-fluid .navbar-collapse ul a {
   color: black;
 }
 
@@ -307,6 +311,33 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+body .jumbo {
+  margin-top: 100px;
+  height: auto;
+  text-align: center;
+  padding-bottom: 75px;
+}
+
+body .jumbo img {
+  height: 300px;
+  margin: 0;
+}
+
+body .jumbo h3 {
+  font-weight: 300;
+  margin-top: 0;
+}
+
+body .jumbo button {
+  background: #2196F3;
+  border: none;
+  margin-bottom: 50px;
+}
+
+body .jumbo button a {
+  color: white;
+}
+
 body .page-header {
   height: 300px;
   margin-top: 100px;
@@ -353,19 +384,6 @@ body #quick-about .col-xs-12 {
   -ms-transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
-}
-
-body #quick-about .col-xs-12 h1, body #quick-about .col-xs-12 h3 {
-  font-weight: 300;
-}
-
-body #quick-about .col-xs-12 button {
-  background: #2196F3;
-  border: none;
-}
-
-body #quick-about .col-xs-12 button a {
-  color: white;
 }
 
 body #quick-blurbs {
