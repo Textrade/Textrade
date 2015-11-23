@@ -1,21 +1,23 @@
 extends ../templates/default.jade
 
 block content
-  .row.page-header
-    .col-xs-6.col-sm-4
-      h1.page-title Our Services
-  .center-all.row.odd  
-    .col-xs-12.col-sm-6.col-sm-offset-3
-      img(src='./assets/img/trade.png')
-      h2 Trade Service
-      p.gro Comparing books is like comparing apples and oranges, but sometimes you need that orange.
-      br
-      p(style='text-align:left') The only thing worse than buying a book for class that you barely use, is having to buy another one the next semester. This year, use Textrade to trade in the books you don't need for the ones you do without having to spend any more money! 
-  .center-all.row.even  
-    .col-xs-12.col-sm-6.col-sm-offset-3
-      img(src='./assets/img/benefits.png')
-      h2 Rent Service
-      p.grow Profit like the kings and tycoons of Amazon do! Earn money off the books you own. 
-      br
-      p(style='text-align:left') It's no secret that renting from the Bookstore and Amazon is a rip off. End the cycle! Rent books from UML students with the books you need or rent out your own books and grab your piece of the pie!
-  include ../templates/modals/createNewAccount.jade
+	.row.page-header
+		.col-xs-6.col-sm-4
+			h1.page-title Our Services
+	a(id='trade')
+	.center-all.row.odd
+		.col-xs-12.col-sm-6.col-sm-offset-3.col-md-4.col-md-offset-4
+			img(src='./assets/img/trade.png')
+			h2 Trade Service
+			p.grow Comparing books is like comparing apples and oranges, but sometimes you need that orange.
+			br
+			p(style='text-align:left') The only thing worse than buying a book for class that you barely use, is having to buy another one the next semester. This year, use Textrade to trade in the books you don't need for the ones you do without having to spend any more money!
+	a(id='rent')
+	.center-all.row.even
+		.col-xs-12.col-sm-4.col-sm-offset-3.col-md-4.col-md-offset-4
+			img(src='./assets/img/benefits.png')
+			h2 Rent Service
+			p.grow Profit like the kings and tycoons of Amazon do! Earn money off the books you own.
+			br
+			p(style='text-align:left') It's no secret that renting from the companies like Amazon is a rip off. End the cycle! Rent books from UML students with the books you need or rent out your own books and grab your piece of the pie!
+	include ../templates/modals/createNewAccount.jade
