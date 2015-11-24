@@ -1,0 +1,33 @@
+#filterBar
+  background: white
+  color: #424242
+  @media (min-width: 1050px)
+    border-right: 5px solid #E0E0E0
+    height: 100%
+  span
+    color: #424242
+    &:hover
+      color: #616161
+  form
+    .col-xs-12
+      margin: 2px 0
+    hr
+      margin: 0
+    .filter-type
+      font-weight: bolder
+#resultsWrap
+  background: #EEEEEE
+  height: 100%
+  #resultsBar
+    background: #EEEEEE
+    color: $lightBlue
+    padding-top: 10px
+    border-bottom: 3px solid #03A9F4
+    border-bottom-left-radius: 2px
+    border-bottom-right-radius: 2px
+  .listing, .whiteBlock
+    background: #fafafa
+    +radiusButLeft(5px)
+    margin: 10px 0
+    border-left: solid 5px $Blue
+    +listingShadow

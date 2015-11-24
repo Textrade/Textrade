@@ -1,123 +1,155 @@
-{% extends 'default/base.html' %}
-
-{% block content %}
-        {% with messeages = get_flashed_messages(with_categories=True) %}
-                    {% if messeages %}
-                        {% for msg in messeages %}
-                            <p>{{ msg[1] }}</p>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                </ol>
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img src="/static/img/books-colorful-harry-potter.jpg" alt="...">
-                    <div class="carousel-caption">
-                        ...
-                    </div>
-                </div>
-                <div class="item">
-                    <img src="/static/img/books-magazines-building-school.jpg" alt="...">
-                    <div class="carousel-caption">
-                        ...
-                    </div>
-                </div>
-                 <div class="item">
-                    <img src="/static/img/calculator-scientific.jpg" alt="...">
-                    <div class="carousel-caption">
-                        ...
-                    </div>
-                </div>
-                ...
-            </div>
-            <!-- Controls -->
-            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Textrade</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic" rel="stylesheet" type="text/css">
+    <!-- Latest compiled and minified CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./assets/styles/css/main.css">
+  </head>
+</html>
+<body>
+  <div id="page-wrap" class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-top container-fluid col-xs-12">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display-->
+        <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="index.html" class="navbar-brand">Textrade</a>
         </div>
-        <div class="row" id="quick-about">
-            <div class="col-xs-12">
-                <h1>Welcome to Textrade</h1>
-                <h3>A new way to buy, sell, and rent textbooks.</h3>
-                <h4 id="incentive">Get started today</h4>
-                <button class="btn btn-default"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create Account</a></button>
-                <!-- Modal For Account Creation-->
-                <div class="modal fade" id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h3 class="modal-title" id="myModalLabel">Register</h3>
-                            </div>
-                            <div class="modal-body form-horizontal" id="register-form">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Name</label>
-                                        <input type="firstName" class="form-control" id="firstName" placeholder="First">
-                                        <input type="lastName" class="form-control" id="lastName" placeholder="Last">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">UML Student Email</label>
-                                        <input type="email" class="form-control" id="email" placeholder="Email">
-                                        <p class="note">*You must have a UML email to register with Textrade</p>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">Username</label>
-                                        <input type="username" class="form-control" id="username" placeholder="Username">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputPassword1">Password</label>
-                                        <input type="password-create" class="form-control" id="password-create" placeholder="Password">
-                                        <input type="password-confirm" class="form-control" id="password-confirm" placeholder="Confirm Password">
-                                    </div>
-                                </form>
-                            </div><!-- close form container -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Collect the nav links, forms, and other content for toggling-->
+        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="search.html">Marketplace</a></li>
+            <li><a href="our-services.html">Our Services</a></li>
+            <li><a href="the-team.html">The Team</a></li>
+            <li><a href="faqs.html">FAQs</a></li>
+            <li><a href="dashboard/index.html">Dashboard</a></li>
+            <li><a href="login.html">Login</a>
+              <!-- should change to "username" and "logout" after successful login-->
+            </li>
+          </ul>
+          <form role="search" name="search" class="navbar-form">
+            <div class="form-group">
+              <input type="text" placeholder="Search Book Titles by Name or ISBN" style="width:300px" class="form-control">
             </div>
+            <button type="submit" aria-label="Left Align" class="btn btn-default"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button>
+          </form>
         </div>
-        <div class="row" id="quick-blurbs">
-            <!-- Small table row that explains the benifits and the mission of textrade -->
-            <div class="blurb col-md-4 col-xs-12">
-                <img src="/static/img/treasure.svg">
-                <div class="blurb-text">
-                    <h3>Benefits of Trade</h3>
-                    <p>Books are like apples and oranges, but sometimes you need that orange.</p>
+        <!-- /.navbar-collapse-->
+      </div>
+      <!-- /.container-fluid-->
+    </nav>
+    <!-- - write content here-->
+    <div class="row push-down">
+      <div class="jumbo"><img src="./assets/img/logo.png">
+        <h3>A new way to buy, sell and rent textbooks.</h3><br>
+        <button class="btn btn-default"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create An Account Today</a></button>
+      </div>
+    </div>
+    <div id="quick-blurbs" class="row odd">
+      <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="./assets/img/mission.png"></div>
+      <div class="col-xs-6 quick-text col-md-4">
+        <h2>Our Mission</h2>
+        <p>No one like's a bad deal, so we'll never give you one.</p><br>
+        <p>Textrade offers a solution by giving the power back to the students. Why sell your books back to Amazon of the school bookstore at a fraction of the price when you can rent out your books to other UML students or trade them for the books you need.</p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
+      </div>
+    </div>
+    <div id="quick-blurbs" class="row even"> 
+      <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="./assets/img/trade.png"></div>
+      <div class="col-xs-6 quick-text col-md-4">
+        <h2>Benefits of Trade</h2>
+        <p>Books are like apples and oranges, but sometimes you need that orange.</p><br>
+        <p>The only thing worse than buying a book for class that you barely use, is having to buy another one the next semester. This year, use Textrade to trade in the books you don't need for the ones you do without having to spend any more money! </p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
+      </div>
+    </div>
+    <div id="quick-blurbs" class="row odd"> 
+      <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="./assets/img/benefits.png"></div>
+      <div class="col-xs-6 quick-text col-md-4">
+        <h2>Benefits of Rent</h2>
+        <p>Profit like the kings do! Earn money off the books you own.    </p><br>
+        <p>It's no secret that renting from the Bookstore and Amazon is a rip off. End the cycle! Rent books from UML students with the books you need or rent out your own books and grab your piece of the pie!</p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
+      </div>
+    </div>
+    <!-- Modal Creat Account-->
+    <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
+      <div role="document" class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+            <h3 id="myModalLabel" class="modal-title">Register with Textrade</h3>
+          </div>
+          <div class="modal-body">
+            <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="newAccountName" class="col-sm-3 control-label">Name</label>
+                <div class="col-sm-9">
+                  <input id="newAccountName" type="text" placeholder="John Smith" class="form-control">
                 </div>
-                <button>Learn More</button>
-            </div>
-            <div class="blurb col-md-4 col-xs-12">
-                <img src="/static/img/map.svg">
-                <div class="blurb-text">
-                    <h3>Our Mission</h3>
-                    <p>No one like's a bad deal, so we'll never give you one</p>
+              </div>
+              <div class="form-group">
+                <label for="newAccountEmail" class="col-sm-3 control-label">UML Email</label>
+                <div class="col-sm-9">
+                  <input id="newAccountEmail" type="email" placeholder="john_smith@student.uml.edu" class="form-control">
                 </div>
-                <button>Learn More</button>
-            </div>
-            <div class="blurb col-md-4 col-xs-12">
-                <img src="/static/img/treasure.svg">
-                <div class="blurb-text">
-                    <h3>Benefits of Rent</h3>
-                    <p>Profit like the kings do! Earn money off the books you own.</p>
+              </div>
+              <div class="form-group">
+                <label for="newAccountUsername" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-9">
+                  <input id="newAccountUsername" type="text" placeholder="johnSmith93" class="form-control">
                 </div>
-                <button>Learn More</button>
-            </div>
+              </div>
+              <div class="form-group">
+                <label for="newAccountPassword" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-9">
+                  <input id="newAccountPassword" type="password" placeholder="password" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <input id="newAccountPasswordConfirmation" type="password" placeholder="confirm password" class="form-control">
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- close form container-->
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+            <button type="button" class="btn btn-primary">Submit</button>
+          </div>
         </div>
-{% endblock %}
+      </div>
+    </div>
+    <div id="footer" class="row">
+      <footer class="col-xs-12 col-sm-6 col-sm-offset-3">
+        <h2>Textrade</h2>
+        <h4>An Educated Book Buying Market</h4>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="the-team.html" style="color:white">The Team</a></li>
+          <li><a href="contact.html" style="color:white">Contact</a></li>
+        </ul>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="our-services.html" style="color:white">Services</a></li>
+          <li><a href="our-services.html#rent" style="color:white">Rent</a></li>
+          <li><a href="our-services.html#trade" style="color:white">Trade</a></li>
+        </ul>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="search.html" style="color:white">Marketplace</a></li>
+        </ul>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="login.html" style="color:white">Login</a></li>
+        </ul>
+      </footer>
+      <p id="copyright" class="col-xs-12">Copyright (c) 2015 Textrade All Rights Reserved.</p>
+    </div>
+    <!-- close .container-fluid-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins)-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed-->
+    <!-- Latest compiled and minified JavaScript-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </div>
+</body>
