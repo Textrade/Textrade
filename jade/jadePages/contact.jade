@@ -1,0 +1,54 @@
+extends ../templates/default.jade
+block content
+  .row.page-header.theTeam
+    .col-xs-12.col-sm-6
+      h1.page-title Contact
+  .row.odd
+    .col-xs-12.contactContainer
+      img.contactImg(src='./assets/img/logoBW.png')
+  .row.even
+    .col-xs-12.col-md-4.col-md-offset-2(style='text-align:left')
+      h3(style='color:#1976D2') Email
+      br
+      p
+        strong General Inquiries
+      p contact@Textrade.com
+      hr
+      p
+        strong Account Issues
+      p accounts@Textrade.com
+      hr
+      h3(style='color:#1976D2') Textrade Trucks
+      br
+      p
+        strong North Truck
+      p 123 Blueberry Lane
+      p Gummydrop, Diabetes 01234
+      hr
+      p
+        strong South Truck
+      p 123 Hangover Lane
+      p Lotsabooze, Bad 01212
+      hr
+    .col-xs-12.col-md-6(style='text-align:left')
+      h2(style='color:#1976D2') Drop Us A Line
+      .col-xs-12
+        form.form-horizontal#contactForm(style='max-width:550px')
+          .form-group.col-xs-12
+            label Name
+            input.form-control(type='text',placeholder='John Smith', name='contactName')
+          .form-group.col-xs-12
+            label Email
+            input.form-control(type='email',placeholder='johnsmith@example.com', name='contactEmail')
+          .form-group.col-xs-12
+            label Subject
+            select.form-control
+              option Option 1
+              option Option 1
+              option Option 1
+          .form-group.col-xs-12
+            label Message
+            textarea.form-control(type='text',placeholder='Your message here', name='contactMessage', rows='6')
+          .form-group.col-xs-12
+            button.btn.btn-primary.pull-right(type='button') Submit
+  include ../templates/modals/createNewAccount.jade

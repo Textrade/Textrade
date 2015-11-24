@@ -329,228 +329,38 @@
 
         <div id="page-wrapper">
           <div class="row">
-            <div class="col-lg-12">
-              <h1 class="page-header">Rentals</h1>
+            <h1 class="page-header">Contact Us</h1>
+            <h3>Experience a problem? Let us know.</h3>
+            <p>Fill out the form below.</p>
+            <div class="col-xs-12">
+              <form id="contactForm" style="max-width:550px" class="form-horizontal">
+                <div class="form-group col-xs-12">
+                  <label>Name</label>
+                  <input type="text" placeholder="John Smith" name="contactName" class="form-control">
+                </div>
+                <div class="form-group col-xs-12">
+                  <label>Email</label>
+                  <input type="email" placeholder="johnsmith@example.com" name="contactEmail" class="form-control">
+                </div>
+                <div class="form-group col-xs-12">
+                  <label>Subject</label>
+                  <select class="form-control">
+                    <option>Option 1</option>
+                    <option>Option 1</option>
+                    <option>Option 1</option>
+                  </select>
+                </div>
+                <div class="form-group col-xs-12">
+                  <label>Message</label>
+                  <textarea type="text" placeholder="Your message here" name="contactMessage" rows="6" class="form-control"></textarea>
+                </div>
+                <div class="form-group col-xs-12">
+                  <button type="button" class="btn btn-primary pull-right">Submit</button>
+                </div>
+              </form>
+            </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-xs-12">
-              <h3>Books Available to Rent</h3>
-              <p style="margin-bottom:50px;">The following books are one you have registered with Textrade as available to rent. They are currently viewable on the Textrade market.<strong> You can add or remove a textbook using the table below.</strong></p>
-              <div class="col-xs-12">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                      <strong>Books You've Listed On The Market For Rent</strong>
-                    </div>
-                  <!-- /.panel-heading -->
-                  <div class="panel-body">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <div class="table-responsive">
-                              <table class="table table-bordered table-hover table-striped">
-                                  <thead>
-                                    <tr>
-                                      <th>Date Listed</th>
-                                      <th>Title</th>
-                                      <th>Action</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr>
-                                        <td>10/21/2013</td>
-                                        <td>Advanced Math in Daily Life</td>
-                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
-                                      </tr>
-                                      <tr>
-                                        <td>10/21/2013</td>
-                                        <td>Science in The Modern Age</td>
-                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
-                                      </tr>
-                                      <tr>
-                                        <td>10/21/2013</td>
-                                        <td>Reading Rainbod 2nd Edition</td>
-                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#removeRentalListing">Remove</button></td>
-                                      </tr>
-                                      <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td><button class="btn btn-success" data-toggle="modal" data-target="#addBookForRent">Add Another Book</button></td>
-                                      </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                          </div>
-                          <!-- /.col-lg-12 (nested) -->
-                        </div><!-- /.row -->
-                    </div><!-- /.panel-body -->
-                </div>
-              </div>
-            </div><!-- /.col-xs-12 -->
-          </div><!-- /.row -->
-          <div class="row">
-            <div class="col-xs-12">
-              <!-- "Your Rentals" -->
-              <hr class="col-xs-12">
-              <div class="col-xs-12 col-md-6">
-                <h3 class="col-xs-12">Your Rentals</h3>
-                <p style="margin-bottom:50px;">You are currently renting the following books from various Textrade renters. To change your payment preferences, or notification settings, please visit <a href="account-settings.html">Account Settings</a>.</p>
-                <div class="panel panel-default col-xs-12">
-                    <div class="panel-heading">
-                      <strong> Books You're Renting</strong>
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
-                                <thead>
-                                  <tr>
-                                    <th>Due Date</th>
-                                    <th>Title</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                      <td>10/21/2013</td>
-                                      <td>The Title of This Book is Very Elaborate</td>
-                                    </tr>
-                                    <tr>
-                                      <td>10/21/2013</td>
-                                      <td>A Lot of Stuff About Math</td>
-                                    </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-                          <!-- /.table-responsive -->
-                        </div>
-                          <!-- /.col-lg-8 (nested) -->
-                      </div>
-                      <!-- /.row -->
-                    </div>
-                    <!-- /.panel-body -->
-                  </div>
-              </div>
-              <!-- "Renting Out" -->
-              <div class="col-xs-12 col-md-6">
-                <h3 class="col-xs-12">Renting Out</h3>
-                <p style="margin-bottom:50px;">Below are the books that you are currently renting out to other TextTrade users and collecting rent on. To list a new book as available for rent, click <a href="#" data-toggle="modal" data-target="#addBookForRent">here</a>.</p>
-                <div class="panel panel-default col-xs-12">
-                      <div class="panel-heading">
-                        <i class="fa fa-book fa-fw"></i> Books You're Are Currently <strong>Renting Out</strong>
-                      </div>
-                      <!-- /.panel-heading -->
-                      <div class="panel-body">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <div class="table-responsive">
-                              <table class="table table-bordered table-hover table-striped">
-                                  <thead>
-                                    <tr>
-                                      <th>Due Date</th>
-                                      <th>Title</th>
-                                      <th>Renting To</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr>
-                                        <td>10/21/2013</td>
-                                        <td>This is the first book you're renting out</td>
-                                        <td>@username</td>
-                                      </tr>
-                                      <tr>
-                                        <td>10/21/2013</td>
-                                        <td>Material Design Foundations</td>
-                                        <td>@username</td>
-                                      </tr>
-                                      <tr>
-                                        <td>10/21/2013</td>
-                                        <td>This is the Third Book You're Renting Out</td>
-                                        <td>@username</td>
-                                      </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                          </div>
-                            <!-- /.col-lg-8 (nested) -->
-                        </div>
-                        <!-- /.row -->
-                      </div>
-                      <!-- /.panel-body -->
-                    </div>
-              </div>
-            </div>
-          </div>
-        </div>
-          <!-- Modal: Remove Listing Confirmation -->
-            <div class="modal fade" id="removeRentalListing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h3 class="modal-title" id="myModalLabel">Confirmation</h3>
-                        </div>
-                        <p style="padding: 20px;">Are you sure you want to remove {BOOK TITLE} from your available books for trade?</p>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Remove Listing</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /#removal-listing-confirmation-modal -->
-            <!-- Modal: Add Listing for Rent Confirmation -->
-            <div class="modal fade" id="addBookForRent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h3 class="modal-title" id="myModalLabel">Request for New Rental Listing</h3>
-                        </div>
-                        <div class="modal-body">
-                          <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-4 control-label">Book Information</label>
-                                <div class="col-sm-8 fix-margin">
-                                    <input type="text" class="form-control" id="book-title" placeholder="Book Title (Edition)">
-                                    <input type="text" class="form-control" id="bookISBN" placeholder="ISBN">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-4 control-label">Book Condition</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control">
-                                        <option>Like New</option>
-                                        <option>Very Good - Minimal wear on cover, otherwise perfect</option>
-                                        <option>Good - Some wear on the cover, spine, and pages</option>
-                                        <option>Fair - Noticeable wear on the cover, spine, and pages</option>
-                                        <option>Poor - Clear evidence of heavy use</option>
-                                    </select>
-                                    <textarea class="form-control fix-margin" rows="3" placeholder="Book condition comments (if any)"></textarea>
-                                    <label for="inputEmail3" class="col-sm-9 control-label">Are there markings inside the book? (Notes in margins etc.?)</label>
-                                    <div class="col-sm-3">
-                                        <div class="checkbox">
-                                            <label><input type="checkbox" value="">Yes</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <strong class="col-sm-4 text-right"><br>Shipping Instructions</strong>
-                                <p class="col-sm-8 col-sm-offset-2">Drop off your textbook at your nearest Textrade truck in the next 5 days to process your book and place it on the Textrade market. If your book is not dropped off within 5 days, the rental request will be removed.<br><br><strong>Textrade trucks are located at North and South campus library Monday - Friday from 11am - 5pm.</strong></p>
-                            </div>
-
-                        </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Send Request for Listing</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
         <!-- /#page-wrapper -->
 
