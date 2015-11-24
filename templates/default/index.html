@@ -1,135 +1,138 @@
-<div id="page-wrap" class="container-fluid">
-    <nav class="navbar navbar-default navbar-fixed-top container-fluid col-xs-12">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display-->
-        <div class="navbar-header">
-          <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="index.html" class="navbar-brand">Textrade</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling-->
-        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="search.html">Marketplace</a></li>
-            <li><a href="our-services.html">Our Services</a></li>
-            <li><a href="the-team.html">The Team</a></li>
-            <li><a href="faqs.html">FAQs</a></li>
-            <li><a href="dashboard/index.html">Dashboard</a></li>
-            <li><a href="login.html">Login</a>
-              <!-- should change to "username" and "logout" after successful login-->
-            </li>
-          </ul>
-          <form role="search" name="search" class="navbar-form">
-            <div class="form-group">
-              <input type="text" placeholder="Search Book Titles by Name or ISBN" style="width:300px" class="form-control">
+{% extends 'default/base.html' %}
+{% block content %}
+    <div id="page-wrap" class="container-fluid">
+        <nav class="navbar navbar-default navbar-fixed-top container-fluid col-xs-12">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display-->
+            <div class="navbar-header">
+              <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="index.html" class="navbar-brand">Textrade</a>
             </div>
-            <button type="submit" aria-label="Left Align" class="btn btn-default"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button>
-          </form>
-        </div>
-        <!-- /.navbar-collapse-->
-      </div>
-      <!-- /.container-fluid-->
-    </nav>
-    <!-- - write content here-->
-    <div class="row push-down">
-      <div class="jumbo"><img src="./assets/img/logo.png">
-        <h3>A new way to buy, sell and rent textbooks.</h3><br>
-        <button class="btn btn-default"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create An Account Today</a></button>
-      </div>
-    </div>
-    <div id="quick-blurbs" class="row odd">
-      <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="./assets/img/mission.png"></div>
-      <div class="col-xs-6 quick-text col-md-4">
-        <h2>Our Mission</h2>
-        <p>No one like's a bad deal, so we'll never give you one.</p><br>
-        <p>Textrade offers a solution by giving the power back to the students. Why sell your books back to Amazon of the school bookstore at a fraction of the price when you can rent out your books to other UML students or trade them for the books you need.</p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
-      </div>
-    </div>
-    <div id="quick-blurbs" class="row even">
-      <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="./assets/img/trade.png"></div>
-      <div class="col-xs-6 quick-text col-md-4">
-        <h2>Benefits of Trade</h2>
-        <p>Books are like apples and oranges, but sometimes you need that orange.</p><br>
-        <p>The only thing worse than buying a book for class that you barely use, is having to buy another one the next semester. This year, use Textrade to trade in the books you don't need for the ones you do without having to spend any more money! </p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
-      </div>
-    </div>
-    <div id="quick-blurbs" class="row odd">
-      <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="./assets/img/benefits.png"></div>
-      <div class="col-xs-6 quick-text col-md-4">
-        <h2>Benefits of Rent</h2>
-        <p>Profit like the kings do! Earn money off the books you own.    </p><br>
-        <p>It's no secret that renting from the Bookstore and Amazon is a rip off. End the cycle! Rent books from UML students with the books you need or rent out your own books and grab your piece of the pie!</p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
-      </div>
-    </div>
-    <!-- Modal Creat Account-->
-    <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
-      <div role="document" class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
-            <h3 id="myModalLabel" class="modal-title">Register with Textrade</h3>
+            <!-- Collect the nav links, forms, and other content for toggling-->
+            <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="search.html">Marketplace</a></li>
+                <li><a href="our-services.html">Our Services</a></li>
+                <li><a href="the-team.html">The Team</a></li>
+                <li><a href="faqs.html">FAQs</a></li>
+                <li><a href="dashboard/index.html">Dashboard</a></li>
+                <li><a href="login.html">Login</a>
+                  <!-- should change to "username" and "logout" after successful login-->
+                </li>
+              </ul>
+              <form role="search" name="search" class="navbar-form">
+                <div class="form-group">
+                  <input type="text" placeholder="Search Book Titles by Name or ISBN" style="width:300px" class="form-control">
+                </div>
+                <button type="submit" aria-label="Left Align" class="btn btn-default"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button>
+              </form>
+            </div>
+            <!-- /.navbar-collapse-->
           </div>
-          <div class="modal-body">
-            <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label for="newAccountName" class="col-sm-3 control-label">Name</label>
-                <div class="col-sm-9">
-                  <input id="newAccountName" type="text" placeholder="John Smith" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="newAccountEmail" class="col-sm-3 control-label">UML Email</label>
-                <div class="col-sm-9">
-                  <input id="newAccountEmail" type="email" placeholder="john_smith@student.uml.edu" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="newAccountUsername" class="col-sm-3 control-label">Username</label>
-                <div class="col-sm-9">
-                  <input id="newAccountUsername" type="text" placeholder="johnSmith93" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="newAccountPassword" class="col-sm-3 control-label">Password</label>
-                <div class="col-sm-9">
-                  <input id="newAccountPassword" type="password" placeholder="password" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                  <input id="newAccountPasswordConfirmation" type="password" placeholder="confirm password" class="form-control">
-                </div>
-              </div>
-            </form>
-          </div>
-          <!-- close form container-->
-          <div class="modal-footer">
-            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-            <button type="button" class="btn btn-primary">Submit</button>
+          <!-- /.container-fluid-->
+        </nav>
+        <!-- - write content here-->
+        <div class="row push-down">
+          <div class="jumbo"><img src="/static/img/logo.png">
+            <h3>A new way to buy, sell and rent textbooks.</h3><br>
+            <button class="btn btn-default"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create An Account Today</a></button>
           </div>
         </div>
+        <div id="quick-blurbs" class="row odd">
+          <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="/static/img/mission.png"></div>
+          <div class="col-xs-6 quick-text col-md-4">
+            <h2>Our Mission</h2>
+            <p>No one like's a bad deal, so we'll never give you one.</p><br>
+            <p>Textrade offers a solution by giving the power back to the students. Why sell your books back to Amazon of the school bookstore at a fraction of the price when you can rent out your books to other UML students or trade them for the books you need.</p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
+          </div>
+        </div>
+        <div id="quick-blurbs" class="row even">
+          <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="/static/img/trade.png"></div>
+          <div class="col-xs-6 quick-text col-md-4">
+            <h2>Benefits of Trade</h2>
+            <p>Books are like apples and oranges, but sometimes you need that orange.</p><br>
+            <p>The only thing worse than buying a book for class that you barely use, is having to buy another one the next semester. This year, use Textrade to trade in the books you don't need for the ones you do without having to spend any more money! </p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
+          </div>
+        </div>
+        <div id="quick-blurbs" class="row odd">
+          <div class="col-xs-6 quick-img col-md-4 col-md-offset-2"><img src="/static/img/benefits.png"></div>
+          <div class="col-xs-6 quick-text col-md-4">
+            <h2>Benefits of Rent</h2>
+            <p>Profit like the kings do! Earn money off the books you own.    </p><br>
+            <p>It's no secret that renting from the Bookstore and Amazon is a rip off. End the cycle! Rent books from UML students with the books you need or rent out your own books and grab your piece of the pie!</p><br><a href="#" data-toggle="modal" data-target="#create-account-modal" class="pull-right">Get Started, Create an Account Today</a><br><br><a href="our-services.html" class="pull-right">Learn More</a>
+          </div>
+        </div>
+        <!-- Modal Creat Account-->
+        <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
+          <div role="document" class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                <h3 id="myModalLabel" class="modal-title">Register with Textrade</h3>
+              </div>
+              <div class="modal-body">
+                <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label for="newAccountName" class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-9">
+                      <input id="newAccountName" type="text" placeholder="John Smith" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="newAccountEmail" class="col-sm-3 control-label">UML Email</label>
+                    <div class="col-sm-9">
+                      <input id="newAccountEmail" type="email" placeholder="john_smith@student.uml.edu" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="newAccountUsername" class="col-sm-3 control-label">Username</label>
+                    <div class="col-sm-9">
+                      <input id="newAccountUsername" type="text" placeholder="johnSmith93" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="newAccountPassword" class="col-sm-3 control-label">Password</label>
+                    <div class="col-sm-9">
+                      <input id="newAccountPassword" type="password" placeholder="password" class="form-control">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                      <input id="newAccountPasswordConfirmation" type="password" placeholder="confirm password" class="form-control">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- close form container-->
+              <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="footer" class="row">
+          <footer class="col-xs-12 col-sm-6 col-sm-offset-3">
+            <h2>Textrade</h2>
+            <h4>An Educated Book Buying Market</h4>
+            <ul class="col-xs-12 col-md-3">
+              <li><a href="the-team.html" style="color:white">The Team</a></li>
+              <li><a href="contact.html" style="color:white">Contact</a></li>
+            </ul>
+            <ul class="col-xs-12 col-md-3">
+              <li><a href="our-services.html" style="color:white">Services</a></li>
+              <li><a href="our-services.html#rent" style="color:white">Rent</a></li>
+              <li><a href="our-services.html#trade" style="color:white">Trade</a></li>
+            </ul>
+            <ul class="col-xs-12 col-md-3">
+              <li><a href="search.html" style="color:white">Marketplace</a></li>
+            </ul>
+            <ul class="col-xs-12 col-md-3">
+              <li><a href="login.html" style="color:white">Login</a></li>
+            </ul>
+          </footer>
+          <p id="copyright" class="col-xs-12">Copyright (c) 2015 Textrade All Rights Reserved.</p>
+        </div>
+        <!-- close .container-fluid-->
       </div>
-    </div>
-    <div id="footer" class="row">
-      <footer class="col-xs-12 col-sm-6 col-sm-offset-3">
-        <h2>Textrade</h2>
-        <h4>An Educated Book Buying Market</h4>
-        <ul class="col-xs-12 col-md-3">
-          <li><a href="the-team.html" style="color:white">The Team</a></li>
-          <li><a href="contact.html" style="color:white">Contact</a></li>
-        </ul>
-        <ul class="col-xs-12 col-md-3">
-          <li><a href="our-services.html" style="color:white">Services</a></li>
-          <li><a href="our-services.html#rent" style="color:white">Rent</a></li>
-          <li><a href="our-services.html#trade" style="color:white">Trade</a></li>
-        </ul>
-        <ul class="col-xs-12 col-md-3">
-          <li><a href="search.html" style="color:white">Marketplace</a></li>
-        </ul>
-        <ul class="col-xs-12 col-md-3">
-          <li><a href="login.html" style="color:white">Login</a></li>
-        </ul>
-      </footer>
-      <p id="copyright" class="col-xs-12">Copyright (c) 2015 Textrade All Rights Reserved.</p>
-    </div>
-    <!-- close .container-fluid-->
-  </div>
+{% endblock %}
