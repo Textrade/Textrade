@@ -438,7 +438,7 @@ def dashboard():
     wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
     have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
     return render_template(
-        'default/dashboard.html',
+        'user/dashboard.html',
         c_user=c_user,
         book_for_rent=book_rent,
         w_books=wanted_books,

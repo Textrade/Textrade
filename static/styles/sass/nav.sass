@@ -1,28 +1,22 @@
-.navbar, .navbar-default, .navbar-fixed-top
+nav
+  background: white
+  margin: 0
+  padding: 0
+  margin-bottom: 150px
+.navbar
+  background: white
+  .container-fluid
     background: white
-    color: black
-    border: none
-    margin-bottom: 50px
-    box-shadow: 0 4px 3px -3px #b2b2b2
-    .container-fluid
-        background: white
+    max-width: 1080px
+    .navbar-header, .navbar-collapse
+      background: white
+      button, a
         color: black
-        .navbar-header
-            background: white
-            color: black 
-            button
-                background: white
-                span
-                    background: black
-            .navbar-brand
-                color: black
-                width: 200px
-        navbar-collapse, #bs-example-navbar-collapse-1
-            ul
-                li
-                    a
-                        background: white
-                        color: black
-                        font-family: Open Sans, sans-serif
-                        font-weight: 300
-                
+      ul
+        @media (min-width: 786px)
+          margin-left: 50px
+        a
+          color: black
+      form
+        @media (min-width: 786px)
+          float: right

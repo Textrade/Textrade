@@ -1,57 +1,144 @@
-{% extends 'default/baseuser.html' %}
-{% block content %}
-    <div class="row page-header" id="services-page-header">
-        <h1>Our Services</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Textrade</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,700,500italic" rel="stylesheet" type="text/css">
+    <!-- Latest compiled and minified CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./assets/styles/css/main.css">
+  </head>
+</html>
+<body>
+  <div id="page-wrap" class="container-fluid">
+    <nav class="navbar navbar-default navbar-fixed-top container-fluid col-xs-12">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display-->
+        <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="index.html" class="navbar-brand">Textrade</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling-->
+        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="search.html">Marketplace</a></li>
+            <li><a href="our-services.html">Our Services</a></li>
+            <li><a href="the-team.html">The Team</a></li>
+            <li><a href="faqs.html">FAQs</a></li>
+            <li><a href="dashboard/index.html">Dashboard</a></li>
+            <li><a href="login.html">Login</a>
+              <!-- should change to "username" and "logout" after successful login-->
+            </li>
+          </ul>
+          <form role="search" name="search" class="navbar-form">
+            <div class="form-group">
+              <input type="text" placeholder="Search Book Titles by Name or ISBN" style="width:300px" class="form-control">
+            </div>
+            <button type="submit" aria-label="Left Align" class="btn btn-default"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button>
+          </form>
+        </div>
+        <!-- /.navbar-collapse-->
+      </div>
+      <!-- /.container-fluid-->
+    </nav>
+    <!-- - write content here-->
+    <div class="row page-header">
+      <div class="col-xs-6 col-sm-4">
+        <h1 class="page-title">Our Services</h1>
+      </div>
+    </div><a id="trade"></a>
+    <div class="center-all row odd">
+      <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4"><img src="./assets/img/trade.png">
+        <h2>Trade Service</h2>
+        <p class="grow">Comparing books is like comparing apples and oranges, but sometimes you need that orange.</p><br>
+        <p style="text-align:left">The only thing worse than buying a book for class that you barely use, is having to buy another one the next semester. This year, use Textrade to trade in the books you don't need for the ones you do without having to spend any more money!</p>
+      </div>
+    </div><a id="rent"></a>
+    <div class="center-all row even">
+      <div class="col-xs-12 col-sm-4 col-sm-offset-3 col-md-4 col-md-offset-4"><img src="./assets/img/benefits.png">
+        <h2>Rent Service</h2>
+        <p class="grow">Profit like the kings and tycoons of Amazon do! Earn money off the books you own.</p><br>
+        <p style="text-align:left">It's no secret that renting from the companies like Amazon is a rip off. End the cycle! Rent books from UML students with the books you need or rent out your own books and grab your piece of the pie!</p>
+      </div>
     </div>
-
-    <div class="row" id="service-list">
-        <div class="col-sm-6" id="rent-service">
-            <img src="img/rent-service-icon.svg">
-            <div class="col-xs-12">
-                <h2>Rent Service</h2>
-                <p>Keep your book, keep the profits</p>
-            </div>
-            <div class="explainer">
-                <h4>You have books</h4>
-                <p>Lots and lots of books and no use for any of them. You've held off on selling them back to the bookstore and Amazon because you'll only get back a fraction of what you paid. So, you come to Textrade.</p>
-
-                <p>Keep the book, keep the profit, keep the power.</p>
-                <button class="btn btn-default">Get Started</button>
-            </div>
+    <!-- Modal Creat Account-->
+    <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
+      <div role="document" class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+            <h3 id="myModalLabel" class="modal-title">Register with Textrade</h3>
+          </div>
+          <div class="modal-body">
+            <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label for="newAccountName" class="col-sm-3 control-label">Name</label>
+                <div class="col-sm-9">
+                  <input id="newAccountName" type="text" placeholder="John Smith" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newAccountEmail" class="col-sm-3 control-label">UML Email</label>
+                <div class="col-sm-9">
+                  <input id="newAccountEmail" type="email" placeholder="john_smith@student.uml.edu" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newAccountUsername" class="col-sm-3 control-label">Username</label>
+                <div class="col-sm-9">
+                  <input id="newAccountUsername" type="text" placeholder="johnSmith93" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newAccountPassword" class="col-sm-3 control-label">Password</label>
+                <div class="col-sm-9">
+                  <input id="newAccountPassword" type="password" placeholder="password" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <input id="newAccountPasswordConfirmation" type="password" placeholder="confirm password" class="form-control">
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- close form container-->
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+            <button type="button" class="btn btn-primary">Submit</button>
+          </div>
         </div>
-        <div class="col-sm-6" id="trade-service">
-            <img src="img/trade-service-icon.svg">
-            <div class="col-xs-12">
-                <h2>Trade Service</h2>
-                <p>Get what you need by getting rid of what you don't</p>
-            </div>
-            <div class="explainer">
-                <h4>You have books but not the ones you need</h4>
-                <p>Chances are, there's a student out there that needs your book, and theres a student out there with a book you need. Get in on the deals by posting your unwanted book up for trade.</p>
-
-                <p>Get what you need, but trading in what you don't.</p>
-                <button class="btn btn-default learn-more"><a href="#" data-toggle="modal" data-target="#create-account-modal">Get Started</a></button>
-            </div>
-
-        </div>
+      </div>
     </div>
-
-    <div class="row" id="testimonials">
-        <h2>Testemonials</h2>
-        <div class="col-sm-4 even">
-            <h3>"Texttrade gives me the ability to make a profit</h3>
-            <p>Appellat e quem qui velit aliquip se nisi esse. Ad enim ullamco excepteur, nisi pariatur nam cohaerescant, ut ea esse consequat a incurreret noster fabulas. Deserunt duis non laboris graviterque ut ipsum id quamquam ne cillum.</p>
-            <p class="quote-author">Joe from Idaho</p>
-        </div>
-        <div class="col-sm-4 odd">
-            <h3>"so much better than Amazon!"</h3>
-            <p>Appellat e quem qui velit aliquip se nisi esse. Ad enim ullamco excepteur, nisi pariatur nam cohaerescant, ut ea esse consequat a incurreret noster fabulas. Deserunt duis non laboris graviterque ut ipsum id quamquam ne cillum, sint coniunctione aliquip tamen incididunt ex quem ita se fore quibusdam a ut dolor litteris mandaremus ita amet commodo ab quis legam te a summis ad elit, appellat aut quibusdam.</p>
-            <p class="quote-author">Joe from Idaho</p>
-        </div>
-        <div class="col-sm-4 even">
-            <h3>"I love Textrade!"</h3>
-            <p>Appellat e quem qui velit aliquip se nisi esse. Ad enim ullamco excepteur, nisi pariatur nam cohaerescant, ut ea esse consequat a incurreret noster fabulas. Deserunt duis non.</p>
-            <p class="quote-author">Joe from Idaho</p>
-        </div>
+    <div id="footer" class="row">
+      <footer class="col-xs-12 col-sm-6 col-sm-offset-3">
+        <h2>Textrade</h2>
+        <h4>An Educated Book Buying Market</h4>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="the-team.html" style="color:white">The Team</a></li>
+          <li><a href="contact.html" style="color:white">Contact</a></li>
+        </ul>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="our-services.html" style="color:white">Services</a></li>
+          <li><a href="our-services.html#rent" style="color:white">Rent</a></li>
+          <li><a href="our-services.html#trade" style="color:white">Trade</a></li>
+        </ul>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="search.html" style="color:white">Marketplace</a></li>
+        </ul>
+        <ul class="col-xs-12 col-md-3">
+          <li><a href="login.html" style="color:white">Login</a></li>
+        </ul>
+      </footer>
+      <p id="copyright" class="col-xs-12">Copyright (c) 2015 Textrade All Rights Reserved.</p>
     </div>
-{% endblock %}
+    <!-- close .container-fluid-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins)-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed-->
+    <!-- Latest compiled and minified JavaScript-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </div>
+</body>
