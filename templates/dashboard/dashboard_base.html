@@ -281,16 +281,16 @@
                         </li>
                         -->
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="{{ url_for('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-book fa-fw"></i> Rent<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="rentals.html">Your Rentals</a>
+                                    <a href="{{ url_for('your_rentals') }}">Your Rentals</a>
                                 </li>
                                 <li>
-                                    <a href="rental-requests.html">Rentals Requests</a>
+                                    <a href="{{ url_for('rental_requests') }}">Rentals Requests</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -299,10 +299,10 @@
                             <a href="#"><i class="fa fa-book fa-fw"></i> Trade<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="trades.html">Trade Listings</a>
+                                    <a href="{{ url_for('trades') }}">Trade Listings</a>
                                 </li>
                                 <li>
-                                    <a href="trade-requests.html">Trade Requests</a>
+                                    <a href="{{ url_for('trade_requests') }}">Trade Requests</a>
                                 </li>
                             </ul>
                         </li>
@@ -310,10 +310,10 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Your Account<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="account-settings.html">Settings</a>
+                                    <a href="{{ url_for('account_settings') }}">Settings</a>
                                 </li>
                                 <li>
-                                    <a href="history.html">History</a>
+                                    <a href="{{ url_for('account_history') }}">History</a>
                                 </li>
                             </ul>
                         </li>

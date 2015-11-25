@@ -217,6 +217,7 @@ admin.add_view(
     )
 )
 
+
 def get_current_user():
     return flask_login.current_user
 
@@ -500,22 +501,6 @@ def user_page(username):
     return render_template('user/user-page.html', user=user, rent_book=user_rent_books)
 
 
-@app.route('/dashboard/')
-@login_required
-def dashboard():
-    c_user = flask_login.current_user
-    book_rent = models.BookRent.select().where(models.BookRent.username == get_current_user())
-    wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
-    have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
-    return render_template(
-        'dashboard/index.html',
-        c_user=c_user,
-        book_for_rent=book_rent,
-        w_books=wanted_books,
-        h_books=have_books,
-    )
-
-
 @app.route('/rent/')
 def rent():
     return render_template('rent/rent.html')
@@ -637,8 +622,8 @@ def rent_book(book_pk):
     )
 
 
-@login_required
 @app.route('/rent/book/delete/<int:book_pk>')
+@login_required
 def delete_book(book_pk):
     book_owner = get_user(book_pk)
     # Check if the user logged in match the book onwer.
@@ -653,8 +638,8 @@ def delete_book(book_pk):
     return redirect(url_for('rent_book', book_pk=book_pk))
 
 
-@login_required
 @app.route('/rent/book/wishlist/add/<int:book_pk>/')
+@login_required
 def wishlist_add(book_pk):
     c_user = flask_login.current_user.username
     try:
@@ -674,6 +659,65 @@ def wishlist_add(book_pk):
 @app.route('/search/')
 def search():
     return render_template('rent/search.html')
+
+#
+#   DASHBOARD
+#
+
+
+@app.route('/dashboard/')
+@login_required
+def dashboard():
+    c_user = flask_login.current_user
+    book_rent = models.BookRent.select().where(models.BookRent.username == get_current_user())
+    wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
+    have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
+    return render_template(
+        'dashboard/index.html',
+        c_user=c_user,
+        book_for_rent=book_rent,
+        w_books=wanted_books,
+        h_books=have_books,
+    )
+
+
+@app.route('/dashboard/your-rentals/')
+@app.route('/dashboard/rentals/')
+@login_required
+def your_rentals():
+    return render_template(
+        'dashboard/rentals.html'
+    )
+
+
+@app.route('/dashboard/rentals-requests/')
+@login_required
+def rental_requests():
+    return render_template('dashboard/rental-requests.html')
+
+
+@app.route('/dashboard/rentals/')
+@login_required
+def trades():
+    return render_template('dashboard/trades.html')
+
+
+@app.route('/dashboard/trade-requests/')
+@login_required
+def trade_requests():
+    return render_template('dashboard/trade-requests.html')
+
+
+@app.route('/dashboard/setting/')
+@login_required
+def account_settings():
+    return render_template('dashboard/account-settings.html')
+
+
+@app.route('/dashboard/history/')
+@login_required
+def account_history():
+    return render_template('dashboard/history.html')
 
 
 if __name__ == '__main__':
