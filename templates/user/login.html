@@ -1,12 +1,15 @@
 {% extends 'default/base.html' %}
+{% from 'default/macros.html' import render_field %}
 {% block content %}
     <!-- - write content here-->
     <div class="row login-page-row">
       <div id="login-wrap">
         <div id="login-dialog"><img src="/static/img/logo.png" style="width:250px;margin:auto;float:center">
-          <form>
-            <input type="text" name="user" placeholder="username">
-            <input type="password" name="pass" placeholder="password">
+          <form action="" method="POST">
+              {{ log_form.hidden_tag() }}
+              {% for field in log_form %}
+                {{ render_field(field) }}
+              {% endfor %}
             <button id="submit" type="submit" name="login" value="Login" class="login loginmodal-submit btn btn-default">Login</button>
             <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account |</a><span> </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
           </form>

@@ -454,7 +454,7 @@ def dashboard():
     wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
     have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
     return render_template(
-        'user/dashboard.html',
+        'dashboard/pages/index.html',
         c_user=c_user,
         book_for_rent=book_rent,
         w_books=wanted_books,
@@ -536,7 +536,7 @@ def add_books():
                 flash("Books for trade added successfully.", "success")
 
     return render_template(
-        'rent/rent-your-book.html',
+            'rent/rent-your-book.html',
         rent_form=rent_book_form,
         trade_form=trade_book_form
     )
@@ -574,11 +574,12 @@ def rent_book(book_pk):
     other_equal_books = models.BookRent.select().where(models.BookRent.isbn == book_.isbn)
 
     return render_template(
-        'book/book-template.html',
+        'book/book.html',
         user=user,
         user_books=user_books,
         book=book_,
         other_equal_books=other_equal_books,
+        joined=user.joined.strftime("%b. %Y")
     )
 
 

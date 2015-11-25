@@ -118,8 +118,8 @@ class RegisterForm(Form):
 
 class LoginForm(Form):
     """Login user form."""
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
 
 
 class ResendToken(Form):

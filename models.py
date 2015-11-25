@@ -50,7 +50,10 @@ class User(UserMixin, Model):
         database = db
 
     def __str__(self):
-        return self.username
+        return "<User Model: {}>".format(self.username)
+
+    def get_name(self):
+        return "{} {}".format(self.first_name, self.last_name)
 
 
 class TradeStatus(Model):
@@ -61,7 +64,7 @@ class TradeStatus(Model):
         database = db
 
     def __str__(self):
-        return self.status
+        return "<TradeStatus Model: {}>".format(self.status)
 
 
 class BookStatus(Model):
@@ -72,7 +75,7 @@ class BookStatus(Model):
         database = db
 
     def __str__(self):
-        return self.status
+        return "<BookStatus Model: {}>".format(self.status)
 
 
 class BookCondition(Model):
@@ -83,7 +86,7 @@ class BookCondition(Model):
         database = db
 
     def __str__(self):
-        return self.condition
+        return "<BookCondition Model: {}>".format(self.condition)
 
 
 class BookRent(Model):
@@ -104,7 +107,7 @@ class BookRent(Model):
         database = db
 
     def __str__(self):
-        return self.name
+        return "<BookRent Model: {}>".format(self.name)
 
 
 class BookTradeHave(Model):
@@ -118,7 +121,7 @@ class BookTradeHave(Model):
         database = db
 
     def __str__(self):
-        return self.isbn
+        return "<BookTradeHave Model: {}>".format(self.isbn)
 
 
 class BookTradeWant(Model):
@@ -132,7 +135,7 @@ class BookTradeWant(Model):
         database = db
 
     def __str__(self):
-        return self.isbn
+        return "<BookTradeWant Model: {}>".format(self.isbn)
 
 
 class Trade(Model):

@@ -41,5 +41,6 @@ def delete_user(username, password):
 
 def get_user(book_id):
     """This funtion get an user object from the rent book object in the database."""
-    __user = BookRent.get(BookRent.id == book_id)
-    return __user
+    book = BookRent.get(BookRent.id == book_id)
+    print(book.username)
+    return book.username
