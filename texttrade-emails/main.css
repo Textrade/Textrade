@@ -13,47 +13,45 @@ body .email-wrapper {
 }
 
 body .email-wrapper .header {
-  background: #61D2B4;
-  color: white;
-  padding: 5px;
+  text-align: left;
+  background: #2196F3;
+  padding: 5px 20px;
 }
 
-body .email-wrapper .formality {
-  text-align: right;
-  font-size: 12px;
-  color: grey;
+body .email-wrapper .header h1 {
+  color: white;
+  font-size: 36px;
 }
 
 body .email-wrapper .message {
-  padding: 0 25px;
+  padding: 15px 25px;
 }
 
-body .email-wrapper .message .intro {
-  margin-bottom: 50px;
-}
-
-body .email-wrapper .message .close {
-  margin-top: 50px;
-}
-
-body .email-wrapper .message .verification {
-  margin-left: 20%;
-  border: solid 3px #61D2B4;
-  background: #61D2B4;
+body .email-wrapper .message .btn-primary {
+  font-size: 14px;
+  font-family: Open Sans, sans-serif;
+  margin: auto;
+  background: #2196F3;
+  border: none;
   color: white;
   border-radius: 4px;
   padding: 5px 15px;
   text-align: center;
-  width: 60%;
 }
 
 body .email-wrapper .footer {
   margin-top: 50px;
+  text-align: left;
+}
+
+body .email-wrapper .footer img {
+  height: 100px;
 }
 
 body .email-wrapper .footer .unsubscribe {
   color: grey;
   font-size: 12px;
+  text-align: left;
 }
 
 body .email-wrapper .footer .unsubscribe a {
