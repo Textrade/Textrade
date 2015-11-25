@@ -247,7 +247,7 @@ def after_request(response):
 
 @app.errorhandler(404)
 def page_not_page(e):
-    return "The no found page!", 404
+    return render_template('misc/404.html'), 404
 
 
 @app.errorhandler(500)
@@ -263,6 +263,22 @@ def index():
 @app.route('/team/')
 def team():
     return render_template('misc/the-team.html')
+
+
+@app.route('/contact-us/')
+def contact():
+    return render_template('misc/contact.html')
+
+
+@app.route('/our-services/')
+@app.route('/services/')
+def our_services():
+    return render_template('misc/our-services.html')
+
+
+@app.route('/faqs/')
+def faqs():
+    return render_template('misc/faqs.html')
 
 
 @app.route('/login/', methods=('GET', 'POST'))
@@ -598,6 +614,12 @@ def wishlist_add(book_pk):
         return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
     flash("Book added to your wishlist!", "success")
     return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+
+
+@app.route('/search/')
+def search():
+    return render_template('rent/search.html')
+
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)

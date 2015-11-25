@@ -157,7 +157,7 @@ nav {
   border-radius: 80px;
   -webkit-border-radius: 80px;
   -moz-border-radius: 80px;
-  background: url(../../img/tm-1.jpg) center;
+  /* background: url(../../img/daniel_santos.jpg) center; */
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
@@ -165,7 +165,7 @@ nav {
 }
 
 .circular img {
-  width: 300px;
+  width: 160px;
   height: auto;
   border-radius: 150px;
   -webkit-border-radius: 150px;

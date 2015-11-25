@@ -1,15 +1,63 @@
 {% extends 'default/base.html' %}
 {% block content %}
-    <!-- - write content here-->
-    <div class="row page-header even">
+    <div class="row page-header theTeam">
       <div class="col-xs-12 col-sm-6">
-        <h1 class="page-title">404 </h1>
-        <h2>Page Not Found</h2><br>
-        <p>Oh my, how embarassing. We both seem to be a little lost. </p><br>
-        <p>Let's have a fresh start. </p><br><a href="{{ url_for('index') }}">Return home.</a>
+        <h1 class="page-title">Contact</h1>
       </div>
     </div>
-    <div class="row fill">     </div>
+    <div class="row odd">
+      <div class="col-xs-12 contactContainer"><img src="/static/img/logoBW.png" class="contactImg"></div>
+    </div>
+    <div class="row even">
+      <div style="text-align:left" class="col-xs-12 col-md-4 col-md-offset-2">
+        <h3 style="color:#1976D2">Email</h3><br>
+        <p><strong>General Inquiries</strong></p>
+        <p>contact@Textrade.com</p>
+        <hr>
+        <p><strong>Account Issues</strong></p>
+        <p>accounts@Textrade.com</p>
+        <hr>
+        <h3 style="color:#1976D2">Textrade Trucks</h3><br>
+        <p><strong>North Truck</strong></p>
+        <p>123 Blueberry Lane</p>
+        <p>Gummydrop, Diabetes 01234</p>
+        <hr>
+        <p><strong>South Truck</strong></p>
+        <p>123 Hangover Lane</p>
+        <p>Lotsabooze, Bad 01212</p>
+        <hr>
+      </div>
+      <div style="text-align:left" class="col-xs-12 col-md-6">
+        <h2 style="color:#1976D2">Drop Us A Line</h2>
+        <div class="col-xs-12">
+          <form id="contactForm" style="max-width:550px" class="form-horizontal">
+            <div class="form-group col-xs-12">
+              <label>Name</label>
+              <input type="text" placeholder="John Smith" name="contactName" class="form-control">
+            </div>
+            <div class="form-group col-xs-12">
+              <label>Email</label>
+              <input type="email" placeholder="johnsmith@example.com" name="contactEmail" class="form-control">
+            </div>
+            <div class="form-group col-xs-12">
+              <label>Subject</label>
+              <select class="form-control">
+                <option>Option 1</option>
+                <option>Option 1</option>
+                <option>Option 1</option>
+              </select>
+            </div>
+            <div class="form-group col-xs-12">
+              <label>Message</label>
+              <textarea type="text" placeholder="Your message here" name="contactMessage" rows="6" class="form-control"></textarea>
+            </div>
+            <div class="form-group col-xs-12">
+              <button type="button" class="btn btn-primary pull-right">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     <!-- Modal Creat Account-->
     <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
       <div role="document" class="modal-dialog">
@@ -60,7 +108,4 @@
         </div>
       </div>
     </div>
-    {% block footer %}
-    {# This override the footer which is no desired in this page #}
-    {% endblock %}
 {% endblock %}
