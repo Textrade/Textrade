@@ -217,7 +217,6 @@ admin.add_view(
     )
 )
 
-
 def get_current_user():
     return flask_login.current_user
 
@@ -234,6 +233,7 @@ def load_user(userid):
 @app.before_request
 def before_request():
     """Connect to the database before a request."""
+    g.user = get_current_user()
     g.db = models.db
     g.db.connect()
 
@@ -257,7 +257,10 @@ def internal_error(e):
 
 @app.route('/')
 def index():
-    return render_template('default/index.html')
+    return render_template(
+        'default/index.html',
+        register_form=RegisterForm()
+    )
 
 
 @app.route('/team/')
@@ -289,7 +292,13 @@ def login():
 
         if login_form.validate_on_submit():
             username = login_form.username.data
-            current_user = models.User.get(models.User.username == username)
+            try:
+                current_user = models.User.get(models.User.username == username)
+            except models.DoesNotExist:
+                flash("Your username  or password doesn't match!", "error")
+                return redirect(url_for('login'))
+
+            # TODO: Check this logic in the next try catch statement maybe no need it.
             if current_user.active:
                 try:
                     log_user = models.User.get(models.User.username == username)
@@ -312,7 +321,8 @@ def login():
             'user/login.html',
             section="user",
             title="Login",
-            log_form=login_form
+            log_form=login_form,
+            register_form=RegisterForm(),
         )
     # TODO: Find why this has been printing twice!
     flash("You are logged in already.", "success")
@@ -339,11 +349,10 @@ def register():
                 username=reg_form.username.data,
                 password=generate_password_hash(reg_form.password.data),
                 university_email=reg_form.university_email.data,
-                personal_email=reg_form.personal_email.data
             )
             flash("User created successfully!", "success")
             token = generate_confirmation_token(reg_form.university_email.data)
-            html = render_template('user/email_verification.html', token=token)
+            html = render_template('email/email_verification.html', token=token)
             subject = "Confirm email and activate your account!"
             send_email(
                 to=reg_form.university_email.data,
@@ -352,7 +361,7 @@ def register():
             )
             flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
-        return render_template('user/register.html', reg_form=reg_form, section="user", title="Register")
+        return render_template('user/register_modal.html', reg_form=reg_form, section="user", title="Register")
     flash("You are logged in.")
     return redirect(url_for('dashboard'))
 
@@ -454,7 +463,7 @@ def dashboard():
     wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
     have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
     return render_template(
-        'dashboard/pages/index.html',
+        'dashboard/index.html',
         c_user=c_user,
         book_for_rent=book_rent,
         w_books=wanted_books,

@@ -1,13 +1,26 @@
 #filterBar
   background: white
   color: #424242
-  @media (min-width: 1050px)
+  @media (min-width: 786px)
     border-right: 5px solid #E0E0E0
     height: 100%
   span
     color: #424242
+    -webkit-transition-duration: 1.5s
+    -moz-transition-duration: 1.5s
+    -o-transition-duration: 1.5s
+     transition-duration: 1.5s
+    -webkit-transition-property: -webkit-transform
+    -moz-transition-property: -moz-transform
+    -o-transition-property: -o-transform
+     transition-property: transform
     &:hover
       color: #616161
+    &:active
+      color: #616161
+      -webkit-transform: rotate(180deg)
+      -ms-transform: rotate(180deg)
+      transform: rotate(180deg)
   form
     .col-xs-12
       margin: 2px 0

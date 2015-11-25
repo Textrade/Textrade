@@ -63,6 +63,15 @@ class RegisterForm(Form):
             )
         ]
     )
+    university_email = StringField(
+        'University Email',
+        validators=[
+            DataRequired(),
+            Email(),
+            is_uml_email,
+            university_email_exits
+        ]
+    )
     username = StringField(
         'Username',
         validators=[
@@ -98,22 +107,14 @@ class RegisterForm(Form):
     #         )
     #     ]
     # )
-    university_email = StringField(
-        'University Email',
-        validators=[
-            DataRequired(),
-            Email(),
-            is_uml_email,
-            university_email_exits
-        ]
-    )
-    personal_email = StringField(
-        'Personal Email (Optional)',
-        validators=[
-            Email(),
-            personal_email_exits
-        ]
-    )
+
+    # personal_email = StringField(
+    #     'Personal Email (Optional)',
+    #     validators=[
+    #         Email(),
+    #         personal_email_exits
+    #     ]
+    # )
 
 
 class LoginForm(Form):

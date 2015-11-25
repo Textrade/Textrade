@@ -1,99 +1,44 @@
 {% extends 'default/base.html' %}
-{% from 'default/macros.html' import render_field %}
+{% from 'default/macros_login.html' import render_field %}
+{% from 'user/register_modal.html' import register_account %}
 {% block content %}
     <!-- - write content here-->
     <div class="row login-page-row">
       <div id="login-wrap">
         <div id="login-dialog"><img src="/static/img/logo.png" style="width:250px;margin:auto;float:center">
-          <form action="" method="POST">
-              {{ log_form.hidden_tag() }}
-              {% for field in log_form %}
-                {{ render_field(field) }}
-              {% endfor %}
+            <form action="" method="POST">
+                {{ log_form.hidden_tag() }}
+                    {% for field in log_form %}
+                        {{ render_field(field) }}
+                    {% endfor %}
             <button id="submit" type="submit" name="login" value="Login" class="login loginmodal-submit btn btn-default">Login</button>
             <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account |</a><span> </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!-- Modal Creat Account-->
-    <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
-      <div role="document" class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
-            <h3 id="myModalLabel" class="modal-title">Register with Textrade</h3>
-          </div>
-          <div class="modal-body">
-            <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label for="newAccountName" class="col-sm-3 control-label">Name</label>
-                <div class="col-sm-9">
-                  <input id="newAccountName" type="text" placeholder="John Smith" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="newAccountEmail" class="col-sm-3 control-label">UML Email</label>
-                <div class="col-sm-9">
-                  <input id="newAccountEmail" type="email" placeholder="john_smith@student.uml.edu" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="newAccountUsername" class="col-sm-3 control-label">Username</label>
-                <div class="col-sm-9">
-                  <input id="newAccountUsername" type="text" placeholder="johnSmith93" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="newAccountPassword" class="col-sm-3 control-label">Password</label>
-                <div class="col-sm-9">
-                  <input id="newAccountPassword" type="password" placeholder="password" class="form-control">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                  <input id="newAccountPasswordConfirmation" type="password" placeholder="confirm password" class="form-control">
-                </div>
-              </div>
             </form>
-          </div>
-          <!-- close form container-->
-          <div class="modal-footer">
-            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-            <button type="button" class="btn btn-primary">Submit</button>
-          </div>
+            <div style="padding-top: 10px;">
+                {% with messeages = get_flashed_messages(with_categories=True) %}
+                    {% if messeages %}
+                        {% for msg in messeages %}
+                            <p>{{ msg[1] }}
+                                {% if msg[0] == "no-active" %}
+                                    If you us to resend you an activation email
+                                    <a href="{{ url_for('resend_token') }}">click here.</a>
+                                {% endif %}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
         </div>
       </div>
     </div>
-    <!-- Modal: Forgot Password-->
-    <div id="forgot-password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
-      <div role="document" class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
-            <h3 id="myModalLabel" class="modal-title">Register with Textrade</h3>
-          </div>
-          <div class="modal-body">
-            <p>Aw shucks! You forgot your email. Fret not! Enter your email address below to get started.</p><br>
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label for="forgotPasswordEmail" class="col-sm-3 control-label">Email</label>
-                <div class="col-sm-9">
-                  <input id="forgotPasswordEmail" type="email" placeholder="Account Email" class="form-control">
-                </div>
-              </div>
-            </form>
-          </div>
-          <!-- close form container-->
-          <div class="modal-footer">
-            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-            <button type="button" class="btn btn-primary">Submit</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% block footer %}
+
+    {# Include register modal #}
+    {{ register_account(register_form) }}
+
+    {# Include forgot password modal  #}
+    {% include 'user/forgot_password_modal.html' %}
+
     {#  Override footer to blank  #}
+    {% block footer %}
     {% endblock %}
 {% endblock %}

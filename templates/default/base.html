@@ -25,9 +25,15 @@
                 <li><a href="{{ url_for('our_services') }}">Our Services</a></li>
                 <li><a href="{{ url_for('team') }}">The Team</a></li>
                 <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
-                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ url_for('login') }}">Login</a>
-                  <!-- should change to "username" and "logout" after successful login-->
+                {% if g.user.username %}
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                {% endif %}
+                <li>
+                    {% if not g.user.username %}
+                        <a href="{{ url_for('login') }}">Login</a>
+                    {% else %}
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    {% endif %}
                 </li>
               </ul>
               <form role="search" name="search" class="navbar-form">
@@ -41,33 +47,33 @@
           </div>
           <!-- /.container-fluid-->
         </nav>
-    {% block content %}
-    {% endblock %}
+        {% block content %}
+        {% endblock %}
 
-    {% block footer %}
-        <div id="footer" class="row">
-          <footer class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <h2>Textrade</h2>
-            <h4>An Educated Book Buying Market</h4>
-            <ul class="col-xs-12 col-md-3">
-              <li><a href="{{ url_for('team') }}" style="color:white">The Team</a></li>
-              <li><a href="{{ url_for('contact') }}" style="color:white">Contact</a></li>
-            </ul>
-            <ul class="col-xs-12 col-md-3">
-              <li><a href="{{ url_for('our_services') }}" style="color:white">Services</a></li>
-              <li><a href="{{ url_for('our_services') }}#rent" style="color:white">Rent</a></li>
-              <li><a href="{{ url_for('our_services') }}#trade" style="color:white">Trade</a></li>
-            </ul>
-            <ul class="col-xs-12 col-md-3">
-              <li><a href="{{ url_for('search') }}" style="color:white">Marketplace</a></li>
-            </ul>
-            <ul class="col-xs-12 col-md-3">
-              <li><a href="{{ url_for('login') }}" style="color:white">Login</a></li>
-            </ul>
-          </footer>
-          <p id="copyright" class="col-xs-12">Copyright (c) 2015 Textrade All Rights Reserved.</p>
-        </div>
-    {% endblock %}
+        {% block footer %}
+            <div id="footer" class="row">
+              <footer class="col-xs-12 col-sm-6 col-sm-offset-3">
+                <h2>Textrade</h2>
+                <h4>An Educated Book Buying Market</h4>
+                <ul class="col-xs-12 col-md-3">
+                  <li><a href="{{ url_for('team') }}" style="color:white">The Team</a></li>
+                  <li><a href="{{ url_for('contact') }}" style="color:white">Contact</a></li>
+                </ul>
+                <ul class="col-xs-12 col-md-3">
+                  <li><a href="{{ url_for('our_services') }}" style="color:white">Services</a></li>
+                  <li><a href="{{ url_for('our_services') }}#rent" style="color:white">Rent</a></li>
+                  <li><a href="{{ url_for('our_services') }}#trade" style="color:white">Trade</a></li>
+                </ul>
+                <ul class="col-xs-12 col-md-3">
+                  <li><a href="{{ url_for('search') }}" style="color:white">Marketplace</a></li>
+                </ul>
+                <ul class="col-xs-12 col-md-3">
+                  <li><a href="{{ url_for('login') }}" style="color:white">Login</a></li>
+                </ul>
+              </footer>
+              <p id="copyright" class="col-xs-12">Copyright (c) 2015 Textrade All Rights Reserved.</p>
+            </div>
+        {% endblock %}
     <!-- close .container-fluid-->
     </div>
     {#  JavaScript Dependecies  #}

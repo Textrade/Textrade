@@ -13,7 +13,6 @@ def create_user(**kwargs):
         # TODO: when expansion to different schools
         # university_name=kwargs['university_name'],
         university_email=kwargs['university_email'],
-        personal_email=kwargs['personal_email']
     )
 
 
