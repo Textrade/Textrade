@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    //- time to send? remove the "../"
+    link(rel='stylesheet', type='text/css', href='../main.css')
+    //- once set, the styles need to be included in a <style> tag. after that, use the CSS inline styles tool. copy and replace the outputed "body" portion, and deleted the <style> tag when ready to send.
+  body
+    .email-wrapper
+      //- Textrade logo
+      .header
+        h1 Textrade Logo
+      .message
+        //- where the content goes...
+        block content
+      .footer
+        //- time to send? remove the "../"
+        img(src='../logoBW.png', style='margin:auto')
+        p.unsubscribe We know, it's not you, it's us. If you'd like us to give you some space, just
+          a unsubscribe

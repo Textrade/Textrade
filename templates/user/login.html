@@ -1,6 +1,8 @@
 {% extends 'default/base.html' %}
 {% from 'default/macros_login.html' import render_field %}
 {% from 'user/register_modal.html' import register_account %}
+{% from 'user/forgot_password_modal.html' import forgot_password_modal %}
+{% from 'user/resend_verification_modal.html' import resend_email_modal %}
 {% block content %}
     <!-- - write content here-->
     <div class="row login-page-row">
@@ -20,8 +22,8 @@
                         {% for msg in messeages %}
                             <p>{{ msg[1] }}
                                 {% if msg[0] == "no-active" %}
-                                    If you us to resend you an activation email
-                                    <a href="{{ url_for('resend_token') }}">click here.</a>
+                                    If you want us to resend you an activation email
+                                    <a href="#" data-toggle="modal" data-target="#resend-email-modal">click here.</a>
                                 {% endif %}
                             </p>
                         {% endfor %}
@@ -36,7 +38,10 @@
     {{ register_account(register_form) }}
 
     {# Include forgot password modal  #}
-    {% include 'user/forgot_password_modal.html' %}
+    {{ forgot_password_modal(forgot_form) }}
+
+    {# Include resend activation email modal  #}
+    {{ resend_email_modal(resend_from) }}
 
     {#  Override footer to blank  #}
     {% block footer %}

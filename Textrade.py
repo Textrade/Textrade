@@ -59,7 +59,7 @@ import models
 #   USER IMPORTS
 #
 #
-from user.forms import (RegisterForm, LoginForm, ResendToken,
+from user.forms import (RegisterForm, LoginForm, ResendActivationEmailForm,
                         ForgotCredentialReset, ResetPassword)
 from user.user import create_user, get_user
 from user.token import *
@@ -269,6 +269,7 @@ def team():
 
 
 @app.route('/contact-us/')
+@app.route('/contact/')
 def contact():
     return render_template('misc/contact.html')
 
@@ -323,6 +324,8 @@ def login():
             title="Login",
             log_form=login_form,
             register_form=RegisterForm(),
+            forgot_form=ForgotCredentialReset(),
+            resend_from=ResendActivationEmailForm()
         )
     # TODO: Find why this has been printing twice!
     flash("You are logged in already.", "success")
@@ -352,7 +355,12 @@ def register():
             )
             flash("User created successfully!", "success")
             token = generate_confirmation_token(reg_form.university_email.data)
-            html = render_template('email/email_verification.html', token=token)
+            html = render_template(
+                'email/verifyNewAccount/verification.html',
+                token=token,
+                name=reg_form.first_name.data,
+
+            )
             subject = "Confirm email and activate your account!"
             send_email(
                 to=reg_form.university_email.data,
@@ -361,7 +369,7 @@ def register():
             )
             flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
-        return render_template('user/register_modal.html', reg_form=reg_form, section="user", title="Register")
+        return redirect(url_for('login'))
     flash("You are logged in.")
     return redirect(url_for('dashboard'))
 
@@ -382,17 +390,38 @@ def confirm_email(token):
             active=True,
             activated_on=datetime.datetime.now()
         ).execute()
+        html = render_template(
+            'email/confirmation/confirmation.html',
+            name=user.first_name,
+            # One means it activation
+            centi=1
+        )
+        subject = "You account is active!"
+        send_email(
+            to=user.university_email,
+            subject=subject,
+            template=html
+        )
         flash("Your email have been confirmed.", "success")
     return redirect(url_for('dashboard'))
 
 
 @app.route('/user/activate/resend/', methods=('GET', 'POST'))
 def resend_token():
-    form = ResendToken()
+    form = ResendActivationEmailForm()
     if form.validate_on_submit():
         email = form.university_email.data
+        try:
+            user = models.User.get(models.User.university_email == email)
+        except models.DoesNotExist:
+            flash("This email is not in our system")
+            return redirect(url_for('login'))
         token = generate_confirmation_token(email)
-        html = render_template('user/email_verification.html', token=token)
+        html = render_template(
+            'email/verifyNewAccount/verification.html',
+            token=token,
+            name=user.first_name
+        )
         subject = "Confirm email and activate your account!"
         send_email(
             to=email,
@@ -401,7 +430,10 @@ def resend_token():
         )
         flash("The activation link have been resend!")
         return redirect(url_for('login'))
-    return render_template('user/resend_token.html', form=form)
+    for errors in form.errors.items():
+        for error in errors[1]:
+            flash("{}".format(error))
+    return redirect(url_for('login'))
 
 
 @app.route('/user/forgot/', methods=('POST', 'GET'))
@@ -409,8 +441,17 @@ def forgot_credentials():
     form = ForgotCredentialReset()
     if form.validate_on_submit():
         email = form.university_email.data
+        try:
+            user = models.User.get(models.User.university_email == email)
+        except models.DoesNotExist:
+            flash("This email is not in our system")
+            return redirect(url_for('login'))
         token = generate_confirmation_token(email)
-        html = render_template('user/reset_password_email.html', token=token)
+        html = render_template(
+            'email/forgotPassword/forgotPassword.html',
+            token=token,
+            name=user.first_name
+        )
         subject = "Reset password request"
         send_email(
             to=email,
@@ -419,7 +460,10 @@ def forgot_credentials():
         )
         flash("We've sent you an email with a link to reset your password.")
         return redirect(url_for('login'))
-    return render_template('user/forgot_credentials.html', form=form)
+    for errors in form.errors.items():
+        for error in errors:
+            flash("{}".format(error))
+    return redirect(url_for('login'))
 
 
 @app.route('/user/forgot/<token>/', methods=('POST', 'GET'))
@@ -438,10 +482,11 @@ def change_credentials(token):
             ).execute()
             flash("Your password was reset successfully")
             return redirect(url_for('login'))
+        # TODO: Need a page to change the password
         return render_template('user/reset_password.html', form=form)
     else:
         flash("The confirmation link is invalid or has expired.", "error")
-        return redirect(url_for('forgot_credentials'))
+        return redirect(url_for('login'))
 
 
 @app.route('/user/<string:username>/')

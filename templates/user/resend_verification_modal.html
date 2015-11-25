@@ -1,27 +1,25 @@
 {% from 'default/macros_modal_form.html' import render_modal_form %}
-{% macro register_account(form) %}
-    <!-- Modal Creat Account-->
-    <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
+{% macro resend_email_modal(form) %}
+    <div id="resend-email-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
       <div role="document" class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
-            <h3 id="myModalLabel" class="modal-title">Register with Textrade</h3>
+            <h3 id="myModalLabel" class="modal-title">Resend activation email</h3>
           </div>
           <div class="modal-body">
-            <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
-            <form action="{{ url_for('register') }}" method="POST" class="form-horizontal">
-                {{ form.hidden_tag() }}
+            <p>Aw shucks! Enter your email address below to re send you the activation email.</p><br>
+            <form action="{{ url_for('resend_token') }}" method="post" class="form-horizontal">
                 {% for field in form %}
-                        {{ render_modal_form(field) }}
+                    {{ render_modal_form(field) }}
                 {% endfor %}
-              <!-- close form container-->
               <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
             </form>
           </div>
+          <!-- close form container-->
         </div>
       </div>
     </div>
