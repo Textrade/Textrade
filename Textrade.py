@@ -652,6 +652,7 @@ def wishlist_add(book_pk):
 
 
 @app.route('/search/')
+@login_required
 def search():
     return render_template(
         'rent/search.html',
