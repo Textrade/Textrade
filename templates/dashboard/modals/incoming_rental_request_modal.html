@@ -1,0 +1,47 @@
+{% macro accept_rental_request_modal(request) %}
+    <!-- Modal: Accept Rental Request -->
+    <div class="modal fade" id="accept-rental-request-{{ request.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title" id="myModalLabel">Accept Rental Request: Confirmation</h3>
+                </div>
+                <p style="padding: 20px;">Are you sure you want accept the following rental request?</p>
+                <ul>
+                    <li><strong>Title:</strong>{{ request.book.name }}</li>
+                    <li><strong>Cost:</strong> $55/semester</li>
+                    <li><strong>To:</strong> @{{ request.rentee.username }}</li>
+                </ul>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a href="{{ url_for('accept_rental_request', request_id=request.id) }}"><button type="button" class="btn btn-primary">Confirm Rental</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro decline_rental_request_modal(request) %}
+ <!-- Modal: Decline Rental Request -->
+<div class="modal fade" id="decline-rental-request-{{ request.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title" id="myModalLabel">Decline Rental Request: Confirmation</h3>
+            </div>
+                <p style="padding: 20px;">Are you sure you want to decline the following rental request?</p>
+            <ul>
+                <li><strong>Title:</strong> {{ request.book.name }}</li>
+                <li><strong>Cost:</strong> $55/semester</li>
+                <li><strong>To:</strong> @{{ request.rentee.username }}</li>
+            </ul>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Yes, Decline Request</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

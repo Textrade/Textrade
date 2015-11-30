@@ -1,5 +1,6 @@
 {% extends 'dashboard/dashboard_base.html' %}
-{% from 'dashboard/modals/delete_rental_request.html' import delete_rental_request_modal %}
+{% from 'dashboard/modals/outgoing_rental_request_modal.html' import delete_rental_request_modal %}
+{% from 'dashboard/modals/incoming_rental_request_modal.html' import accept_rental_request_modal, decline_rental_request_modal %}
 {% block content %}
     <div id="page-wrapper">
       <div class="row">
@@ -41,12 +42,15 @@
                                       <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                      <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
-                                      <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
+                                      <li><a data-toggle="modal" data-target="#accept-rental-request-{{ in_rental.id }}">Approve</a></li>
+                                      <li><a data-toggle="modal" data-target="#decline-rental-request-{{ in_rental.id }}">Decline</a></li>
                                     </ul>
                                   </div>
                                 </td>
                               </tr>
+                            {# Include the modals to accept and decline incoming requests #}
+                            {{ accept_rental_request_modal(in_rental) }}
+                            {{ decline_rental_request_modal(in_rental) }}
                           {% endfor %}
 
                         </tbody>
@@ -124,49 +128,6 @@
       </div>
       <!-- /.row -->
       <div class="row">
-                  </div>
-        <!-- Modal: Accept Rental Request -->
-        <div class="modal fade" id="accept-rental-request" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 class="modal-title" id="myModalLabel">Accept Rental Request: Confirmation</h3>
-                    </div>
-                    <p style="padding: 20px;">Are you sure you want accept the following rental request?</p>
-                    <ul>
-                        <li><strong>Title:</strong> Advanced Mathematics</li>
-                        <li><strong>Cost:</strong> $55/semester</li>
-                        <li><strong>To:</strong> @username</li>
-                    </ul>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Confirm Rental</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal: Decline Rental Request -->
-        <div class="modal fade" id="decline-rental-request" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 class="modal-title" id="myModalLabel">Decline Rental Request: Confirmation</h3>
-                    </div>
-                    <p style="padding: 20px;">Are you sure you want to decline the following rental request?</p>
-                    <ul>
-                        <li><strong>Title:</strong> Advanced Mathematics</li>
-                        <li><strong>Cost:</strong> $55/semester</li>
-                        <li><strong>To:</strong> @username</li>
-                    </ul>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Yes, Decline Request</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+      </div>
     </div>
 {% endblock %}
