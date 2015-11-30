@@ -1,5 +1,6 @@
 {% extends 'dashboard/dashboard_base.html' %}
 {% from 'dashboard/modals/remove_listing_confirmation.html' import remove_listing_modal %}
+{% from 'dashboard/modals/add_rental_book.html' import add_rental_book %}
 {% block content %}
     <div id="page-wrapper">
       <div class="row">
@@ -155,52 +156,8 @@
         </div>
       </div>
     </div>
-            <!-- Modal: Add Listing for Rent Confirmation -->
-            <div class="modal fade" id="addBookForRent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h3 class="modal-title" id="myModalLabel">Request for New Rental Listing</h3>
-                        </div>
-                        <div class="modal-body">
-                          <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-4 control-label">Book Information</label>
-                                <div class="col-sm-8 fix-margin">
-                                    <input type="text" class="form-control" id="book-title" placeholder="Book Title (Edition)">
-                                    <input type="text" class="form-control" id="bookISBN" placeholder="ISBN">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-4 control-label">Book Condition</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control">
-                                        <option>Like New</option>
-                                        <option>Very Good - Minimal wear on cover, otherwise perfect</option>
-                                        <option>Good - Some wear on the cover, spine, and pages</option>
-                                        <option>Fair - Noticeable wear on the cover, spine, and pages</option>
-                                        <option>Poor - Clear evidence of heavy use</option>
-                                    </select>
-                                    <textarea class="form-control fix-margin" rows="3" placeholder="Book condition comments (if any)"></textarea>
-                                    <label for="inputEmail3" class="col-sm-9 control-label">Are there markings inside the book? (Notes in margins etc.?)</label>
-                                    <div class="col-sm-3">
-                                        <div class="checkbox">
-                                            <label><input type="checkbox" value="">Yes</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <strong class="col-sm-4 text-right"><br>Shipping Instructions</strong>
-                                <p class="col-sm-8 col-sm-offset-2">Drop off your textbook at your nearest Textrade truck in the next 5 days to process your book and place it on the Textrade market. If your book is not dropped off within 5 days, the rental request will be removed.<br><br><strong>Textrade trucks are located at North and South campus library Monday - Friday from 11am - 5pm.</strong></p>
-                            </div>
 
-                        </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Send Request for Listing</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    {#  Include the modal to add a book for rent  #}
+    {{ add_rental_book(add_rental_form) }}
+
 {% endblock %}

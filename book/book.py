@@ -28,9 +28,10 @@ def create_book_rent(**kwargs):
         isbn=kwargs['isbn'],
         condition=kwargs['condition'],
         condition_comment=kwargs['condition_comment'],
+        marks=kwargs['marks'],
         username=kwargs['username'],
         available='available',
-        image_path=kwargs['img_path']
+        # image_path=kwargs['img_path']
     )
 
 

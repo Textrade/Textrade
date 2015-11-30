@@ -73,6 +73,7 @@ class TradeStatus(Model):
 
 class BookStatus(Model):
     """Status for books"""
+    id_field = PrimaryKeyField()
     status = CharField(max_length=50, unique=True)
 
     class Meta:
@@ -85,6 +86,7 @@ class BookStatus(Model):
 class BookCondition(Model):
     """List of condition for the books."""
     condition = CharField(max_length=255, unique=True)
+    label = CharField(max_length=255)
 
     class Meta:
         database = db
@@ -102,10 +104,11 @@ class BookToRent(Model):
     isbn = CharField(max_length=255)
     condition = ForeignKeyField(BookCondition, to_field='condition', related_name='book')
     condition_comment = TextField(default="")
+    marks = BooleanField(default=False)
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateTimeField(default=datetime.datetime.now)
-    image_path = CharField(max_length=255, unique=True)
+    # image_path = CharField(max_length=255, unique=True)
     
     class Meta:
         database = db
@@ -293,19 +296,24 @@ def init_app():
     ]
     books_condition = [
         {
-            'condition': 'New',
-        },
-        {
             'condition': 'Like New',
+            'label': '',
         },
         {
-            'condition': 'Used',
+            'condition': 'Very Good',
+            'label': 'Minimal wear on cover, otherwise perfect',
         },
         {
             'condition': 'Good',
+            'label': 'Some wear on the cover, spine, and pages',
+        },
+        {
+            'condition': 'Fair',
+            'label': 'Noticeable wear on the cover, spine and pages',
         },
         {
             'condition': 'Bad',
+            'label': 'Clear evidence of heavy use',
         },
     ]
     rent_books = [
@@ -317,8 +325,8 @@ def init_app():
             'isbn': '9780133807806',
             'username': 'jsmith',
             'available': 'available',
-            'condition': 'Good',
-            'image_path': 'empty1',
+            'condition': 'Fair',
+            # 'image_path': 'empty1',
         },
         {
             'name': 'Physics For Scientist and Engineers',
@@ -328,8 +336,8 @@ def init_app():
             'isbn': '978032175291',
             'username': 'jsmith',
             'available': 'available',
-            'condition': 'New',
-            'image_path': 'empty3',
+            'condition': 'Good',
+            # 'image_path': 'empty3',
         },
         {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
@@ -339,8 +347,8 @@ def init_app():
             'isbn': '9781305280618',
             'username': 'myork',
             'available': 'available',
-            'condition': 'Used',
-            'image_path': 'empty2',
+            'condition': 'Like New',
+            # 'image_path': 'empty2',
         },
         {
             'name': 'Physics For Scientist and Engineers',
@@ -350,8 +358,8 @@ def init_app():
             'isbn': '978032175291',
             'username': 'jcook',
             'available': 'available',
-            'condition': 'New',
-            'image_path': 'empty4',
+            'condition': 'Bad',
+            # 'image_path': 'empty4',
         },
     ]
     try:

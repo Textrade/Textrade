@@ -317,6 +317,15 @@
                                 </li>
                             </ul>
                         </li>
+                        <li>
+                            {% with messeages = get_flashed_messages(with_categories=True) %}
+                                        {% if messeages %}
+                                            {% for msg in messeages %}
+                                                <p>{{ msg[1] }}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                {% endwith %}
+                        </li>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
