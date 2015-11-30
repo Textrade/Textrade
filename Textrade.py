@@ -565,11 +565,6 @@ def add_book_rent():
     return redirect(url_for('your_rentals'))
 
 
-@app.route('/rent/book/search/')
-def rent_search():
-    return render_template('rent/search.html')
-
-
 @app.route('/rent/book/<string:username>/')
 def rent_user_book(username):
     try:
@@ -581,7 +576,7 @@ def rent_user_book(username):
 
 
 @app.route('/rent/book/<int:book_pk>/')
-def rent_book(book_pk):
+def book_page(book_pk):
     try:
         user = get_user(book_pk)
     except peewee.DoesNotExist:
@@ -619,7 +614,7 @@ def delete_book(book_pk):
         flash("The book have been deleted.")
         return redirect(url_for('dashboard'))
     flash("You are not the owner of this book.", "error")
-    return redirect(url_for('rent_book', book_pk=book_pk))
+    return redirect(url_for('book_page', book_pk=book_pk))
 
 
 @app.route('/rent/book/wishlist/add/<int:book_pk>/')
@@ -632,17 +627,22 @@ def wishlist_add(book_pk):
         abort(404)
     except DuplicateEntry:
         flash("This book is already in your wishlist!", "error")
-        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+        return redirect(url_for('book_page', username=c_user, book_pk=book_pk))
     except SelfBook:
         flash("This is your own book, you can't add it", "error")
-        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+        return redirect(url_for('book_page', username=c_user, book_pk=book_pk))
     flash("Book added to your wishlist!", "success")
-    return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+    return redirect(url_for('book_page', username=c_user, book_pk=book_pk))
 
 
 @app.route('/search/')
 def search():
-    return render_template('rent/search.html')
+    return render_template(
+        'rent/search.html',
+        rentals=models.BookToRent.select().where(
+            ~(models.BookToRent.username == get_current_user().username)
+        )
+    )
 
 #
 #   DASHBOARD

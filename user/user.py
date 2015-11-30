@@ -39,7 +39,7 @@ def delete_user(username, password):
 
 
 def get_user(book_id):
-    """This funtion get an user object from the rent book object in the database."""
+    """This function get an user object from the rent book object in the database."""
     book = BookToRent.get(BookToRent.id == book_id)
     print(book.username)
     return book.username
@@ -48,9 +48,12 @@ def get_user(book_id):
 def get_rentals(user):
     """This function return a list of books for rental of a user"""
     return BookToRent.select().where(
-        ((BookToRent.available == "available") |
-         (BookToRent.available == "requested")
-         )&
+        (
+            # Makes sure that the status of the book is available or requested
+            (BookToRent.available == "available") |
+            (BookToRent.available == "requested")
+         ) &
+        # Get only the rentals of the passed user
         (BookToRent.username == user.username)
     )
 
