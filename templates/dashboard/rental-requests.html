@@ -26,58 +26,28 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>10/21/2013</td>
-                            <td>Advannced Math</td>
-                            <td>$50</td>
-                            <td>@username</td>
-                            <td>
-                              <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                  Approve/Decline
-                                  <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                  <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
-                                  <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
-                                </ul>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>10/21/2013</td>
-                            <td>Introduction to Science</td>
-                            <td>$50</td>                                                    <td>@username</td>
-                            <td>
-                              <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                              Approve/Decline
-                              <span class="caret"></span>
-                              </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                  <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
-                                  <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
-                                </ul>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>10/21/2013</td>
-                            <td>A Third Book You're Renting</td>
-                            <td>$50</td>                                                    <td>@username</td>
-                            <td>
-                              <div class="dropdown">
-                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                  Approve/Decline
-                                  <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                  <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
-                                  <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
-                                </ul>
-                              </div>
-                            </td>
-                          </tr>
+                        {% for in_rental in incoming_rentals %}
+                              <tr>
+                                <td>{{ in_rental.date_requested_to_string() }}</td>
+                                <td>{{ in_rental.book.name }}</td>
+                                  {#  TODO: Integrate price to model #}
+                                <td>$50</td>
+                                <td>@{{ in_rental.rentee.username }}</td>
+                                <td>
+                                  <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                      Approve/Decline
+                                      <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                      <li><a data-toggle="modal" data-target="#accept-rental-request">Approve</a></li>
+                                      <li><a data-toggle="modal" data-target="#decline-rental-request">Decline</a></li>
+                                    </ul>
+                                  </div>
+                                </td>
+                              </tr>
+                          {% endfor %}
+
                         </tbody>
                       </table>
                     </div>
@@ -116,11 +86,12 @@
                           </tr>
                         </thead>
                         <tbody>
+                            {% for out_rental in outgoing_rentals %}
                             <tr>
-                              <td>10/21/2013</td>
-                              <td>Advanced Math</td>
-                                    <td>$50</td>
-                              <td>@username</td>
+                              <td>{{ out_rental.date_requested_to_string() }}</td>
+                              <td>{{ out_rental.book.name }}</td>
+                                <td>$50</td>
+                              <td>@{{ out_rental.renter.username }}</td>
                               <td>
                                 <div class="dropdown">
                                   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -133,38 +104,7 @@
                                 </div>
                               </td>
                             </tr>
-                            <tr>
-                              <td>10/21/2013</td>
-                              <td>Intro to Science</td>
-                              <td>$50</td>                                                    <td>@username</td>
-                              <td>
-                                <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                  Action
-                                  <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a data-toggle="modal" data-target="#delete-rental-request">Delete Request</a></li>
-                                  </ul>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>10/21/2013</td>
-                              <td>Intro to Science</td>
-                              <td>$50</td>                                                    <td>@username</td>
-                              <td>
-                                <div class="dropdown">
-                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                  Action
-                                  <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                    <li><a data-toggle="modal" data-target="#delete-rental-request">Delete Request</a></li>
-                                  </ul>
-                                </div>
-                              </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                       </table>
                     </div>

@@ -147,6 +147,7 @@ class BookRenting(Model):
 class BookRentingRequest(Model):
     """BookRentingRequest model. This table will hold the renting until the renter accept."""
     book = ForeignKeyField(BookToRent, to_field='id', related_name='book_requested')
+    renter = ForeignKeyField(User, to_field='username', related_name='renter_requested')
     rentee = ForeignKeyField(User, to_field='username', related_name='user_requesting')
     date_requested = DateTimeField(default=datetime.datetime.now)
 
@@ -155,6 +156,9 @@ class BookRentingRequest(Model):
 
     def __str__(self):
         return "<BookRentingRequest Model: {} - {}>".format(self.book, self.rentee)
+
+    def date_requested_to_string(self):
+        return self.date_requested.strftime("%m/%d/%Y")
 
 
 class BookTradeHave(Model):

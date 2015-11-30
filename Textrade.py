@@ -697,9 +697,12 @@ def delete_rental_book(book_id):
 @app.route('/dashboard/rentals-requests/')
 @login_required
 def rental_requests():
+    user = get_current_user()
     return render_template(
         'dashboard/rental-requests.html',
-        title="Rental Requests"
+        title="Rental Requests",
+        incoming_rentals=get_user_renting_incoming_requests(user.username),
+        outgoing_rentals=get_user_renting_outgoing_request(user.username)
     )
 
 
@@ -720,7 +723,7 @@ def request_book(book_id):
         except models.DoesNotExist:
             if status:
                 request_book_rent(book_id=book_id, username=get_current_user().username)
-                flash("Your book have been requested!", "success")
+                flash("This book have been requested!", "success")
                 # TODO: Send email confirmation
                 return redirect(url_for('rental_requests'))
             else:
@@ -735,7 +738,7 @@ def request_book(book_id):
 @login_required
 def accept_rental_request(request_id):
     try:
-        request = models.BookRentingRequest.get(
+        book_request = models.BookRentingRequest.get(
             models.BookRentingRequest.id == request_id
         )
     except models.DoesNotExist:
@@ -743,7 +746,7 @@ def accept_rental_request(request_id):
         return redirect(url_for('rental_requests'))
     else:
         book = models.BookToRent.get(
-            models.BookToRent.id == request.book
+            models.BookToRent.id == book_request.book
         )
         renter = book.username
 

@@ -40,22 +40,41 @@ def request_book_rent(book_id, username):
     """This function request a book to be rented."""
     BookRentingRequest.create(
         book=book_id,
+        renter=BookToRent.get(BookToRent.id == book_id).username.username,
         rentee=username,
     )
 
 
 def accept_request_to_rent(request_id):
     """This function accept a request to rent."""
-    request = BookRentingRequest.get(BookRentingRequest.id == request_id)
-    book = BookToRent.get(BookToRent.id == request.book)
+    request = get_renting_request_by_id(request_id)
 
     BookRenting.create(
-        book=book.id,
-        renter=book.username.username,
+        book=request.book.id,
+        renter=request.renter.username,
         rentee=request.rentee.username
     )
 
     request.delete_instance()
+
+
+def get_renting_request_by_id(request_id):
+    """This function gets a renting request by request_id"""
+    return BookRentingRequest.get(BookRentingRequest.id == request_id)
+
+
+def get_user_renting_incoming_requests(username):
+    """This function gets all the requests receipt by an specific user"""
+    return BookRentingRequest.select().where(
+        BookRentingRequest.renter == username
+    )
+
+
+def get_user_renting_outgoing_request(username):
+    """This function gets all the request sent from an specific user."""
+    return BookRentingRequest.select().where(
+        BookRentingRequest.rentee == username
+    )
 
 
 def delete_book_rent(book_id):
