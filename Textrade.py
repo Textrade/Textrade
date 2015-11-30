@@ -83,9 +83,9 @@ app = Flask(__name__)
 app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
 app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
 app.config['CSRF_ENABLED'] = True
-DEBUG = True
-HOST = "127.0.0.1"
-PORT = 5000
+DEBUG = False
+# HOST = "127.0.0.1"
+# PORT = 5000
 
 #
 #
@@ -381,7 +381,7 @@ def register():
 @app.route('/user/activate/<token>/')
 def confirm_email(token):
     try:
-        email = confirm_token(token)
+        email = confirm_token(token, app.config['SECRET_KEY'])
     except BadSignature:
         flash("The confirmation link is invalid or has expired.", "error")
         return redirect(url_for('index'))
@@ -404,7 +404,8 @@ def confirm_email(token):
         send_email(
             to=user.university_email,
             subject=subject,
-            template=html
+            template=html,
+            sender=app.config['MAIL_SENDER']
         )
         flash("Your email have been confirmed.", "success")
     return redirect(url_for('dashboard'))
@@ -420,7 +421,7 @@ def resend_token():
         except models.DoesNotExist:
             flash("This email is not in our system")
             return redirect(url_for('login'))
-        token = generate_confirmation_token(email)
+        token = generate_confirmation_token(email, app.config['SECRET_KEY'])
         html = render_template(
             'email/verifyNewAccount/verification.html',
             token=token,
@@ -430,7 +431,8 @@ def resend_token():
         send_email(
             to=email,
             subject=subject,
-            template=html
+            template=html,
+            sender=app.config['MAIL_SENDER']
         )
         flash("The activation link have been resend!")
         return redirect(url_for('login'))
@@ -814,4 +816,4 @@ def account_history():
 
 
 if __name__ == '__main__':
-    app.run(debug=DEBUG, host=HOST, port=PORT)
+    app.run()
