@@ -73,7 +73,6 @@ class TradeStatus(Model):
 
 class BookStatus(Model):
     """Status for books"""
-    id_field = PrimaryKeyField()
     status = CharField(max_length=50, unique=True)
 
     class Meta:
@@ -122,19 +121,40 @@ class BookToRent(Model):
     def get_book_name(self):
         return self.name
 
+    def is_available(self):
+        if self.available.status == "available":
+            return 1
+        return 0
 
-# class BookRenting(Model):
-#     """BookRenting model. This table is for book that users are currently renting."""
-#     book = ForeignKeyField(BookToRent, to_field='name', related_name='book_for_renting')
-#     username = ForeignKeyField(User, to_field='username', related_name='username')
-#     rented_date = DateTimeField(default=datetime.datetime.now)
-#     returning_date = DateTimeField()
-#
-#     class Mata:
-#         database = db
-#
-#     def __str__(self):
-#         return "<BookRenting Model: {} - {}>".format(self.username, self.book)
+
+class BookRenting(Model):
+    """BookRenting model. This table is for book that users are currently renting."""
+    book = ForeignKeyField(BookToRent, to_field='id', related_name='book_for_renting')
+    renter = ForeignKeyField(User, to_field='username', related_name='renter_user')
+    rentee = ForeignKeyField(User, to_field='username', related_name='rentee_user')
+    rented_date = DateTimeField(default=datetime.datetime.now)
+    returning_date = DateTimeField(default=(datetime.datetime.now() + datetime.timedelta(weeks=18)))
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return "<BookRenting Model: {} - {} <-> {}>".format(
+            self.book, self.renter, self.rentee
+        )
+
+
+class BookRentingRequest(Model):
+    """BookRentingRequest model. This table will hold the renting until the renter accept."""
+    book = ForeignKeyField(BookToRent, to_field='id', related_name='book_requested')
+    rentee = ForeignKeyField(User, to_field='username', related_name='user_requesting')
+    date_requested = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return "<BookRentingRequest Model: {} - {}>".format(self.book, self.rentee)
 
 
 class BookTradeHave(Model):
@@ -206,6 +226,8 @@ def create_tables():
                 BookStatus,
                 BookCondition,
                 BookToRent,
+                BookRenting,
+                BookRentingRequest,
                 BookTradeWant,
                 BookTradeHave,
                 Trade,
@@ -233,6 +255,8 @@ def drop_tables():
                 TradeStatus,
                 BookStatus,
                 BookCondition,
+                BookRentingRequest,
+                BookRenting,
                 BookToRent,
                 BookTradeWant,
                 BookTradeHave,

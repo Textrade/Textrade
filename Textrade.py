@@ -703,7 +703,63 @@ def rental_requests():
     )
 
 
-@app.route('/dashboard/rentals/')
+@app.route('/dashboard/rentals-requests/request-book/<int:book_id>/',)
+@login_required
+def request_book(book_id):
+    try:
+        status = models.BookToRent.get(BookToRent.id == book_id).is_available()
+    except models.DoesNotExist:
+        flash("The book that you are trying to request doesn't exists", "error")
+        return redirect(url_for('rental_requests'))
+    else:
+        try:
+            models.BookRentingRequest.get(
+                (models.BookRentingRequest.book == book_id) &
+                (models.BookRentingRequest.rentee == get_current_user().username)
+            )
+        except models.DoesNotExist:
+            if status:
+                request_book_rent(book_id=book_id, username=get_current_user().username)
+                flash("Your book have been requested!", "success")
+                # TODO: Send email confirmation
+                return redirect(url_for('rental_requests'))
+            else:
+                flash("The book that you are trying to request is not available at this time", "error")
+                return redirect(url_for('rental_requests'))
+        else:
+            flash("You have requested this book already", "error")
+            return redirect(url_for('rental_requests'))
+
+
+@app.route('/dashboard/rentals-requests/accept-requests/<int:request_id>/')
+@login_required
+def accept_rental_request(request_id):
+    try:
+        request = models.BookRentingRequest.get(
+            models.BookRentingRequest.id == request_id
+        )
+    except models.DoesNotExist:
+        flash("This request doesn't exists", "error")
+        return redirect(url_for('rental_requests'))
+    else:
+        book = models.BookToRent.get(
+            models.BookToRent.id == request.book
+        )
+        renter = book.username
+
+        if get_current_user().username == renter.username:
+            accept_request_to_rent(request_id)
+            flash(
+                "You have accepted this requests, you will get an email with instruction on how to proceed",
+                "success"
+            )
+            return redirect(url_for('rental_requests'))
+        else:
+            flash("You are not the owner of this book.")
+            return redirect(url_for('rental_requests'))
+
+
+@app.route('/dashboard/trades/')
 @login_required
 def trades():
     return render_template(

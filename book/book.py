@@ -3,7 +3,8 @@ import json
 
 from peewee import DoesNotExist
 
-from models import BookToRent, BookTradeWant, BookTradeHave, WishList
+from models import (BookToRent, BookTradeWant, BookTradeHave, WishList, BookRentingRequest,
+                    BookRenting)
 
 
 class DuplicateEntry(Exception):
@@ -33,6 +34,28 @@ def create_book_rent(**kwargs):
         available='available',
         # image_path=kwargs['img_path']
     )
+
+
+def request_book_rent(book_id, username):
+    """This function request a book to be rented."""
+    BookRentingRequest.create(
+        book=book_id,
+        rentee=username,
+    )
+
+
+def accept_request_to_rent(request_id):
+    """This function accept a request to rent."""
+    request = BookRentingRequest.get(BookRentingRequest.id == request_id)
+    book = BookToRent.get(BookToRent.id == request.book)
+
+    BookRenting.create(
+        book=book.id,
+        renter=book.username.username,
+        rentee=request.rentee.username
+    )
+
+    request.delete_instance()
 
 
 def delete_book_rent(book_id):
