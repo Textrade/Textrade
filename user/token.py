@@ -1,6 +1,5 @@
 from itsdangerous import URLSafeSerializer, BadSignature
 from flask.ext.mail import Message
-from Textrade import mail
 
 
 def generate_confirmation_token(email, secret_key):
@@ -23,7 +22,7 @@ def confirm_token(token, secret_key, expiration=3600):
     return email
 
 
-def send_email(to, subject, template, sender):
+def send_email(mail, to, subject, template, sender):
     """Send an email"""
     msg = Message(
         subject,

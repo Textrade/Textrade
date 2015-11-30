@@ -84,8 +84,8 @@ app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
 app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
 app.config['CSRF_ENABLED'] = True
 DEBUG = False
-# HOST = "127.0.0.1"
-# PORT = 5000
+HOST = "127.0.0.1"
+PORT = 5006
 
 #
 #
@@ -94,14 +94,14 @@ DEBUG = False
 #
 #
 #
-mail = Mail()
+MAIL = Mail()
 app.config['MAIL_SERVER'] = "smtp.gmail.com"
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_SENDER'] = "Textrade <umltextrade@gmail.com>"
 app.config['MAIL_USERNAME'] = "umltextrade@gmail.com"
 app.config['MAIL_PASSWORD'] = "Angell100."
-mail.init_app(app)
+MAIL.init_app(app)
 
 #
 #
@@ -253,7 +253,7 @@ def page_not_page(e):
 
 @app.errorhandler(500)
 def internal_error(e):
-    return "We have a internal error =(", 500
+    return "We have a internal error =(", e
 
 
 @app.route('/')
@@ -355,7 +355,7 @@ def register():
                 university_email=reg_form.university_email.data,
             )
             flash("User created successfully!", "success")
-            token = generate_confirmation_token(reg_form.university_email.data)
+            token = generate_confirmation_token(reg_form.university_email.data, secret_key=app.secret_key)
             html = render_template(
                 'email/verifyNewAccount/verification.html',
                 token=token,
@@ -366,7 +366,9 @@ def register():
             send_email(
                 to=reg_form.university_email.data,
                 subject=subject,
-                template=html
+                template=html,
+                sender=app.config['MAIL_SENDER'],
+                mail=MAIL
             )
             flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
@@ -405,7 +407,8 @@ def confirm_email(token):
             to=user.university_email,
             subject=subject,
             template=html,
-            sender=app.config['MAIL_SENDER']
+            sender=app.config['MAIL_SENDER'],
+            mail=MAIL
         )
         flash("Your email have been confirmed.", "success")
     return redirect(url_for('dashboard'))
@@ -432,7 +435,8 @@ def resend_token():
             to=email,
             subject=subject,
             template=html,
-            sender=app.config['MAIL_SENDER']
+            sender=app.config['MAIL_SENDER'],
+            mail=MAIL
         )
         flash("The activation link have been resend!")
         return redirect(url_for('login'))
@@ -452,7 +456,7 @@ def forgot_credentials():
         except models.DoesNotExist:
             flash("This email is not in our system")
             return redirect(url_for('login'))
-        token = generate_confirmation_token(email)
+        token = generate_confirmation_token(email, app.secret_key)
         html = render_template(
             'email/forgotPassword/forgotPassword.html',
             token=token,
@@ -462,7 +466,9 @@ def forgot_credentials():
         send_email(
             to=email,
             subject=subject,
-            template=html
+            template=html,
+            sender=app.config['MAIL_SENDER'],
+            mail=MAIL
         )
         flash("We've sent you an email with a link to reset your password.")
         return redirect(url_for('login'))
@@ -474,7 +480,7 @@ def forgot_credentials():
 
 @app.route('/user/forgot/<token>/', methods=('POST', 'GET'))
 def change_credentials(token):
-    email = confirm_token(token)
+    email = confirm_token(token, app.secret_key)
     if email:
         try:
             user = models.User.get(models.User.university_email == email)
@@ -816,4 +822,4 @@ def account_history():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=DEBUG, host=HOST, port=PORT)
