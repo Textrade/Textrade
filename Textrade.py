@@ -382,7 +382,7 @@ def register():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/user/activate/<token>/')
+@app.route('/user/activate/<string:token>/')
 def confirm_email(token):
     try:
         email = confirm_token(token, app.config['SECRET_KEY'])
