@@ -1,0 +1,1 @@
+web: gunicorn Textrade:app --log-file=-
