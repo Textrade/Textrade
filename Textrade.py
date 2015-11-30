@@ -668,13 +668,16 @@ def dashboard():
 @app.route('/dashboard/rentals/')
 @login_required
 def your_rentals():
+    user = get_current_user()
     return render_template(
         'dashboard/rentals.html',
         title="Your Rentals",
         rental_list=get_rentals(
-            get_current_user()
+            user
         ),
-        add_rental_form=AddBookRentForm()
+        add_rental_form=AddBookRentForm(),
+        currently_renting=get_currently_renting(user.username),
+        currently_renting_out=get_currently_renting_out(user.username)
     )
 
 

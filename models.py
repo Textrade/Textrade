@@ -143,6 +143,9 @@ class BookRenting(Model):
             self.book, self.renter, self.rentee
         )
 
+    def get_due_date(self):
+        return self.returning_date.strftime("%m/%d/%Y")
+
 
 class BookRentingRequest(Model):
     """BookRentingRequest model. This table will hold the renting until the renter accept."""

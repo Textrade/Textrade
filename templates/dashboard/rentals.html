@@ -66,7 +66,7 @@
           <hr class="col-xs-12">
           <div class="col-xs-12 col-md-6">
             <h3 class="col-xs-12">Your Rentals</h3>
-            <p style="margin-bottom:50px;" class="col-md-9">You are currently renting the following books from various Textrade renters. To change your payment preferences, or notification settings, please visit <a href="account-settings.html">Account Settings</a>.</p>
+            <p style="margin-bottom:50px;" class="col-md-9">You are currently renting the following books from various Textrade renters. To change your payment preferences, or notification settings, please visit <a href="{{ url_for('account_settings') }}">Account Settings</a>.</p>
             <div class="panel panel-default col-xs-12">
                 <div class="panel-heading">
                   <i class="fa fa-book fa-fw"></i><strong> Books You're Renting</strong>
@@ -84,14 +84,12 @@
                               </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                  <td>10/21/2013</td>
-                                  <td>The Title of This Book is Very Elaborate</td>
-                                </tr>
-                                <tr>
-                                  <td>10/21/2013</td>
-                                  <td>A Lot of Stuff About Math</td>
-                                </tr>
+                                {% for renting in currently_renting %}
+                                    <tr>
+                                      <td>{{ renting.get_due_date() }}</td>
+                                      <td>{{ renting.book.name }}</td>
+                                    </tr>
+                                {% endfor %}
                               </tbody>
                           </table>
                       </div>
@@ -126,21 +124,13 @@
                                 </tr>
                               </thead>
                               <tbody>
+                              {% for renting_out in currently_renting_out %}
                                   <tr>
-                                    <td>10/21/2013</td>
-                                    <td>This is the first book you're renting out</td>
-                                    <td>@username</td>
+                                    <td>{{ renting_out.get_due_date() }}</td>
+                                    <td>{{ renting_out.book.name }}</td>
+                                    <td>@{{ renting_out.rentee.username }}</td>
                                   </tr>
-                                  <tr>
-                                    <td>10/21/2013</td>
-                                    <td>Material Design Foundations</td>
-                                    <td>@username</td>
-                                  </tr>
-                                  <tr>
-                                    <td>10/21/2013</td>
-                                    <td>This is the Third Book You're Renting Out</td>
-                                    <td>@username</td>
-                                  </tr>
+                             {% endfor %}
                                 </tbody>
                             </table>
                         </div>

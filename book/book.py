@@ -62,8 +62,24 @@ def accept_request_to_rent(request_id):
         renter=request.renter.username,
         rentee=request.rentee.username
     )
-
+    BookToRent.update(
+        available="rented"
+    ).where(BookToRent.id == request.book.id).execute()
     request.delete_instance()
+
+
+def get_currently_renting(username):
+    """This functions gets the book that the passed user is
+    currently renting.
+    """
+    return BookRenting.select().where(BookRenting.rentee == username)
+
+
+def get_currently_renting_out(username):
+    """This function gets the book that the passed user is
+    currently renting out.
+    """
+    return BookRenting.select().where(BookRenting.renter == username)
 
 
 def get_renting_request_by_id(request_id):

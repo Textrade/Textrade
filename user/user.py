@@ -47,5 +47,10 @@ def get_user(book_id):
 
 def get_rentals(user):
     """This function return a list of books for rental of a user"""
-    return BookToRent.select().where(BookToRent.username == user.username)
+    return BookToRent.select().where(
+        ((BookToRent.available == "available") |
+         (BookToRent.available == "requested")
+         )&
+        (BookToRent.username == user.username)
+    )
 
