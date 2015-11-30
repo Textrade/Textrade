@@ -61,7 +61,7 @@ import models
 #
 from user.forms import (RegisterForm, LoginForm, ResendActivationEmailForm,
                         ForgotCredentialReset, ResetPassword)
-from user.user import create_user, get_user
+from user.user import create_user, get_user, get_rentals
 from user.token import *
 
 #
@@ -193,7 +193,7 @@ admin.add_view(
 #
 admin.add_view(
     TextradeModelView(
-        name="Book for Rent", model=models.BookRent, endpoint='book-rent', category="Book"
+        name="Book for Rent", model=models.BookToRent, endpoint='book-rent', category="Book"
     )
 )
 admin.add_view(
@@ -370,6 +370,9 @@ def register():
             )
             flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
+        for errors in reg_form.errors.items():
+            for error in errors[1]:
+                flash("{}".format(error))
         return redirect(url_for('login'))
     flash("You are logged in.")
     return redirect(url_for('dashboard'))
@@ -497,8 +500,8 @@ def user_page(username):
         user = models.User.get(models.User.username == username)
     except peewee.DoesNotExist:
         abort(404)
-    user_rent_books = models.BookRent.select().where(models.BookRent.username == username)
-    return render_template('user/user-page.html', user=user, rent_book=user_rent_books)
+    user_rent_books = models.BookToRent.select().where(models.BookToRent.username == username)
+    return render_template('user/profile.html', user=user, rent_book=user_rent_books)
 
 
 @app.route('/rent/')
@@ -508,7 +511,7 @@ def rent():
 
 @app.route('/rent/book/')
 def rent_all_book():
-    book = models.BookRent.select()
+    book = models.BookToRent.select()
     return "All book for rent available..."
 
 
@@ -592,7 +595,7 @@ def rent_user_book(username):
         user = models.User.get(models.User.username == username)
     except peewee.DoesNotExist:
         abort(404)
-    book_for_rent = models.User.select().where(models.BookRent.username == username)
+    book_for_rent = models.User.select().where(models.BookToRent.username == username)
     return "Book for rent for a particular user."
 
 
@@ -603,14 +606,14 @@ def rent_book(book_pk):
     except peewee.DoesNotExist:
         abort(404)
 
-    user_books = models.BookRent.select().where(models.BookRent.username == user.username)
+    user_books = models.BookToRent.select().where(models.BookToRent.username == user.username)
 
     try:
-        book_ = models.BookRent.get(models.BookRent.id == book_pk)
+        book_ = models.BookToRent.get(models.BookToRent.id == book_pk)
     except peewee.DoesNotExist:
         abort(404)
 
-    other_equal_books = models.BookRent.select().where(models.BookRent.isbn == book_.isbn)
+    other_equal_books = models.BookToRent.select().where(models.BookToRent.isbn == book_.isbn)
 
     return render_template(
         'book/book.html',
@@ -618,7 +621,7 @@ def rent_book(book_pk):
         user_books=user_books,
         book=book_,
         other_equal_books=other_equal_books,
-        joined=user.joined.strftime("%b. %Y")
+        joined=user.joined_to_string()
     )
 
 
@@ -629,7 +632,7 @@ def delete_book(book_pk):
     # Check if the user logged in match the book onwer.
     if book_owner.username == get_current_user():
         try:
-            models.BookRent.get(BookRent.id == book_pk).delete_instance()
+            models.BookToRent.get(BookToRent.id == book_pk).delete_instance()
         except models.DoesNotExist:
             flash("This book doesn't exists.")
         flash("The book have been deleted.")
@@ -668,13 +671,12 @@ def search():
 @app.route('/dashboard/')
 @login_required
 def dashboard():
-    c_user = flask_login.current_user
-    book_rent = models.BookRent.select().where(models.BookRent.username == get_current_user())
+    book_rent = models.BookToRent.select().where(models.BookToRent.username == get_current_user())
     wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
     have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
     return render_template(
         'dashboard/index.html',
-        c_user=c_user,
+        title="Dashboard",
         book_for_rent=book_rent,
         w_books=wanted_books,
         h_books=have_books,
@@ -686,38 +688,73 @@ def dashboard():
 @login_required
 def your_rentals():
     return render_template(
-        'dashboard/rentals.html'
+        'dashboard/rentals.html',
+        title="Your Rentals",
+        rental_list=get_rentals(
+            get_current_user()
+        )
     )
+
+
+@app.route('/dashboard/rentals/delete/<int:book_id>')
+@login_required
+def delete_rental_book(book_id):
+    username = models.BookToRent.get(BookToRent.id == book_id).username.username
+    if get_current_user().username == username:
+        try:
+            delete_book_rent(book_id)
+        except models.DoesNotExist:
+            flash("The book that you are try to delete doesn't exists.", "error")
+        flash("Your book was delete successfully.", "success")
+    else:
+        flash("You are trying to delete a book that is not yours, this will be reported.", "error")
+        # TODO: Report this to log.
+    return redirect(url_for('your_rentals'))
 
 
 @app.route('/dashboard/rentals-requests/')
 @login_required
 def rental_requests():
-    return render_template('dashboard/rental-requests.html')
+    return render_template(
+        'dashboard/rental-requests.html',
+        title="Rental Requests"
+    )
 
 
 @app.route('/dashboard/rentals/')
 @login_required
 def trades():
-    return render_template('dashboard/trades.html')
+    return render_template(
+        'dashboard/trades.html',
+        title="Trades"
+    )
 
 
 @app.route('/dashboard/trade-requests/')
 @login_required
 def trade_requests():
-    return render_template('dashboard/trade-requests.html')
+    return render_template(
+        'dashboard/trade-requests.html',
+        title="Trade Requests"
+    )
 
 
 @app.route('/dashboard/setting/')
 @login_required
 def account_settings():
-    return render_template('dashboard/account-settings.html')
+    return render_template(
+        'dashboard/account-settings.html',
+        title="Account Settings"
+    )
 
 
 @app.route('/dashboard/history/')
 @login_required
 def account_history():
-    return render_template('dashboard/history.html')
+    return render_template(
+        'dashboard/history.html',
+        title="History"
+    )
 
 
 if __name__ == '__main__':

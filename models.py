@@ -31,6 +31,7 @@ class UserRole(Model):
         return self.role
 
 
+# TODO: Review system.
 class User(UserMixin, Model):
     """User model."""
     first_name = CharField(max_length=255)
@@ -54,6 +55,9 @@ class User(UserMixin, Model):
 
     def get_name(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+    def joined_to_string(self):
+        return self.joined.strftime("%b. %Y")
 
 
 class TradeStatus(Model):
@@ -89,8 +93,8 @@ class BookCondition(Model):
         return "<BookCondition Model: {}>".format(self.condition)
 
 
-class BookRent(Model):
-    """BookRent model."""
+class BookToRent(Model):
+    """BookToRent model."""
     name = CharField(max_length=255)
     # edition = CharField(max_length=255)
     author = CharField(max_length=255)
@@ -107,7 +111,27 @@ class BookRent(Model):
         database = db
 
     def __str__(self):
-        return "<BookRent Model: {}>".format(self.name)
+        return "<BookToRent Model: {}>".format(self.name)
+
+    def date_listed(self):
+        return self.added.strftime("%m/%d/%Y")
+
+    def get_book_name(self):
+        return self.name
+
+
+# class BookRenting(Model):
+#     """BookRenting model. This table is for book that users are currently renting."""
+#     book = ForeignKeyField(BookToRent, to_field='name', related_name='book_for_renting')
+#     username = ForeignKeyField(User, to_field='username', related_name='username')
+#     rented_date = DateTimeField(default=datetime.datetime.now)
+#     returning_date = DateTimeField()
+#
+#     class Mata:
+#         database = db
+#
+#     def __str__(self):
+#         return "<BookRenting Model: {} - {}>".format(self.username, self.book)
 
 
 class BookTradeHave(Model):
@@ -142,8 +166,8 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    book_one = ForeignKeyField(BookRent, related_name='book_one_to_trade')
-    book_two = ForeignKeyField(BookRent, related_name='book_two_to_trade')
+    book_one = ForeignKeyField(BookToRent, related_name='book_one_to_trade')
+    book_two = ForeignKeyField(BookToRent, related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -156,7 +180,7 @@ class Trade(Model):
 
 class WishList(Model):
     """WishList model."""
-    book = ForeignKeyField(BookRent, related_name='book_wishList')
+    book = ForeignKeyField(BookToRent, related_name='book_wishList')
     username = ForeignKeyField(User, to_field='username')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -178,7 +202,7 @@ def create_tables():
                 TradeStatus,
                 BookStatus,
                 BookCondition,
-                BookRent,
+                BookToRent,
                 BookTradeWant,
                 BookTradeHave,
                 Trade,
@@ -206,7 +230,7 @@ def drop_tables():
                 TradeStatus,
                 BookStatus,
                 BookCondition,
-                BookRent,
+                BookToRent,
                 BookTradeWant,
                 BookTradeHave,
                 Trade,
@@ -228,6 +252,7 @@ def init_app():
         {'status': 'requested'},
         {'status': 'no_available'},
         {'status': 'available'},
+        {'status': 'rented'},
     ]
     trade_status = [
         {'status': 'completed'},
@@ -296,6 +321,17 @@ def init_app():
             'image_path': 'empty1',
         },
         {
+            'name': 'Physics For Scientist and Engineers',
+            # 'edition': '3rd',
+            'author': 'Randall D. Knight',
+            'description': 'Init',
+            'isbn': '978032175291',
+            'username': 'jsmith',
+            'available': 'available',
+            'condition': 'New',
+            'image_path': 'empty3',
+        },
+        {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
             # 'edition': '13th',
             'author': 'William J. Baumol & Alan S. Blinder',
@@ -315,7 +351,7 @@ def init_app():
             'username': 'jcook',
             'available': 'available',
             'condition': 'New',
-            'image_path': 'empty3',
+            'image_path': 'empty4',
         },
     ]
     try:
@@ -325,7 +361,7 @@ def init_app():
             BookCondition.insert_many(books_condition).execute()
             TradeStatus.insert_many(trade_status).execute()
             User.insert_many(users).execute()
-            BookRent.insert_many(rent_books).execute()
+            BookToRent.insert_many(rent_books).execute()
         User.create(
             first_name="admin", last_name="admin",
             username="admin", password=generate_password_hash("admin"),

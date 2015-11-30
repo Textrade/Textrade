@@ -3,7 +3,7 @@ import json
 
 from peewee import DoesNotExist
 
-from models import BookRent, BookTradeWant, BookTradeHave, WishList
+from models import BookToRent, BookTradeWant, BookTradeHave, WishList
 
 
 class DuplicateEntry(Exception):
@@ -21,7 +21,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 
 def create_book_rent(**kwargs):
     """Create a book for rent."""
-    BookRent.create(
+    BookToRent.create(
         name=kwargs['name'],
         author=kwargs['author'],
         description=kwargs['description'],
@@ -32,6 +32,11 @@ def create_book_rent(**kwargs):
         available='available',
         image_path=kwargs['img_path']
     )
+
+
+def delete_book_rent(book_id):
+    """This function delete a book for rent."""
+    BookToRent.get(BookToRent.id == book_id).delete_instance()
 
 
 def create_book_trade(**kwargs):
@@ -67,7 +72,7 @@ def load_book_info(isbn):
 
 
 def get_book_rent(book_pk):
-    return BookRent.get(BookRent.id == book_pk)
+    return BookToRent.get(BookToRent.id == book_pk)
 
 
 def add_to_wishlist(book_pk, username):
@@ -75,7 +80,7 @@ def add_to_wishlist(book_pk, username):
     try:
         wishlist = WishList.get((WishList.username == username) & (WishList.book == book_pk))
     except DoesNotExist:
-        book = BookRent.get(BookRent.id == book_pk)
+        book = BookToRent.get(BookToRent.id == book_pk)
         if not book.username.username == username:
             WishList.create(
                 book=book_pk,
