@@ -85,7 +85,7 @@ app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
 app.config['CSRF_ENABLED'] = True
 DEBUG = False
 HOST = "127.0.0.1"
-PORT = 5006
+PORT = 5000
 
 #
 #
@@ -363,13 +363,15 @@ def register():
 
             )
             subject = "Confirm email and activate your account!"
-            send_email(
-                to=reg_form.university_email.data,
-                subject=subject,
-                template=html,
-                sender=app.config['MAIL_SENDER'],
-                mail=MAIL
+
+            msg = Message(
+                subject,
+                recipients=[reg_form.university_email.data],
+                html=html,
+                sender=app.config['MAIL_SENDER']
             )
+            MAIL.send(msg)
+
             flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
         for errors in reg_form.errors.items():
@@ -403,13 +405,15 @@ def confirm_email(token):
             centi=1
         )
         subject = "You account is active!"
-        send_email(
-            to=user.university_email,
-            subject=subject,
-            template=html,
-            sender=app.config['MAIL_SENDER'],
-            mail=MAIL
+
+        msg = Message(
+            subject,
+            recipients=[user.university_email],
+            html=html,
+            sender=app.config['MAIL_SENDER']
         )
+        MAIL.send(msg)
+
         flash("Your email have been confirmed.", "success")
     return redirect(url_for('dashboard'))
 
@@ -431,13 +435,15 @@ def resend_token():
             name=user.first_name
         )
         subject = "Confirm email and activate your account!"
-        send_email(
-            to=email,
-            subject=subject,
-            template=html,
-            sender=app.config['MAIL_SENDER'],
-            mail=MAIL
+
+        msg = Message(
+            subject,
+            recipients=[email],
+            html=html,
+            sender=app.config['MAIL_SENDER']
         )
+        MAIL.send(msg)
+
         flash("The activation link have been resend!")
         return redirect(url_for('login'))
     for errors in form.errors.items():
@@ -463,13 +469,15 @@ def forgot_credentials():
             name=user.first_name
         )
         subject = "Reset password request"
-        send_email(
-            to=email,
-            subject=subject,
-            template=html,
-            sender=app.config['MAIL_SENDER'],
-            mail=MAIL
+
+        msg = Message(
+            subject,
+            recipients=[email],
+            html=html,
+            sender=app.config['MAIL_SENDER']
         )
+        MAIL.send(msg)
+
         flash("We've sent you an email with a link to reset your password.")
         return redirect(url_for('login'))
     for errors in form.errors.items():
