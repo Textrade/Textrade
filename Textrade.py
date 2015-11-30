@@ -722,7 +722,7 @@ def request_book(book_id):
             )
         except models.DoesNotExist:
             if status:
-                request_book_rent(book_id=book_id, username=get_current_user().username)
+                create_request_book_rent(book_id=book_id, username=get_current_user().username)
                 flash("This book have been requested!", "success")
                 # TODO: Send email confirmation
                 return redirect(url_for('rental_requests'))
@@ -760,6 +760,18 @@ def accept_rental_request(request_id):
         else:
             flash("You are not the owner of this book.")
             return redirect(url_for('rental_requests'))
+
+
+@app.route('/dashboard/rentals-requests/delete-request/<int:request_id>/')
+@login_required
+def delete_rental_request(request_id):
+    try:
+        delete_request_book_rent(request_id, get_current_user().username)
+    except models.DoesNotExist:
+        flash("This request doesn't exists", "error")
+        return redirect(url_for('rental_requests'))
+    flash("The request was deleted successfully", "success")
+    return redirect(url_for('rental_requests'))
 
 
 @app.route('/dashboard/trades/')

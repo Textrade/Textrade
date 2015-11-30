@@ -1,4 +1,5 @@
 {% extends 'dashboard/dashboard_base.html' %}
+{% from 'dashboard/modals/delete_rental_request.html' import delete_rental_request_modal %}
 {% block content %}
     <div id="page-wrapper">
       <div class="row">
@@ -99,11 +100,12 @@
                                   <span class="caret"></span>
                                 </button>
                                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                  <li><a data-toggle="modal" data-target="#delete-rental-request">Delete Request</a></li>
+                                  <li><a data-toggle="modal" data-target="#delete-rental-request-{{ out_rental.id }}">Delete Request</a></li>
                                   </ul>
                                 </div>
                               </td>
                             </tr>
+                            {{ delete_rental_request_modal(out_rental) }}
                             {% endfor %}
                         </tbody>
                       </table>
@@ -165,26 +167,6 @@
                 </div>
             </div>
         </div>
-        <!-- Modal: Delete Rental Request -->
-        <div class="modal fade" id="delete-rental-request" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 class="modal-title" id="myModalLabel">Delete Rental Request: Confirmation</h3>
-                    </div>
-                    <p style="padding: 20px;">Are you sure you want to delete the following rental request?</p>
-                    <ul>
-                        <li><strong>Title:</strong> Advanced Mathematics</li>
-                        <li><strong>Cost:</strong> $55/semester</li>
-                        <li><strong>To:</strong> @username</li>
-                    </ul>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Yes, Delete Request</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 {% endblock %}

@@ -36,13 +36,21 @@ def create_book_rent(**kwargs):
     )
 
 
-def request_book_rent(book_id, username):
+def create_request_book_rent(book_id, username):
     """This function request a book to be rented."""
     BookRentingRequest.create(
         book=book_id,
         renter=BookToRent.get(BookToRent.id == book_id).username.username,
         rentee=username,
     )
+
+
+def delete_request_book_rent(request_id, rentee):
+    """This function delete a request to rent."""
+    BookRentingRequest.get(
+        (BookRentingRequest.id == request_id) &
+        (BookRentingRequest.rentee == rentee)
+    ).delete_instance()
 
 
 def accept_request_to_rent(request_id):
