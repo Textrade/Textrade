@@ -13,17 +13,23 @@ def check_file(ALLOWED_EXTENSIONS, filename):
 
 class AddBookRentForm(Form):
     """Form to add a book for rent"""
+    book = StringField(
+        'Book Title (Edition)',
+        validators=[
+            DataRequired(),
+        ]
+    )
     isbn = StringField(
         'ISBN',
         validators=[
             DataRequired(),
             Regexp(
-                r'^[0-9a-zA-Z-]+$',
+                r'^[0-9-]+$',
                 message="ISBN can only be numbers"
             )
         ]
     )
-    condition_list = [('', 'Select Condition')]
+    condition_list = []
     for condition in BookCondition.select():
         condition_list.append((condition.condition, condition.condition))
 
@@ -31,16 +37,17 @@ class AddBookRentForm(Form):
         'Condition',
         choices=condition_list,
         validators=[
-            DataRequired(message="Please let us know what is the condition."),
+            DataRequired(message="Please let us know what is the condition"),
         ]
     )
-    condition_comment = TextAreaField()
-    img = FileField(
-        'Upload a picture',
-        validators=[
-            DataRequired(message="Please provide a picture, people want to see your book.")
-        ]
-    )
+    condition_comment = TextAreaField('Book condition comments (if any)')
+    marks = BooleanField('Are there markings inside the book? (Notes in margins etc.?)')
+    # img = FileField(
+    #     'Upload a picture',
+    #     validators=[
+    #         DataRequired(message="Please provide a picture, people want to see your book.")
+    #     ]
+    # )
 
 
 class AddBookTradeForm(Form):

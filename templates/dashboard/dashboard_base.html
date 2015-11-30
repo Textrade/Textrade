@@ -9,25 +9,25 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>{{ title }} | Textrade</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/dashboard/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+    <link href="/static/dashboard/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
     <!-- Timeline CSS -->
-    <link href="../dist/css/timeline.css" rel="stylesheet">
+    <link href="/static/dashboard/dist/css/timeline.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/static/dashboard/dist/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="../bower_components/morrisjs/morris.css" rel="stylesheet">
+    <link href="/static/dashboard/bower_components/morrisjs/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/dashboard/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Textrade | Dashboard</a>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Textrade | Dashboard</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -251,12 +251,12 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="{{ url_for('user_page', username=g.user.username) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <li><a href="{{ url_for('account_settings') }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -281,16 +281,16 @@
                         </li>
                         -->
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="{{ url_for('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-book fa-fw"></i> Rent<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="rentals.html">Your Rentals</a>
+                                    <a href="{{ url_for('your_rentals') }}">Your Rentals</a>
                                 </li>
                                 <li>
-                                    <a href="rental-requests.html">Rentals Requests</a>
+                                    <a href="{{ url_for('rental_requests') }}">Rentals Requests</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -299,10 +299,10 @@
                             <a href="#"><i class="fa fa-book fa-fw"></i> Trade<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="trades.html">Trade Listings</a>
+                                    <a href="{{ url_for('trades') }}">Trade Listings</a>
                                 </li>
                                 <li>
-                                    <a href="trade-requests.html">Trade Requests</a>
+                                    <a href="{{ url_for('trade_requests') }}">Trade Requests</a>
                                 </li>
                             </ul>
                         </li>
@@ -310,12 +310,21 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Your Account<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="account-settings.html">Settings</a>
+                                    <a href="{{ url_for('account_settings') }}">Settings</a>
                                 </li>
                                 <li>
-                                    <a href="history.html">History</a>
+                                    <a href="{{ url_for('account_history') }}">History</a>
                                 </li>
                             </ul>
+                        </li>
+                        <li>
+                            {% with messeages = get_flashed_messages(with_categories=True) %}
+                                {% if messeages %}
+                                    {% for msg in messeages %}
+                                        <p>{{ msg[1] }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
                         </li>
                     </ul>
                 </div>
@@ -324,50 +333,28 @@
             <!-- /.navbar-static-side -->
         </nav>
 
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-            <div class="row">
-              <div class="col-xs-12">
-                <h2>Hi Jim</h2>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 welcome">
-                <h3>Welcome to Textrade!</h3>
-                <p>We're really excited you've joined us!</p>
-                <p>
-                  <strong>To list your textbooks as available to rent, go to "Your Rentals" in the navigation menu</strong>
-                </p>
-              </div>
-            </div>
-        </div>
-        <!-- /#page-wrapper -->
+        {% block content %}
+        {% endblock %}
 
-    </div>
+      </div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/static/dashboard/bower_components/jquery/dist/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/static/dashboard/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <script src="/static/dashboard/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
-    <script src="../bower_components/raphael/raphael-min.js"></script>
-    <script src="../bower_components/morrisjs/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
+    <script src="/static/dashboard/bower_components/raphael/raphael-min.js"></script>
+    <script src="/static/dashboard/bower_components/morrisjs/morris.min.js"></script>
+    <script src="/static/dashboard/js/morris-data.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="/static/dashboard/dist/js/sb-admin-2.js"></script>
 
 </body>
 

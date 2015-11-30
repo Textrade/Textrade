@@ -31,6 +31,7 @@ class UserRole(Model):
         return self.role
 
 
+# TODO: Review system.
 class User(UserMixin, Model):
     """User model."""
     first_name = CharField(max_length=255)
@@ -50,7 +51,13 @@ class User(UserMixin, Model):
         database = db
 
     def __str__(self):
-        return self.username
+        return "<User Model: {}>".format(self.username)
+
+    def get_name(self):
+        return "{} {}".format(self.first_name, self.last_name)
+
+    def joined_to_string(self):
+        return self.joined.strftime("%b. %Y")
 
 
 class TradeStatus(Model):
@@ -61,7 +68,7 @@ class TradeStatus(Model):
         database = db
 
     def __str__(self):
-        return self.status
+        return "<TradeStatus Model: {}>".format(self.status)
 
 
 class BookStatus(Model):
@@ -72,22 +79,23 @@ class BookStatus(Model):
         database = db
 
     def __str__(self):
-        return self.status
+        return "<BookStatus Model: {}>".format(self.status)
 
 
 class BookCondition(Model):
     """List of condition for the books."""
     condition = CharField(max_length=255, unique=True)
+    label = CharField(max_length=255)
 
     class Meta:
         database = db
 
     def __str__(self):
-        return self.condition
+        return "<BookCondition Model: {}>".format(self.condition)
 
 
-class BookRent(Model):
-    """BookRent model."""
+class BookToRent(Model):
+    """BookToRent model."""
     name = CharField(max_length=255)
     # edition = CharField(max_length=255)
     author = CharField(max_length=255)
@@ -95,16 +103,65 @@ class BookRent(Model):
     isbn = CharField(max_length=255)
     condition = ForeignKeyField(BookCondition, to_field='condition', related_name='book')
     condition_comment = TextField(default="")
+    marks = BooleanField(default=False)
     username = ForeignKeyField(User, to_field='username', related_name='book')
     available = ForeignKeyField(BookStatus, to_field='status', related_name='book')
     added = DateTimeField(default=datetime.datetime.now)
-    image_path = CharField(max_length=255, unique=True)
+    # image_path = CharField(max_length=255, unique=True)
     
     class Meta:
         database = db
 
     def __str__(self):
+        return "<BookToRent Model: {}>".format(self.name)
+
+    def date_listed(self):
+        return self.added.strftime("%m/%d/%Y")
+
+    def get_book_name(self):
         return self.name
+
+    def is_available(self):
+        if self.available.status == "available":
+            return 1
+        return 0
+
+
+class BookRenting(Model):
+    """BookRenting model. This table is for book that users are currently renting."""
+    book = ForeignKeyField(BookToRent, to_field='id', related_name='book_for_renting')
+    renter = ForeignKeyField(User, to_field='username', related_name='renter_user')
+    rentee = ForeignKeyField(User, to_field='username', related_name='rentee_user')
+    rented_date = DateTimeField(default=datetime.datetime.now)
+    returning_date = DateTimeField(default=(datetime.datetime.now() + datetime.timedelta(weeks=18)))
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return "<BookRenting Model: {} - {} <-> {}>".format(
+            self.book, self.renter, self.rentee
+        )
+
+    def get_due_date(self):
+        return self.returning_date.strftime("%m/%d/%Y")
+
+
+class BookRentingRequest(Model):
+    """BookRentingRequest model. This table will hold the renting until the renter accept."""
+    book = ForeignKeyField(BookToRent, to_field='id', related_name='book_requested')
+    renter = ForeignKeyField(User, to_field='username', related_name='renter_requested')
+    rentee = ForeignKeyField(User, to_field='username', related_name='user_requesting')
+    date_requested = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        database = db
+
+    def __str__(self):
+        return "<BookRentingRequest Model: {} - {}>".format(self.book, self.rentee)
+
+    def date_requested_to_string(self):
+        return self.date_requested.strftime("%m/%d/%Y")
 
 
 class BookTradeHave(Model):
@@ -118,7 +175,7 @@ class BookTradeHave(Model):
         database = db
 
     def __str__(self):
-        return self.isbn
+        return "<BookTradeHave Model: {}>".format(self.isbn)
 
 
 class BookTradeWant(Model):
@@ -132,15 +189,15 @@ class BookTradeWant(Model):
         database = db
 
     def __str__(self):
-        return self.isbn
+        return "<BookTradeWant Model: {}>".format(self.isbn)
 
 
 class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    book_one = ForeignKeyField(BookRent, related_name='book_one_to_trade')
-    book_two = ForeignKeyField(BookRent, related_name='book_two_to_trade')
+    book_one = ForeignKeyField(BookToRent, related_name='book_one_to_trade')
+    book_two = ForeignKeyField(BookToRent, related_name='book_two_to_trade')
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -153,7 +210,7 @@ class Trade(Model):
 
 class WishList(Model):
     """WishList model."""
-    book = ForeignKeyField(BookRent, related_name='book_wishList')
+    book = ForeignKeyField(BookToRent, related_name='book_wishList')
     username = ForeignKeyField(User, to_field='username')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -175,7 +232,9 @@ def create_tables():
                 TradeStatus,
                 BookStatus,
                 BookCondition,
-                BookRent,
+                BookToRent,
+                BookRenting,
+                BookRentingRequest,
                 BookTradeWant,
                 BookTradeHave,
                 Trade,
@@ -203,7 +262,9 @@ def drop_tables():
                 TradeStatus,
                 BookStatus,
                 BookCondition,
-                BookRent,
+                BookRentingRequest,
+                BookRenting,
+                BookToRent,
                 BookTradeWant,
                 BookTradeHave,
                 Trade,
@@ -225,6 +286,7 @@ def init_app():
         {'status': 'requested'},
         {'status': 'no_available'},
         {'status': 'available'},
+        {'status': 'rented'},
     ]
     trade_status = [
         {'status': 'completed'},
@@ -265,19 +327,24 @@ def init_app():
     ]
     books_condition = [
         {
-            'condition': 'New',
-        },
-        {
             'condition': 'Like New',
+            'label': '',
         },
         {
-            'condition': 'Used',
+            'condition': 'Very Good',
+            'label': 'Minimal wear on cover, otherwise perfect',
         },
         {
             'condition': 'Good',
+            'label': 'Some wear on the cover, spine, and pages',
+        },
+        {
+            'condition': 'Fair',
+            'label': 'Noticeable wear on the cover, spine and pages',
         },
         {
             'condition': 'Bad',
+            'label': 'Clear evidence of heavy use',
         },
     ]
     rent_books = [
@@ -289,8 +356,19 @@ def init_app():
             'isbn': '9780133807806',
             'username': 'jsmith',
             'available': 'available',
+            'condition': 'Fair',
+            # 'image_path': 'empty1',
+        },
+        {
+            'name': 'Physics For Scientist and Engineers',
+            # 'edition': '3rd',
+            'author': 'Randall D. Knight',
+            'description': 'Init',
+            'isbn': '978032175291',
+            'username': 'jsmith',
+            'available': 'available',
             'condition': 'Good',
-            'image_path': 'empty1',
+            # 'image_path': 'empty3',
         },
         {
             'name': 'MICROECONOMICS PRINCIPLES and POLICY',
@@ -300,8 +378,8 @@ def init_app():
             'isbn': '9781305280618',
             'username': 'myork',
             'available': 'available',
-            'condition': 'Used',
-            'image_path': 'empty2',
+            'condition': 'Like New',
+            # 'image_path': 'empty2',
         },
         {
             'name': 'Physics For Scientist and Engineers',
@@ -311,8 +389,8 @@ def init_app():
             'isbn': '978032175291',
             'username': 'jcook',
             'available': 'available',
-            'condition': 'New',
-            'image_path': 'empty3',
+            'condition': 'Bad',
+            # 'image_path': 'empty4',
         },
     ]
     try:
@@ -322,7 +400,7 @@ def init_app():
             BookCondition.insert_many(books_condition).execute()
             TradeStatus.insert_many(trade_status).execute()
             User.insert_many(users).execute()
-            BookRent.insert_many(rent_books).execute()
+            BookToRent.insert_many(rent_books).execute()
         User.create(
             first_name="admin", last_name="admin",
             username="admin", password=generate_password_hash("admin"),

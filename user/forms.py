@@ -63,6 +63,15 @@ class RegisterForm(Form):
             )
         ]
     )
+    university_email = StringField(
+        'University Email',
+        validators=[
+            DataRequired(),
+            Email(),
+            is_uml_email,
+            university_email_exits
+        ]
+    )
     username = StringField(
         'Username',
         validators=[
@@ -98,38 +107,29 @@ class RegisterForm(Form):
     #         )
     #     ]
     # )
-    university_email = StringField(
-        'University Email',
-        validators=[
-            DataRequired(),
-            Email(),
-            is_uml_email,
-            university_email_exits
-        ]
-    )
-    personal_email = StringField(
-        'Personal Email (Optional)',
-        validators=[
-            Email(),
-            personal_email_exits
-        ]
-    )
+
+    # personal_email = StringField(
+    #     'Personal Email (Optional)',
+    #     validators=[
+    #         Email(),
+    #         personal_email_exits
+    #     ]
+    # )
 
 
 class LoginForm(Form):
     """Login user form."""
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
 
 
-class ResendToken(Form):
+class ResendActivationEmailForm(Form):
     """Resend token form when activating user."""
     university_email = StringField(
-        'Universiry Email',
+        'Email',
         validators=[
             DataRequired(),
             Email(),
-            is_uml_email,
             university_email_does_not_exits,
         ]
     )
@@ -138,11 +138,10 @@ class ResendToken(Form):
 class ForgotCredentialReset(Form):
     """Form to send reset email with verification."""
     university_email = StringField(
-        'University Email',
+        'Email',
         validators=[
             DataRequired(),
             Email(),
-            is_uml_email,
             university_email_does_not_exits
         ]
     )

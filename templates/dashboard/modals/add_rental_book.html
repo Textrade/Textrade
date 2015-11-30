@@ -1,0 +1,26 @@
+{% from 'default/macros_modal_form.html' import render_modal_form %}
+{% macro add_rental_book(form) %}
+    <!-- Modal: Add Listing for Rent Confirmation -->
+    <div class="modal fade" id="addBookForRent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title" id="myModalLabel">Request for New Rental Listing</h3>
+                </div>
+              <form action="{{ url_for('add_book_rent') }}" method="post" class="form-horizontal">
+                <div class="modal-body">
+                    {{ form.hidden_tag() }}
+                      {% for field in form %}
+                        {{ render_modal_form(field) }}
+                      {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send Request for Listing</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

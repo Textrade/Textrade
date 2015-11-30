@@ -1,6 +1,6 @@
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 
-from models import User, BookRent
+from models import User, BookToRent
 
 
 def create_user(**kwargs):
@@ -13,7 +13,6 @@ def create_user(**kwargs):
         # TODO: when expansion to different schools
         # university_name=kwargs['university_name'],
         university_email=kwargs['university_email'],
-        personal_email=kwargs['personal_email']
     )
 
 
@@ -40,6 +39,21 @@ def delete_user(username, password):
 
 
 def get_user(book_id):
-    """This funtion get an user object from the rent book object in the database."""
-    __user = BookRent.get(BookRent.id == book_id)
-    return __user
+    """This function get an user object from the rent book object in the database."""
+    book = BookToRent.get(BookToRent.id == book_id)
+    print(book.username)
+    return book.username
+
+
+def get_rentals(user):
+    """This function return a list of books for rental of a user"""
+    return BookToRent.select().where(
+        (
+            # Makes sure that the status of the book is available or requested
+            (BookToRent.available == "available") |
+            (BookToRent.available == "requested")
+         ) &
+        # Get only the rentals of the passed user
+        (BookToRent.username == user.username)
+    )
+

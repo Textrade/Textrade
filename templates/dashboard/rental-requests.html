@@ -1,0 +1,133 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% from 'dashboard/modals/outgoing_rental_request_modal.html' import delete_rental_request_modal %}
+{% from 'dashboard/modals/incoming_rental_request_modal.html' import accept_rental_request_modal, decline_rental_request_modal %}
+{% block content %}
+    <div id="page-wrapper">
+      <div class="row">
+        <h1 class="page-header">Rental Requests</h1>
+        <div class="col-xs-12 col-md-6">
+              <h3>Incoming Requests</h3>
+          <p style="margin-bottom:50px;">Oh man! You're so popular. The following titles have been requested by Textrade users looking to rent. Appropve or decline the following rental requests.</p>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <i class="fa fa-book fa-fw"></i> <strong>Incoming Rental Requests</strong>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Cost</th>
+                            <th>Renting To</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for in_rental in incoming_rentals %}
+                              <tr>
+                                <td>{{ in_rental.date_requested_to_string() }}</td>
+                                <td>{{ in_rental.book.name }}</td>
+                                  {#  TODO: Integrate price to model #}
+                                <td>$50</td>
+                                <td>@{{ in_rental.rentee.username }}</td>
+                                <td>
+                                  <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                      Approve/Decline
+                                      <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                      <li><a data-toggle="modal" data-target="#accept-rental-request-{{ in_rental.id }}">Approve</a></li>
+                                      <li><a data-toggle="modal" data-target="#decline-rental-request-{{ in_rental.id }}">Decline</a></li>
+                                    </ul>
+                                  </div>
+                                </td>
+                              </tr>
+                            {# Include the modals to accept and decline incoming requests #}
+                            {{ accept_rental_request_modal(in_rental) }}
+                            {{ decline_rental_request_modal(in_rental) }}
+                          {% endfor %}
+
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                  </div>
+                  <!-- /.col-lg-8 (nested) -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+          </div> <!-- /.panel -->
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <!-- Books users is trying to rent -->
+              <h3>Pending Requests</h3>
+          <p style="margin-bottom:50px;">You've submited rental requests for the following titles. The owner of these titles have yet to accept or decline your requests. You can delete any rental requests using the drop down menu in the action column</p>
+          <!-- Books users want in return for trades -->
+          <div class="col-xs-12" style="margin-bottom:30px;">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                  <i class="fa fa-book fa-fw"></i> <strong>Pending</strong> Rental Requests
+              </div>
+              <!-- /.panel-heading -->
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Title</th>
+                            <th>Cost</th>
+                            <th>Renting From</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for out_rental in outgoing_rentals %}
+                            <tr>
+                              <td>{{ out_rental.date_requested_to_string() }}</td>
+                              <td>{{ out_rental.book.name }}</td>
+                                <td>$50</td>
+                              <td>@{{ out_rental.renter.username }}</td>
+                              <td>
+                                <div class="dropdown">
+                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  Action
+                                  <span class="caret"></span>
+                                </button>
+                                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                  <li><a data-toggle="modal" data-target="#delete-rental-request-{{ out_rental.id }}">Delete Request</a></li>
+                                  </ul>
+                                </div>
+                              </td>
+                            </tr>
+                            {{ delete_rental_request_modal(out_rental) }}
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                  </div>
+                  <!-- /.col-lg-8 (nested) -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.panel-body -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- /.row -->
+      <div class="row">
+      </div>
+    </div>
+{% endblock %}

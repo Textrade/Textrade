@@ -59,9 +59,9 @@ import models
 #   USER IMPORTS
 #
 #
-from user.forms import (RegisterForm, LoginForm, ResendToken,
+from user.forms import (RegisterForm, LoginForm, ResendActivationEmailForm,
                         ForgotCredentialReset, ResetPassword)
-from user.user import create_user, get_user
+from user.user import create_user, get_user, get_rentals
 from user.token import *
 
 #
@@ -193,7 +193,7 @@ admin.add_view(
 #
 admin.add_view(
     TextradeModelView(
-        name="Book for Rent", model=models.BookRent, endpoint='book-rent', category="Book"
+        name="Book for Rent", model=models.BookToRent, endpoint='book-rent', category="Book"
     )
 )
 admin.add_view(
@@ -234,6 +234,7 @@ def load_user(userid):
 @app.before_request
 def before_request():
     """Connect to the database before a request."""
+    g.user = get_current_user()
     g.db = models.db
     g.db.connect()
 
@@ -247,7 +248,7 @@ def after_request(response):
 
 @app.errorhandler(404)
 def page_not_page(e):
-    return "The no found page!", 404
+    return render_template('misc/404.html'), 404
 
 
 @app.errorhandler(500)
@@ -257,12 +258,32 @@ def internal_error(e):
 
 @app.route('/')
 def index():
-    return render_template('default/index.html')
+    return render_template(
+        'default/index.html',
+        register_form=RegisterForm()
+    )
 
 
 @app.route('/team/')
 def team():
     return render_template('misc/the-team.html')
+
+
+@app.route('/contact-us/')
+@app.route('/contact/')
+def contact():
+    return render_template('misc/contact.html')
+
+
+@app.route('/our-services/')
+@app.route('/services/')
+def our_services():
+    return render_template('misc/our-services.html')
+
+
+@app.route('/faqs/')
+def faqs():
+    return render_template('misc/faqs.html')
 
 
 @app.route('/login/', methods=('GET', 'POST'))
@@ -273,7 +294,13 @@ def login():
 
         if login_form.validate_on_submit():
             username = login_form.username.data
-            current_user = models.User.get(models.User.username == username)
+            try:
+                current_user = models.User.get(models.User.username == username)
+            except models.DoesNotExist:
+                flash("Your username  or password doesn't match!", "error")
+                return redirect(url_for('login'))
+
+            # TODO: Check this logic in the next try catch statement maybe no need it.
             if current_user.active:
                 try:
                     log_user = models.User.get(models.User.username == username)
@@ -296,7 +323,10 @@ def login():
             'user/login.html',
             section="user",
             title="Login",
-            log_form=login_form
+            log_form=login_form,
+            register_form=RegisterForm(),
+            forgot_form=ForgotCredentialReset(),
+            resend_from=ResendActivationEmailForm()
         )
     # TODO: Find why this has been printing twice!
     flash("You are logged in already.", "success")
@@ -323,11 +353,15 @@ def register():
                 username=reg_form.username.data,
                 password=generate_password_hash(reg_form.password.data),
                 university_email=reg_form.university_email.data,
-                personal_email=reg_form.personal_email.data
             )
             flash("User created successfully!", "success")
             token = generate_confirmation_token(reg_form.university_email.data)
-            html = render_template('user/email_verification.html', token=token)
+            html = render_template(
+                'email/verifyNewAccount/verification.html',
+                token=token,
+                name=reg_form.first_name.data,
+
+            )
             subject = "Confirm email and activate your account!"
             send_email(
                 to=reg_form.university_email.data,
@@ -336,7 +370,10 @@ def register():
             )
             flash("An email confirmation has been sent to your email.", "success")
             return redirect(url_for('login'))
-        return render_template('user/register.html', reg_form=reg_form, section="user", title="Register")
+        for errors in reg_form.errors.items():
+            for error in errors[1]:
+                flash("{}".format(error))
+        return redirect(url_for('login'))
     flash("You are logged in.")
     return redirect(url_for('dashboard'))
 
@@ -357,17 +394,38 @@ def confirm_email(token):
             active=True,
             activated_on=datetime.datetime.now()
         ).execute()
+        html = render_template(
+            'email/confirmation/confirmation.html',
+            name=user.first_name,
+            # One means it activation
+            centi=1
+        )
+        subject = "You account is active!"
+        send_email(
+            to=user.university_email,
+            subject=subject,
+            template=html
+        )
         flash("Your email have been confirmed.", "success")
     return redirect(url_for('dashboard'))
 
 
 @app.route('/user/activate/resend/', methods=('GET', 'POST'))
 def resend_token():
-    form = ResendToken()
+    form = ResendActivationEmailForm()
     if form.validate_on_submit():
         email = form.university_email.data
+        try:
+            user = models.User.get(models.User.university_email == email)
+        except models.DoesNotExist:
+            flash("This email is not in our system")
+            return redirect(url_for('login'))
         token = generate_confirmation_token(email)
-        html = render_template('user/email_verification.html', token=token)
+        html = render_template(
+            'email/verifyNewAccount/verification.html',
+            token=token,
+            name=user.first_name
+        )
         subject = "Confirm email and activate your account!"
         send_email(
             to=email,
@@ -376,7 +434,10 @@ def resend_token():
         )
         flash("The activation link have been resend!")
         return redirect(url_for('login'))
-    return render_template('user/resend_token.html', form=form)
+    for errors in form.errors.items():
+        for error in errors[1]:
+            flash("{}".format(error))
+    return redirect(url_for('login'))
 
 
 @app.route('/user/forgot/', methods=('POST', 'GET'))
@@ -384,8 +445,17 @@ def forgot_credentials():
     form = ForgotCredentialReset()
     if form.validate_on_submit():
         email = form.university_email.data
+        try:
+            user = models.User.get(models.User.university_email == email)
+        except models.DoesNotExist:
+            flash("This email is not in our system")
+            return redirect(url_for('login'))
         token = generate_confirmation_token(email)
-        html = render_template('user/reset_password_email.html', token=token)
+        html = render_template(
+            'email/forgotPassword/forgotPassword.html',
+            token=token,
+            name=user.first_name
+        )
         subject = "Reset password request"
         send_email(
             to=email,
@@ -394,7 +464,10 @@ def forgot_credentials():
         )
         flash("We've sent you an email with a link to reset your password.")
         return redirect(url_for('login'))
-    return render_template('user/forgot_credentials.html', form=form)
+    for errors in form.errors.items():
+        for error in errors:
+            flash("{}".format(error))
+    return redirect(url_for('login'))
 
 
 @app.route('/user/forgot/<token>/', methods=('POST', 'GET'))
@@ -413,10 +486,11 @@ def change_credentials(token):
             ).execute()
             flash("Your password was reset successfully")
             return redirect(url_for('login'))
+        # TODO: Need a page to change the password
         return render_template('user/reset_password.html', form=form)
     else:
         flash("The confirmation link is invalid or has expired.", "error")
-        return redirect(url_for('forgot_credentials'))
+        return redirect(url_for('login'))
 
 
 @app.route('/user/<string:username>/')
@@ -426,24 +500,8 @@ def user_page(username):
         user = models.User.get(models.User.username == username)
     except peewee.DoesNotExist:
         abort(404)
-    user_rent_books = models.BookRent.select().where(models.BookRent.username == username)
-    return render_template('user/user-page.html', user=user, rent_book=user_rent_books)
-
-
-@app.route('/dashboard/')
-@login_required
-def dashboard():
-    c_user = flask_login.current_user
-    book_rent = models.BookRent.select().where(models.BookRent.username == get_current_user())
-    wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
-    have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
-    return render_template(
-        'user/dashboard.html',
-        c_user=c_user,
-        book_for_rent=book_rent,
-        w_books=wanted_books,
-        h_books=have_books,
-    )
+    user_rent_books = models.BookToRent.select().where(models.BookToRent.username == username)
+    return render_template('user/profile.html', user=user, rent_book=user_rent_books)
 
 
 @app.route('/rent/')
@@ -453,82 +511,58 @@ def rent():
 
 @app.route('/rent/book/')
 def rent_all_book():
-    book = models.BookRent.select()
+    book = models.BookToRent.select()
     return "All book for rent available..."
 
 
 @app.route('/book/add/', methods=('GET', 'POST'))
 @login_required
-def add_books():
+def add_book_rent():
     rent_book_form = AddBookRentForm()
-    trade_book_form = AddBookTradeForm()
+    # Add a book for rent
+    if rent_book_form.validate_on_submit():
+        # Get ISBN from form after validate
+        isbn = rent_book_form.isbn.data
+        # Try to load information
+        book = load_book_info(isbn)
+        if book:
+            # file = request.files['img']
+            # if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
+            #     # Secure the input file
+            #     filename = secure_filename(
+            #         "{}-{}.{}".format(
+            #             flask_login.current_user.username,
+            #             uuid.uuid4(),
+            #             file.filename.rsplit('.', 1)[1]
+            #         )
+            #     )
+            #     # Save the image to the server
+            #     img_path = DOMAIN_NAME + '/static/img/books/' + filename
+            #     file.save(os.path.join(UPLOAD_FOLDER, filename))
+                # Create a book record in the database
+            create_book_rent(
+                name=book['title'],
+                author=book['authors'],
+                description=book['description'],
+                isbn=isbn,
+                condition=rent_book_form.condition.data,
+                condition_comment=rent_book_form.condition_comment.data,
+                username=get_current_user().username,
+                marks=rent_book_form.marks.data,
+                # img_path=img_path
+            )
+            flash("You book have been created!", "success")
+            return redirect(url_for('add_book_rent'))
+            # else:
+            #     flash("This format of the file is not allowed.", "error")
+        else:
+            flash("We couldn't find this book, check the ISBN number.", "error")
+            return redirect(url_for('add_book_rent'))
 
-    if request.method == "POST":
-        # Check which form was submitted
-        which_form = request.form['hidden']
-        if which_form is "0":
-            # Add a book for rent
-            if rent_book_form.validate_on_submit():
-                # Get ISBN from form after validate
-                isbn = rent_book_form.isbn.data
-                # Try to load information
-                book = load_book_info(isbn)
-                if book:
-                    file = request.files['img']
-                    if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
-                        # Secure the input file
-                        filename = secure_filename(
-                            "{}-{}.{}".format(
-                                flask_login.current_user.username,
-                                uuid.uuid4(),
-                                file.filename.rsplit('.', 1)[1]
-                            )
-                        )
-                        # Save the image to the server
-                        img_path = DOMAIN_NAME + '/static/img/books/' + filename
-                        file.save(os.path.join(UPLOAD_FOLDER, filename))
-                        # Create a book record in the database
-                        create_book_rent(
-                            name=book['title'],
-                            author=book['authors'],
-                            description=book['description'],
-                            isbn=isbn,
-                            condition=rent_book_form.condition.data,
-                            condition_comment=rent_book_form.condition_comment.data,
-                            username=flask_login.current_user.username,
-                            img_path=img_path
-                        )
-                        flash("You book have been created!", "success")
-                        return redirect(url_for('add_books'))
-                    else:
-                        flash("This format of the file is not allowed.", "error")
-                else:
-                    flash("We couldn't find this book, check the ISBN number.", "error")
-                    return redirect(url_for('add_books'))
-        elif which_form is "1":
-            # Add a book to trade
-            if trade_book_form.validate_on_submit():
-                have_book_isbn = trade_book_form.have_book.data
-                want_book_isbn = trade_book_form.want_book.data
-                create_book_trade(
-                    have_name=load_book_info(have_book_isbn)['title'],
-                    want_name=load_book_info(want_book_isbn)['title'],
-                    want_isbn=want_book_isbn,
-                    have_isbn=have_book_isbn,
-                    user=get_current_user(),
-                )
-                flash("Books for trade added successfully.", "success")
-
-    return render_template(
-        'rent/rent-your-book.html',
-        rent_form=rent_book_form,
-        trade_form=trade_book_form
-    )
-
-
-@app.route('/rent/book/search/')
-def rent_search():
-    return render_template('rent/rental-books-search.html')
+    for errors in rent_book_form.errors.items():
+        for error in errors[1]:
+            flash("{}".format(error))
+    return redirect(url_for('your_rentals'))
 
 
 @app.route('/rent/book/<string:username>/')
@@ -537,53 +571,54 @@ def rent_user_book(username):
         user = models.User.get(models.User.username == username)
     except peewee.DoesNotExist:
         abort(404)
-    book_for_rent = models.User.select().where(models.BookRent.username == username)
+    book_for_rent = models.User.select().where(models.BookToRent.username == username)
     return "Book for rent for a particular user."
 
 
 @app.route('/rent/book/<int:book_pk>/')
-def rent_book(book_pk):
+def book_page(book_pk):
     try:
         user = get_user(book_pk)
     except peewee.DoesNotExist:
         abort(404)
 
-    user_books = models.BookRent.select().where(models.BookRent.username == user.username)
+    user_books = models.BookToRent.select().where(models.BookToRent.username == user.username)
 
     try:
-        book_ = models.BookRent.get(models.BookRent.id == book_pk)
+        book_ = models.BookToRent.get(models.BookToRent.id == book_pk)
     except peewee.DoesNotExist:
         abort(404)
 
-    other_equal_books = models.BookRent.select().where(models.BookRent.isbn == book_.isbn)
+    other_equal_books = models.BookToRent.select().where(models.BookToRent.isbn == book_.isbn)
 
     return render_template(
-        'book/book-template.html',
+        'book/book.html',
         user=user,
         user_books=user_books,
         book=book_,
         other_equal_books=other_equal_books,
+        joined=user.joined_to_string()
     )
 
 
-@login_required
 @app.route('/rent/book/delete/<int:book_pk>')
+@login_required
 def delete_book(book_pk):
     book_owner = get_user(book_pk)
     # Check if the user logged in match the book onwer.
     if book_owner.username == get_current_user():
         try:
-            models.BookRent.get(BookRent.id == book_pk).delete_instance()
+            models.BookToRent.get(BookToRent.id == book_pk).delete_instance()
         except models.DoesNotExist:
             flash("This book doesn't exists.")
         flash("The book have been deleted.")
         return redirect(url_for('dashboard'))
     flash("You are not the owner of this book.", "error")
-    return redirect(url_for('rent_book', book_pk=book_pk))
+    return redirect(url_for('book_page', book_pk=book_pk))
 
 
-@login_required
 @app.route('/rent/book/wishlist/add/<int:book_pk>/')
+@login_required
 def wishlist_add(book_pk):
     c_user = flask_login.current_user.username
     try:
@@ -592,12 +627,191 @@ def wishlist_add(book_pk):
         abort(404)
     except DuplicateEntry:
         flash("This book is already in your wishlist!", "error")
-        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+        return redirect(url_for('book_page', username=c_user, book_pk=book_pk))
     except SelfBook:
         flash("This is your own book, you can't add it", "error")
-        return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+        return redirect(url_for('book_page', username=c_user, book_pk=book_pk))
     flash("Book added to your wishlist!", "success")
-    return redirect(url_for('rent_book', username=c_user, book_pk=book_pk))
+    return redirect(url_for('book_page', username=c_user, book_pk=book_pk))
+
+
+@app.route('/search/')
+def search():
+    return render_template(
+        'rent/search.html',
+        rentals=models.BookToRent.select().where(
+            ~(models.BookToRent.username == get_current_user().username)
+        )
+    )
+
+#
+#   DASHBOARD
+#
+
+
+@app.route('/dashboard/')
+@login_required
+def dashboard():
+    book_rent = models.BookToRent.select().where(models.BookToRent.username == get_current_user())
+    wanted_books = models.BookTradeWant.select().where(models.BookTradeWant.user == get_current_user())
+    have_books = models.BookTradeHave.select().where(models.BookTradeHave.user == get_current_user())
+    return render_template(
+        'dashboard/index.html',
+        title="Dashboard",
+        book_for_rent=book_rent,
+        w_books=wanted_books,
+        h_books=have_books,
+    )
+
+
+@app.route('/dashboard/your-rentals/')
+@app.route('/dashboard/rentals/')
+@login_required
+def your_rentals():
+    user = get_current_user()
+    return render_template(
+        'dashboard/rentals.html',
+        title="Your Rentals",
+        rental_list=get_rentals(
+            user
+        ),
+        add_rental_form=AddBookRentForm(),
+        currently_renting=get_currently_renting(user.username),
+        currently_renting_out=get_currently_renting_out(user.username)
+    )
+
+
+@app.route('/dashboard/rentals/delete/<int:book_id>')
+@login_required
+def delete_rental_book(book_id):
+    username = models.BookToRent.get(BookToRent.id == book_id).username.username
+    if get_current_user().username == username:
+        try:
+            delete_book_rent(book_id)
+        except models.DoesNotExist:
+            flash("The book that you are try to delete doesn't exists.", "error")
+        flash("Your book was delete successfully.", "success")
+    else:
+        flash("You are trying to delete a book that is not yours, this will be reported.", "error")
+        # TODO: Report this to log.
+    return redirect(url_for('your_rentals'))
+
+
+@app.route('/dashboard/rentals-requests/')
+@login_required
+def rental_requests():
+    user = get_current_user()
+    return render_template(
+        'dashboard/rental-requests.html',
+        title="Rental Requests",
+        incoming_rentals=get_user_renting_incoming_requests(user.username),
+        outgoing_rentals=get_user_renting_outgoing_request(user.username)
+    )
+
+
+@app.route('/dashboard/rentals-requests/request-book/<int:book_id>/',)
+@login_required
+def request_book(book_id):
+    try:
+        status = models.BookToRent.get(BookToRent.id == book_id).is_available()
+    except models.DoesNotExist:
+        flash("The book that you are trying to request doesn't exists", "error")
+        return redirect(url_for('rental_requests'))
+    else:
+        try:
+            models.BookRentingRequest.get(
+                (models.BookRentingRequest.book == book_id) &
+                (models.BookRentingRequest.rentee == get_current_user().username)
+            )
+        except models.DoesNotExist:
+            if status:
+                create_request_book_rent(book_id=book_id, username=get_current_user().username)
+                flash("This book have been requested!", "success")
+                # TODO: Send email confirmation
+                return redirect(url_for('rental_requests'))
+            else:
+                flash("The book that you are trying to request is not available at this time", "error")
+                return redirect(url_for('rental_requests'))
+        else:
+            flash("You have requested this book already", "error")
+            return redirect(url_for('rental_requests'))
+
+
+@app.route('/dashboard/rentals-requests/accept-requests/<int:request_id>/')
+@login_required
+def accept_rental_request(request_id):
+    try:
+        book_request = models.BookRentingRequest.get(
+            models.BookRentingRequest.id == request_id
+        )
+    except models.DoesNotExist:
+        flash("This request doesn't exists", "error")
+        return redirect(url_for('rental_requests'))
+    else:
+        book = models.BookToRent.get(
+            models.BookToRent.id == book_request.book
+        )
+        renter = book.username
+
+        if get_current_user().username == renter.username:
+            accept_request_to_rent(request_id)
+            flash(
+                "You have accepted this requests, you will get an email with instruction on how to proceed",
+                "success"
+            )
+            return redirect(url_for('rental_requests'))
+        else:
+            flash("You are not the owner of this book.")
+            return redirect(url_for('rental_requests'))
+
+
+@app.route('/dashboard/rentals-requests/delete-request/<int:request_id>/')
+@login_required
+def delete_rental_request(request_id):
+    try:
+        delete_request_book_rent(request_id, get_current_user().username)
+    except models.DoesNotExist:
+        flash("This request doesn't exists", "error")
+        return redirect(url_for('rental_requests'))
+    flash("The request was deleted successfully", "success")
+    return redirect(url_for('rental_requests'))
+
+
+@app.route('/dashboard/trades/')
+@login_required
+def trades():
+    return render_template(
+        'dashboard/trades.html',
+        title="Trades",
+    )
+
+
+@app.route('/dashboard/trade-requests/')
+@login_required
+def trade_requests():
+    return render_template(
+        'dashboard/trade-requests.html',
+        title="Trade Requests"
+    )
+
+
+@app.route('/dashboard/setting/')
+@login_required
+def account_settings():
+    return render_template(
+        'dashboard/account-settings.html',
+        title="Account Settings"
+    )
+
+
+@app.route('/dashboard/history/')
+@login_required
+def account_history():
+    return render_template(
+        'dashboard/history.html',
+        title="History"
+    )
+
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)

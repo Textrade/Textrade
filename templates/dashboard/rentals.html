@@ -1,0 +1,153 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% from 'dashboard/modals/remove_listing_confirmation.html' import remove_listing_modal %}
+{% from 'dashboard/modals/add_rental_book.html' import add_rental_book %}
+{% block content %}
+    <div id="page-wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 class="page-header">Rentals</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <h3>Books Available to Rent</h3>
+          <p style="margin-bottom:50px;">The following books are one you have registered with Textrade as available to rent. They are currently viewable on the Textrade market. You can <strong>add or remove a textbook</strong> using the table below.</p>
+          <div class="col-xs-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                  <i class="fa fa-book fa-fw"></i><strong> Books You Have On The Market For Rent</strong>
+                </div>
+              <!-- /.panel-heading -->
+              <div class="panel-body">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="table-responsive">
+                          <table class="table table-bordered table-hover table-striped">
+                                {% if rental_list[0] %}
+                                  <thead>
+                                    <tr>
+                                      <th>Date Listed</th>
+                                      <th>Title</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                        {% for rental in rental_list %}
+                                            <tr>
+                                                <td>{{ rental.date_listed() }}</td>
+                                                <td>{{ rental.get_book_name() }}</td>
+                                                <td><button class="btn btn-danger" data-toggle="modal" data-target="#{{ rental.id }}">Remove</button></td>
+                                            </tr>
+                                            {{ remove_listing_modal(rental) }}
+                                        {% endfor %}
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td><button class="btn btn-success" data-toggle="modal" data-target="#addBookForRent">Add Another Book</button></td>
+                                        </tr>
+                                    </tbody>
+                                {% else %}
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addBookForRent">Add Another Book</button>
+                                {% endif %}
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                      </div>
+                      <!-- /.col-lg-12 (nested) -->
+                    </div><!-- /.row -->
+                </div><!-- /.panel-body -->
+            </div>
+          </div>
+        </div><!-- /.col-xs-12 -->
+      </div><!-- /.row -->
+      <div class="row">
+        <div class="col-xs-12">
+          <!-- "Your Rentals" -->
+          <hr class="col-xs-12">
+          <div class="col-xs-12 col-md-6">
+            <h3 class="col-xs-12">Your Rentals</h3>
+            <p style="margin-bottom:50px;" class="col-md-9">You are currently renting the following books from various Textrade renters. To change your payment preferences, or notification settings, please visit <a href="{{ url_for('account_settings') }}">Account Settings</a>.</p>
+            <div class="panel panel-default col-xs-12">
+                <div class="panel-heading">
+                  <i class="fa fa-book fa-fw"></i><strong> Books You're Renting</strong>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Due Date</th>
+                                <th>Title</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% for renting in currently_renting %}
+                                    <tr>
+                                      <td>{{ renting.get_due_date() }}</td>
+                                      <td>{{ renting.book.name }}</td>
+                                    </tr>
+                                {% endfor %}
+                              </tbody>
+                          </table>
+                      </div>
+                      <!-- /.table-responsive -->
+                    </div>
+                      <!-- /.col-lg-8 (nested) -->
+                  </div>
+                  <!-- /.row -->
+                </div>
+                <!-- /.panel-body -->
+              </div>
+          </div>
+          <!-- "Renting Out" -->
+          <div class="col-xs-12 col-md-6">
+            <h3 class="col-xs-12">Renting Out</h3>
+            <p style="margin-bottom:50px;" class="col-md-9">Below are the books that you are currently renting out to other TextTrade users and collecting rent on. To list a new book as available for rent, click <a href="#" data-toggle="modal" data-target="#addBookForRent">here</a>.</p>
+            <div class="panel panel-default col-xs-12">
+                  <div class="panel-heading">
+                    <i class="fa fa-book fa-fw"></i> Books You're Are Currently <strong>Renting Out</strong>
+                  </div>
+                  <!-- /.panel-heading -->
+                  <div class="panel-body">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="table-responsive">
+                          <table class="table table-bordered table-hover table-striped">
+                              <thead>
+                                <tr>
+                                  <th>Due Date</th>
+                                  <th>Title</th>
+                                  <th>Renting To</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              {% for renting_out in currently_renting_out %}
+                                  <tr>
+                                    <td>{{ renting_out.get_due_date() }}</td>
+                                    <td>{{ renting_out.book.name }}</td>
+                                    <td>@{{ renting_out.rentee.username }}</td>
+                                  </tr>
+                             {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                      </div>
+                        <!-- /.col-lg-8 (nested) -->
+                    </div>
+                    <!-- /.row -->
+                  </div>
+                  <!-- /.panel-body -->
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {#  Include the modal to add a book for rent  #}
+    {{ add_rental_book(add_rental_form) }}
+
+{% endblock %}

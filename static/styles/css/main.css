@@ -151,20 +151,83 @@ nav {
   background: white;
 }
 
-.circular {
+#circular-1 {
   width: 160px;
   height: 160px;
   border-radius: 80px;
   -webkit-border-radius: 80px;
   -moz-border-radius: 80px;
-  background: url(../../img/tm-1.jpg) center;
+  background: url(../../img/brittany.jpg) center;
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
   margin: auto;
 }
 
-.circular img {
+#circular-1 img {
+  width: 300px;
+  height: auto;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+}
+
+#circular-2 {
+  width: 160px;
+  height: 160px;
+  border-radius: 80px;
+  -webkit-border-radius: 80px;
+  -moz-border-radius: 80px;
+  background: url(../../img/chris.jpg) center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto;
+}
+
+#circular-2 img {
+  width: 300px;
+  height: auto;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+}
+
+#circular-3 {
+  width: 160px;
+  height: 160px;
+  border-radius: 80px;
+  -webkit-border-radius: 80px;
+  -moz-border-radius: 80px;
+  background: url(../../img/nina.jpg) center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto;
+}
+
+#circular-3 img {
+  width: 300px;
+  height: auto;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+}
+
+#circular-4 {
+  width: 160px;
+  height: 160px;
+  border-radius: 80px;
+  -webkit-border-radius: 80px;
+  -moz-border-radius: 80px;
+  background: url(../../img/daniel.jpg) center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto;
+}
+
+#circular-4 img {
   width: 300px;
   height: auto;
   border-radius: 150px;
@@ -251,7 +314,7 @@ nav {
   color: #424242;
 }
 
-@media (min-width: 1050px) {
+@media (min-width: 786px) {
   #filterBar {
     border-right: 5px solid #E0E0E0;
     height: 100%;
@@ -260,10 +323,25 @@ nav {
 
 #filterBar span {
   color: #424242;
+  -webkit-transition-duration: 1.5s;
+  -moz-transition-duration: 1.5s;
+  -o-transition-duration: 1.5s;
+  -o-transition-duration-transition-duration: 1.5s;
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  -o-transition-property: -o-transform;
+  -o-transition-property-transition-property: transform;
 }
 
 #filterBar span:hover {
   color: #616161;
+}
+
+#filterBar span:active {
+  color: #616161;
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 #filterBar form .col-xs-12 {
@@ -493,4 +571,19 @@ ol p {
 
 .fill {
   height: 50vh;
+}
+
+.contactContainer {
+  text-align: center;
+}
+
+@media (max-width: 786px) {
+  .contactContainer {
+    text-align: left;
+  }
+}
+
+.contactContainer .contactImg {
+  min-width: 400px;
+  max-width: 550px;
 }

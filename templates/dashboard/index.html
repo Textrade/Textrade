@@ -1,13 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="refresh" content="0;url=pages/index.html">
-<title>SB Admin 2</title>
-<script language="javascript">
-    window.location.href = "pages/index.html"
-</script>
-</head>
-<body>
-Go to <a href="pages/index.html">/pages/index.html</a>
-</body>
-</html>
+{% extends 'dashboard/dashboard_base.html' %}
+{% block content %}
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Dashboard</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-xs-12">
+            <h2>Hi {{ g.user.first_name }}</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 welcome">
+            <h3>Welcome to Textrade!</h3>
+            <p>We're really excited you've joined us!</p>
+            <p>
+              <strong>To list your textbooks as available to rent, go to "Your Rentals" in the navigation menu</strong>
+            </p>
+          </div>
+        </div>
+    </div>
+    <!-- /#page-wrapper -->
+{% endblock %}
