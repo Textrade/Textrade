@@ -93,11 +93,12 @@ nav {
     -ms-transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
   }
-  .center-all .col-xs-12 img {
-    height: 200px;
-  }
+  
 }
-
+/* moved this out of MQ */
+.center-all .col-xs-12 img {
+  height: 200px;
+}
 .center-all h2 {
   font-weight: 300;
 }
@@ -211,6 +212,27 @@ nav {
 }
 
 #circular-3 img {
+  width: 300px;
+  height: auto;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+}
+/* add daniel back into the team! */
+#circular-4 {
+  width: 160px;
+  height: 160px;
+  border-radius: 80px;
+  -webkit-border-radius: 80px;
+  -moz-border-radius: 80px;
+  background: url(../../img/daniel.jpg) center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto;
+}
+
+#circular-4 img {
   width: 300px;
   height: auto;
   border-radius: 150px;
@@ -419,7 +441,18 @@ body .jumbo img {
   height: 300px;
   margin: 0;
 }
-
+/* added this to hide the logo that breaks the mobile view */
+@media (max-width: 786px) {
+  body .jubmo img {
+    display: none;
+  }
+}
+/* add to index page -- says textrade only on mobile view */
+@media (min-width:786px) {
+  #mobileTitle {
+    display: none;
+  }
+}
 body .jumbo h3 {
   font-weight: 300;
   margin-top: 0;
