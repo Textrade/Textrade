@@ -235,7 +235,7 @@ def load_user(userid):
 def before_request():
     """Connect to the database before a request."""
     g.user = get_current_user()
-    g.domain = "https://textrade.herokuapp.com"
+    g.domain = "http://www.textrade.us"
     g.db = models.db
     g.db.connect()
 
