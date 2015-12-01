@@ -434,17 +434,19 @@ body .jumbo {
   margin-top: 100px;
   height: auto;
   text-align: center;
-  padding-bottom: 75px;
+  padding-bottom: 50px;
+  padding-top: 0;
 }
-
-body .jumbo img {
-  height: 300px;
-  margin: 0;
+@media (max-width: 786px) {
+  body .jumbo img {
+    display: none;
+  }
 }
 /* added this to hide the logo that breaks the mobile view */
-@media (max-width: 786px) {
+@media (min-width: 786px) {
   body .jubmo img {
     display: none;
+    margin-top: 0;
   }
 }
 /* add to index page -- says textrade only on mobile view */
