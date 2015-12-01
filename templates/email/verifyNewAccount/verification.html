@@ -74,9 +74,9 @@
       <div class="message">
         <h2>Hi {{ name }}</h2>
         <p>Welcome to Textrade! We're excited to have you. Before you can start renting and trading on Textrade you'll have to veryify your account. To do so, simply click the link below, or let us know if you're having a problem.</p>
-        <a href="https://fierce-thicket-7796.herokuapp.com/{{ url_for('confirm_email', token=token) }}"><button class="btn-primary">Verify your account</button></a>
+        <a href="{{ g.domain }}/{{ url_for('confirm_email', token=token) }}"><button class="btn-primary">Verify your account</button></a>
       </div>
-      <div class="footer"><img src="https://fierce-thicket-7796.herokuapp.com/static/email/logoBW.png" style="margin:auto">
+      <div class="footer"><img src="{{ g.domain }}/static/email/logoBW.png" style="margin:auto">
         <p class="unsubscribe">We know, it's not you, it's us. If you'd like us to give you some space, just <a>unsubscribe</a></p>
       </div>
     </div>

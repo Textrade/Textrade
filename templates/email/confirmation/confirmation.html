@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="https://fierce-thicket-7796.herokuapp.com/static/email/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ g.domain }}/static/email/main.css">
   </head>
   <body>
     <div class="email-wrapper">
@@ -19,7 +19,7 @@
             <p>You've successfully reset your password.</p>
         {% endif %}
       </div>
-      <div class="footer"><img src="https://fierce-thicket-7796.herokuapp.com/static/email/logoBW.png" style="margin:auto">
+      <div class="footer"><img src="{{ g.domain }}/static/email/logoBW.png" style="margin:auto">
         <p class="unsubscribe">We know, it's not you, it's us. If you'd like us to give you some space, just <a>unsubscribe</a></p>
       </div>
     </div>

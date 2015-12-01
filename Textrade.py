@@ -235,6 +235,7 @@ def load_user(userid):
 def before_request():
     """Connect to the database before a request."""
     g.user = get_current_user()
+    g.domain = "https://textrade.herokuapp.com"
     g.db = models.db
     g.db.connect()
 
@@ -486,7 +487,7 @@ def forgot_credentials():
     return redirect(url_for('login'))
 
 
-@app.route('/user/forgot/<token>/', methods=('POST', 'GET'))
+@app.route('/user/forgot/<string:token>/', methods=('POST', 'GET'))
 def change_credentials(token):
     email = confirm_token(token, app.secret_key)
     if email:
