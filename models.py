@@ -170,12 +170,16 @@ class BookTradeHave(Model):
     isbn = CharField(max_length=255)
     # TODO: Change to username
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_have")
+    date_posted = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = db
 
     def __str__(self):
         return "<BookTradeHave Model: {}>".format(self.isbn)
+
+    def date_to_formatted_string(self):
+        return self.date_posted.strftime("%m/%d/%Y")
 
 
 class BookTradeWant(Model):
@@ -184,12 +188,16 @@ class BookTradeWant(Model):
     isbn = CharField(max_length=255)
     # TODO: Change to username convention
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_want")
+    date_posted = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = db
 
     def __str__(self):
         return "<BookTradeWant Model: {}>".format(self.isbn)
+
+    def date_to_formatted_string(self):
+        return self.date_posted.strftime("%m/%d/%Y")
 
 
 class Trade(Model):
@@ -205,7 +213,7 @@ class Trade(Model):
         database = db
 
     def __str__(self):
-        return "Trade between {} and {}".format(self.user_one, self.user_two)
+        return "<Trade Model: (ID: {} - {} and {})".format(self.id, self.user_one, self.user_two)
 
 
 class WishList(Model):

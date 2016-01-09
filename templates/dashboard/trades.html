@@ -1,4 +1,7 @@
 {% extends 'dashboard/dashboard_base.html' %}
+{% from "dashboard/modals/add_have_book.html" import add_have_book %}
+{% from "dashboard/modals/add_want_book.html" import add_want_book %}
+{% from "dashboard/modals/remove_trade_book.html" import remove_have_book, remove_want_book %}
 {% block content %}
     <div id="page-wrapper">
         <div class="row">
@@ -24,32 +27,34 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped">
                                         <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Title</th>
-                                                <th>Action</th>
-                                            </tr>
+                                            {% if have_books[0] %}
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Title</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            {% endif %}
                                         </thead>
                                         <tbody>
+                                            {% for have in have_books %}
+                                                <tr>
+                                                    <td>{{ have.date_to_formatted_string() }}</td>
+                                                    <td>{{ have.name }}</td>
+                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#remove-have-book-{{ have.id }}"><i class="fa fa-times"></i></button></td>
+                                                </tr>
+                                                {{ remove_have_book(have) }}
+                                            {% endfor %}
                                             <tr>
-                                                <td>10/21/2013</td>
-                                                <td>{Smothing really long that takes a while to say.}</td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>10/21/2013</td>
-                                                <td>3:20 PM</td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>10/21/2013</td>
-                                                <td>3:03 PM</td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td><input type="text" class="form-control" id="list-book-for-trade" placeholder="Add a book by typing in the ISBN"></td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#add-listing-confirmation-modal"><i class="fa fa-check"></i></button></td>
+                                                {% if have_books[0] %}
+                                                    <td></td>
+                                                {% endif %}
+                                                <td>
+                                                    <form method="post" action="{{ url_for('add_have_book') }}" id="have-form">
+                                                        {{ add_have_trade_book_form.hidden_tag() }}
+                                                        {{ add_have_trade_book_form.isbn(class="form-control", placeholder="Add a book by typing in the ISBN") }}
+                                                    </form>
+                                                </td>
+                                                <td style="text-align:center;"><button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#add-have-book-confirmation-modal"><i class="fa fa-check"></i></button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -77,33 +82,37 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped">
                                         <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Title</th>
-                                                <th>Action</th>
-                                            </tr>
+                                            {% if want_books[0] %}
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Title</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            {% endif %}
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>10/21/2013</td>
-                                                <td>{Smothing really long that takes a while to say.}</td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>10/21/2013</td>
-                                                <td>3:20 PM</td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>10/21/2013</td>
-                                                <td>3:03 PM</td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#removal-listing-confirmation-modal"><i class="fa fa-times"></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td><input type="text" class="form-control" id="list-book-for-trade" placeholder="Add a book by typing in the ISBN"></td>
-                                                <td style="text-align:center;"><button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#add-listing-confirmation-modal"><i class="fa fa-check"></i></button></td>
-                                            </tr>
+                                            {% for want in want_books %}
+                                                <tr>
+                                                    <td>{{ want.date_to_formatted_string() }}</td>
+                                                    <td>{{ want.name }}</td>
+                                                    <td style="text-align:center;"><button type="button" class="btn btn-warning btn-circle" data-toggle="modal" data-target="#remove-want-book-{{ want.id }}"><i class="fa fa-times"></i></button></td>
+                                                </tr>
+                                                {{ remove_want_book(want) }}
+                                            {% endfor %}
+                                                <tr>
+                                                    {% if want_books[0] %}
+                                                        <td></td>
+                                                    {% endif %}
+                                                    <td>
+                                                        <form method="post" action="{{ url_for('add_want_book') }}" id="want-form">
+                                                            {{ add_want_trade_book_form.hidden_tag() }}
+                                                            {{ add_want_trade_book_form.isbn(class="form-control", placeholder="Add a book by typing in the ISBN") }}
+                                                        </form>
+                                                    </td>
+                                                    <td style="text-align:center;">
+                                                        <button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#add-want-book-confirmation-modal"><i class="fa fa-check"></i></button>
+                                                    </td>
+                                                </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -117,39 +126,8 @@
                 </div>
             </div>
         </div>
-        <!-- Modal: Remove Listing Confirmation -->
-        <div class="modal fade" id="removal-listing-confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 class="modal-title" id="myModalLabel">Confirmation</h3>
-                    </div>
-                    <p style="padding: 20px;">Are you sure you want to remove {BOOK TITLE} from your available books for trade?</p>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Remove Listing</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /#removal-listing-confirmation-modal -->
-        <!-- Modal: Add Listing Confirmation -->
-        <div class="modal fade" id="add-listing-confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 class="modal-title" id="myModalLabel">Add Title Confirmation</h3>
-                    </div>
-                    <p style="padding: 20px;">Are you sure you want to add {BOOK TITLE} to your available books for trade?</p>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Add Listing</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ add_have_book() }}
+        {{ add_want_book() }}
     </div>
     <!-- /#page-wrapper -->
 {% endblock %}
