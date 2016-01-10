@@ -1,8 +1,8 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                                                   #
 #   PROJECT: Textrade                               #
-#   CONTRIBUTORS:   Daniel Santos (Back-End),       #
-#                   Nina Petropoulos (Front-End)    #
+#   CONTRIBUTORS:   Daniel Santos       (Back-End)  #
+#                   Nina Petropoulos    (Front-End) #
 #   VERSION: 1.0                                    #
 #                                                   #
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -145,8 +145,10 @@ class TextradeModelView(ModelView):
     form_excluded_columns = ['password', ]
     column_details_exclude_list = ['password', ]
 
+    column_searchable_list = ['username', 'role']
+
     def is_accessible(self):
-        return flask_login.current_user.is_authenticated()
+        return flask_login.current_user.is_admin()
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login', next=request.url))

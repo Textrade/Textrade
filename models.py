@@ -59,6 +59,9 @@ class User(UserMixin, Model):
     def joined_to_string(self):
         return self.joined.strftime("%b. %Y")
 
+    def is_admin(self):
+        return not self.role.role == "costumer"
+
 
 class TradeStatus(Model):
     """Status for trades"""
