@@ -34,6 +34,7 @@ class TradeController:
 
     @staticmethod
     def get_primary_user(trade_id):
+        """Get primary user."""
         return Trade.get(Trade.id == trade_id).user_one.username
 
     @staticmethod
