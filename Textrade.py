@@ -88,7 +88,7 @@ app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
 app.config['CSRF_ENABLED'] = True
 DEBUG = True
 HOST = "127.0.0.1"
-PORT = 5001
+PORT = 5000
 
 #
 #
@@ -144,8 +144,6 @@ class TextradeModelView(ModelView):
     ]
     form_excluded_columns = ['password', ]
     column_details_exclude_list = ['password', ]
-
-    column_searchable_list = ['username', 'role']
 
     def is_accessible(self):
         return flask_login.current_user.is_admin()
