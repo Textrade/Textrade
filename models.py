@@ -207,8 +207,10 @@ class Trade(Model):
     """Trade model."""
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
-    book_one = ForeignKeyField(BookToRent, related_name='book_one_to_trade')
-    book_two = ForeignKeyField(BookToRent, related_name='book_two_to_trade')
+    user_one_approved = BooleanField(default=False)
+    user_two_approved = BooleanField(default=False)
+    book_one = CharField(max_length=255, null=False)
+    book_two = CharField(max_length=255, null=False)
     status = ForeignKeyField(TradeStatus, to_field='status', related_name='trade')
     date = DateTimeField(default=datetime.datetime.now)
 
@@ -217,6 +219,9 @@ class Trade(Model):
 
     def __str__(self):
         return "<Trade Model: (ID: {} - {} and {})".format(self.id, self.user_one, self.user_two)
+
+    def date_to_formatted_string(self):
+            return self.date.strftime("%m/%d/%Y")
 
 
 class WishList(Model):
@@ -428,3 +433,7 @@ if __name__ == '__main__':
     drop_tables()
     create_tables()
     init_app()
+    # db.connect()
+    # db.drop_table(Trade)
+    # db.create_table(Trade)
+    # db.close()
