@@ -4,20 +4,20 @@ from models import Trade, BookTradeHave, BookTradeWant
 class TradeController:
     def __init__(self, user_one=None, user_two=None, book_one=None,
                  book_two=None, status="processing"):
-        self.user_one = user_one
-        self.user_two = user_two
-        self.book_one = book_one
-        self.book_two = book_two
-        self.status = status
+        self._user_one = user_one
+        self._user_two = user_two
+        self._book_one = book_one
+        self._book_two = book_two
+        self._status = status
 
     def create(self):
         """Create a trade from the instance created by the constructor"""
         Trade.create(
-            user_one=self.user_one,
-            user_two=self.user_two,
-            book_one=self.book_one,
-            book_two=self.book_two,
-            status=self.status
+            user_one=self._user_one,
+            user_two=self._user_two,
+            book_one=self._book_one,
+            book_two=self._book_two,
+            status=self._status
         )
 
     @staticmethod
@@ -31,6 +31,26 @@ class TradeController:
             book_two=book_two,
             status=status
         )
+
+    @staticmethod
+    def get_primary_user(trade_id):
+        return Trade.get(Trade.id == trade_id).user_one.username
+
+    @staticmethod
+    def get_secondary_user(trade_id):
+        return Trade.get(Trade.id == trade_id).user_two.username
+
+    @staticmethod
+    def approve_trade_as_user_one(trade_id):
+        Trade.update(user_one_approved=True).where(
+                Trade.id == trade_id
+        ).execute()
+
+    @staticmethod
+    def approve_trade_as_user_two(trade_id):
+        Trade.update(user_two_approved=True).where(
+            Trade.id == trade_id
+        ).execute()
 
     @staticmethod
     def delete_trade(trade_id):
@@ -69,19 +89,37 @@ class TradeController:
     @staticmethod
     def get_trades_as_primary(username):
         """This method return a list of all trades that the passed user is a primary."""
-        return Trade.select().where(Trade.user_one == username)
+        trades = Trade.select().where(
+                Trade.user_one == username
+        )
+        trades_list = []
+        for trade in trades:
+            if trade.user_one_approved is False:
+                trades_list.append(trade)
+        return trades_list
 
     @staticmethod
     def get_trades_as_secondary(username):
-        """This method return a list of all trades that the passed user is a secondary."""
-        return Trade.select().where(Trade.user_two == username)
+        """This method return a list of all trades that the passed user is a secondary.
+        :param username:
+        """
+        trades = Trade.select().where(
+                Trade.user_two == username
+        )
+        trades_list = []
+        for trade in trades:
+            if trade.user_two_approved is False:
+                trades_list.append(trade)
+        return trades_list
 
     @staticmethod
     def get_all_trades_by_user(username):
-        """This method return a list of all trades that the user is involved with."""
+        """This method return a list of all trades that the user is involved with.
+        :param username:
+        """
         trades = []
-        as_primary = Trade.select().where(Trade.user_one == username)
-        as_secondary = Trade.select().where(Trade.user_two == username)
+        as_primary = TradeController.get_trades_as_primary(username)
+        as_secondary = TradeController.get_trades_as_secondary(username)
 
         for t in as_primary:
             trades.append(t)

@@ -1,8 +1,8 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #                                                   #
 #   PROJECT: Textrade                               #
-#   CONTRIBUTORS:   Daniel Santos (Back-End),       #
-#                   Nina Petropoulos (Front-End)    #
+#   CONTRIBUTORS:   Daniel Santos       (Back-End)  #
+#                   Nina Petropoulos    (Front-End) #
 #   VERSION: 1.0                                    #
 #                                                   #
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -88,7 +88,7 @@ app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
 app.config['CSRF_ENABLED'] = True
 DEBUG = True
 HOST = "127.0.0.1"
-PORT = 5001
+PORT = 5000
 
 #
 #
@@ -146,7 +146,7 @@ class TextradeModelView(ModelView):
     column_details_exclude_list = ['password', ]
 
     def is_accessible(self):
-        return flask_login.current_user.is_authenticated()
+        return flask_login.current_user.is_admin()
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('login', next=request.url))
@@ -571,7 +571,7 @@ def your_rentals():
     )
 
 
-@app.route('/dashboard/rentals/delete/<int:book_id>')
+@app.route('/dashboard/rentals/delete/<int:book_id>', methods=('GET',))
 @login_required
 def delete_rental_book(book_id):
     username = models.BookToRent.get(BookToRent.id == book_id).username.username
@@ -878,8 +878,42 @@ def delete_want_book():
 def trade_requests():
     return render_template(
         'dashboard/trade-requests.html',
-        title="Trade Requests"
+        title="Trade Requests",
+        trades_as_primary=TradeController().get_trades_as_primary(get_current_user().username),
+        trades_as_secondary=TradeController().get_trades_as_secondary(get_current_user().username)
     )
+
+
+@app.route('/dashboard/trade-requests/approve/<int:trade_id>', methods=('GET', 'POST'))
+@login_required
+def approve_trade_request(trade_id):
+    if TradeController.get_primary_user(trade_id) == get_current_user().username:
+        try:
+            TradeController.approve_trade_as_user_one(trade_id)
+        except DoesNotExist:
+            flash("This trade doesn't exists.")
+            return redirect(url_for('trade_requests'))
+        flash("Trade request approved. You will receive an email with instructions.")
+    elif TradeController.get_secondary_user(trade_id) == get_current_user().username:
+        try:
+            TradeController.approve_trade_as_user_two(trade_id)
+        except DoesNotExist:
+            flash("This trade doesn't exists.")
+            return redirect(url_for('trade_requests'))
+        flash("Trade request approved. You will receive an email with instructions.")
+    else:
+        flash("This is not a request related to you")
+    return redirect(url_for('trade_requests'))
+
+
+@app.route('/dashboard/trade-requests/decline/<int:trade_id>', methods=('GET', 'POST'))
+@login_required
+def decline_trade_request(trade_id):
+    try:
+        TradeController.delete_trade(trade_id)
+    except DoesNotExist:
+        flash("This trade doesn't exists.")
+    return redirect(url_for('trade_requests'))
 
 #
 #

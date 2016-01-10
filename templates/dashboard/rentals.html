@@ -36,7 +36,7 @@
                                             <tr>
                                                 <td>{{ rental.date_listed() }}</td>
                                                 <td>{{ rental.get_book_name() }}</td>
-                                                <td><button class="btn btn-danger" data-toggle="modal" data-target="#{{ rental.id }}">Remove</button></td>
+                                                <td><button id="remove-rent-{{ rental.id }}" class="btn btn-danger" data-toggle="modal" data-target="#{{ rental.id }}">Remove</button></td>
                                             </tr>
                                             {{ remove_listing_modal(rental) }}
                                         {% endfor %}

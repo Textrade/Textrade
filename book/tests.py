@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
 from config import HOST, PORT
-from models import BookToRent
+from models import BookToRent, db
 
 driver = webdriver.Chrome("/Users/dsantos/WebDrivers/chromedriver")
 
@@ -25,8 +25,23 @@ def test_add_book_for_rent_automated():
     driver.find_element_by_id("marks").click()
     time.sleep(2)
     driver.find_element_by_id("send-request").send_keys(Keys.ENTER)
+    db.close()
 
+
+def test_remove_book_for_rent_automated():
+    driver.get(HOST+":"+PORT+"/dashboard/rentals")
+    login_helper()
+    assert "Your Rentals | Textrade" in driver.title
+    driver.find_element_by_id(
+            "remove-rent-" +
+            str(BookToRent.select().order_by(BookToRent.id.desc()).get().id)
+    ).click()
+    time.sleep(2)
+    driver.switch_to_active_element()
+    driver.find_element_by_id("remove-rent-book").click()
+    time.sleep(2)
     driver.close()
+    db.close()
 
 
 def login_helper():
@@ -36,4 +51,5 @@ def login_helper():
 
 
 if __name__ == '__main__':
-    test_add_book_for_rent_automated()
+    # test_add_book_for_rent_automated()
+    test_remove_book_for_rent_automated()
