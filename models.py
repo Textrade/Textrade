@@ -174,6 +174,7 @@ class BookTradeHave(Model):
     # TODO: Change to username
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_have")
     date_posted = DateTimeField(default=datetime.datetime.now)
+    active = BooleanField(default=True)
 
     class Meta:
         database = db
@@ -192,6 +193,7 @@ class BookTradeWant(Model):
     # TODO: Change to username convention
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_want")
     date_posted = DateTimeField(default=datetime.datetime.now)
+    active = BooleanField(default=True)
 
     class Meta:
         database = db

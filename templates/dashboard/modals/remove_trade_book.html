@@ -9,7 +9,9 @@
                 <p style="padding: 20px;">Are you sure you want to remove <b>"{{ book.name }}"</b> from your available books for trade?</p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Remove Listing</button>
+                    <a href="{{ url_for('delete_have_book', have_book_id=book.id) }}">
+                        <button type="button" class="btn btn-primary">Remove Listing</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -27,7 +29,9 @@
                 <p style="padding: 20px;">Are you sure you want to remove <b>"{{ book.name }}"</b> from your available books for trade?</p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Remove Listing</button>
+                    <a href="{{ url_for('delete_want_book', want_book_id=book.id) }}">
+                        <button type="button" class="btn btn-primary">Remove Listing</button>
+                    </a>
                 </div>
             </div>
         </div>

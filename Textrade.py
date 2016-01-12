@@ -841,10 +841,20 @@ def add_have_book():
     return redirect(url_for('trades'))
 
 
-@app.route('/dashboard/trades/delete-have-book/', methods=('GET', 'POST'))
+@app.route('/dashboard/trades/delete-have-book/<int:have_book_id>', methods=('GET', 'POST'))
 @login_required
-def delete_have_book():
-    pass
+def delete_have_book(have_book_id):
+    try:
+        book = BookTradeHaveController.get_book_by_id(have_book_id)
+    except DoesNotExist:
+        flash("This book is not related with your account")
+        return redirect(url_for('trades'))
+    if book.user_id == get_current_user().username:
+        BookTradeHaveController.delete(have_book_id)
+        flash("Book deleted")
+    else:
+        flash("This book is not related with your account")
+    return redirect(url_for('trades'))
 
 
 @app.route('/dashboard/trades/add-want-book/', methods=('GET', 'POST'))
@@ -867,10 +877,21 @@ def add_want_book():
     return redirect(url_for('trades'))
 
 
-@app.route('/dashboard/trades/delete-want-book/', methods=('GET', 'POST'))
+@app.route('/dashboard/trades/delete-want-book/<int:want_book_id>', methods=('GET', 'POST'))
 @login_required
-def delete_want_book():
-    pass
+def delete_want_book(want_book_id):
+    try:
+        book = BookTradeWantController.get_book_by_id(want_book_id)
+    except DoesNotExist:
+        flash("This book is not related with your account")
+        return redirect(url_for('trades'))
+
+    if book.user_id == get_current_user().username:
+        BookTradeWantController.delete(want_book_id)
+        flash("Book deleted")
+    else:
+        flash("This book is not related with your account")
+    return redirect(url_for('trades'))
 
 
 @app.route('/dashboard/trade-requests/')

@@ -150,6 +150,10 @@ class BookTradeHaveController:
         )
 
     @staticmethod
+    def get_book_by_id(book_id):
+        return BookTradeHave.get(BookTradeHave.id == book_id)
+
+    @staticmethod
     def modify_title(have_id, title):
         BookTradeHave.get(
                 BookTradeHave.id == have_id
@@ -196,21 +200,25 @@ class BookTradeWantController:
         )
 
     @staticmethod
-    def modify_title(have_id, title):
+    def get_book_by_id(book_id):
+        return BookTradeWant.get(BookTradeWant.id == book_id)
+
+    @staticmethod
+    def modify_title(want_id, title):
         BookTradeWant.get(
-                BookTradeWant.id == have_id
+                BookTradeWant.id == want_id
         ).update(BookTradeWant.name == title).execute()
 
     @staticmethod
-    def modify_isbn(have_id, isbn):
+    def modify_isbn(want_id, isbn):
         BookTradeWant.get(
-                BookTradeWant.id == have_id
+                BookTradeWant.id == want_id
         ).update(BookTradeWant.isbn == isbn).execute()
 
     @staticmethod
-    def delete(have_id):
+    def delete(want_id):
         BookTradeWant.get(
-            BookTradeWant.id == have_id
+            BookTradeWant.id == want_id
         ).delete_instance()
 
     @staticmethod
