@@ -174,7 +174,6 @@ class BookTradeHave(Model):
     # TODO: Change to username
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_have")
     date_posted = DateTimeField(default=datetime.datetime.now)
-    active = BooleanField(default=True)
 
     class Meta:
         database = db
@@ -193,7 +192,6 @@ class BookTradeWant(Model):
     # TODO: Change to username convention
     user = ForeignKeyField(User, to_field='username', related_name="book_trade_want")
     date_posted = DateTimeField(default=datetime.datetime.now)
-    active = BooleanField(default=True)
 
     class Meta:
         database = db
@@ -207,6 +205,7 @@ class BookTradeWant(Model):
 
 class Trade(Model):
     """Trade model."""
+    internal_id = CharField(max_length=255, unique=True)
     user_one = ForeignKeyField(User, to_field='username', related_name='user_one')
     user_two = ForeignKeyField(User, to_field='username', related_name='user_two')
     user_one_approved = BooleanField(default=False)
@@ -290,6 +289,133 @@ def drop_tables():
             ], safe=True
         )
     print("Tables deleted.")
+
+
+def create_trade_data():
+    db.drop_tables(
+        [BookTradeWant, BookTradeHave],
+        safe=True
+    )
+    db.create_tables(
+        [BookTradeHave, BookTradeWant],
+        safe=True
+    )
+
+    users = [
+        'dsantosp12',
+        'jsmith',
+        'myork',
+        'admin',
+    ]
+
+    books = [
+        [
+            ('Physics for Scientists & Engineers: '
+             'A Strategic Approach Plus'),
+            '9780321740908',
+        ],
+        [
+            'Java How To Program', '9780133807806',
+        ],
+        [
+            'Absolute C++', '9780133970784',
+        ],
+        [
+            'Glencoe Health, a Guide to Wellness',
+            '0026515628',
+        ],
+        [
+            ('Manufacturing Planning and Control '
+             'for Supply Chain Management'),
+            '0072299908',
+        ],
+        [
+            ('Principles of Environmental Engineering '
+             'and Science'),
+            '0072350539',
+        ],
+        [
+            'Viscous Fluid Flow', '0072402318',
+        ],
+        [
+            'Biology', '0072437316',
+        ]
+    ]
+
+    want_books = [
+        {
+            'name': books[0][0],
+            'isbn': books[0][1],
+            'user': users[0],
+            'date_posted': (datetime.datetime.now() -
+                            datetime.timedelta(20))
+        },
+        {
+            'name': books[1][0],
+            'isbn': books[1][1],
+            'user': users[1],
+            'date_posted': (datetime.datetime.now() -
+                            datetime.timedelta(10))
+        },
+        # {
+        #     'name': books[2][0],
+        #     'isbn': books[2][1],
+        #     'user': users[2],
+        #     'date_posted': (datetime.datetime.now() -
+        #                     datetime.timedelta(30))
+        # },
+        # {
+        #     'name': books[3][0],
+        #     'isbn': books[3][1],
+        #     'user': users[3],
+        #     'date_posted': (datetime.datetime.now() -
+        #                     datetime.timedelta(15))
+        # },
+    ]
+
+    have_books = [
+        {
+            'name': books[1][0],
+            'isbn': books[1][1],
+            'user': users[0],
+            'date_posted': (datetime.datetime.now() -
+                            datetime.timedelta(20))
+        },
+        {
+            'name': books[0][0],
+            'isbn': books[0][1],
+            'user': users[1],
+            'date_posted': (datetime.datetime.now() -
+                            datetime.timedelta(10))
+        },
+        # {
+        #     'name': books[3][0],
+        #     'isbn': books[3][1],
+        #     'user': users[2],
+        #     'date_posted': (datetime.datetime.now() -
+        #                     datetime.timedelta(20))
+        # },
+        # {
+        #     'name': books[2][0],
+        #     'isbn': books[2][1],
+        #     'user': users[3],
+        #     'date_posted': (datetime.datetime.now() -
+        #                     datetime.timedelta(28))
+        # },
+
+    ]
+
+    try:
+        with db.atomic():
+            BookTradeWant.insert_many(want_books).execute()
+            BookTradeHave.insert_many(have_books).execute()
+
+    except Exception as e:
+        print("Something went wrong initializing the book for trade")
+        print(e)
+        return
+    db.close()
+    print("Trade successfully initialized.")
 
 
 def init_app():
@@ -425,6 +551,9 @@ def init_app():
             university_email="admin@student.uml.edu", role="admin",
             active=True
         )
+
+        create_trade_data()
+
     except Exception as e:
         print(e)
         return
@@ -432,10 +561,11 @@ def init_app():
 
 
 if __name__ == '__main__':
-    drop_tables()
-    create_tables()
-    init_app()
+    # drop_tables()
+    # create_tables()
+    # init_app()
     # db.connect()
     # db.drop_table(Trade)
     # db.create_table(Trade)
     # db.close()
+    create_trade_data()
