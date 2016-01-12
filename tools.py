@@ -28,31 +28,16 @@ class Tools:
     @staticmethod
     def admin_required(func):
         """
-        If you decorate a view with this, it will ensure that the current user is
-        logged in and authenticated before calling the actual view. (If they are
-        not, it calls the :attr:`LoginManager.unauthorized` callback.) For
-        example::
+        This method is a type of login_required decorator but for admin
+        required areas. This doesn't allows any type of user to access
+        areas that they are shouldn't be looking.
 
-            @app.route('/post')
-            @login_required
-            def post():
-                pass
+        You can decorator any view with this method, for example;
 
-        If there are only certain times you need to require that your user is
-        logged in, you can do so with::
-
-            if not current_user.is_authenticated():
-                return current_app.login_manager.unauthorized()
-
-        ...which is essentially the code that this function adds to your views.
-
-        It can be convenient to globally turn off authentication when unit
-        testing. To enable this, if either of the application
-        configuration variables `LOGIN_DISABLED` or `TESTING` is set to
-        `True`, this decorator will be ignored.
-
-        :param func: The view function to decorate.
-        :type func: function
+        @Tools.admin_required
+        @app.route('/top-secret/
+        def top_secret_view():
+            return "Welcome admin!"
         """
 
         @wraps(func)
