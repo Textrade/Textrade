@@ -24,7 +24,7 @@ from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required)
 import flask_wtf
 import flask_login
-
+from init import app
 #
 #
 #
@@ -46,43 +46,36 @@ from flask_admin.contrib.peewee import ModelView
 
 #
 #
-#   MODELS IMPORTS
-#
-#
-import models
-
-#
-#
 #   USER IMPORTS
 #
 #
-from user.forms import (RegisterForm, LoginForm, ResendActivationEmailForm,
-                        ForgotCredentialReset, ResetPassword)
-from user.user import create_user, get_user, get_rentals
-from user.token import *
+# from user.forms import (RegisterForm, LoginForm, ResendActivationEmailForm,
+#                         ForgotCredentialReset, ResetPassword)
+# from user.user import create_user, get_user, get_rentals
+# from user.token import *
 
 #
 #
 #   TRADE IMPORTS
 #
+# #
+# from trade.trade import *
+# from trade.forms import AddHaveBookTrade, AddWantBookTrade
 #
-from trade.trade import *
-from trade.forms import AddHaveBookTrade, AddWantBookTrade
-
-#
-#
-#   BOOK IMPORTS
-#
-#
-from book.forms import (AddBookRentForm, AddBookTradeForm)
-from book.book import *
+# #
+# #
+# #   BOOK IMPORTS
+# #
+# #
+# from book.forms import (AddBookRentForm, AddBookTradeForm)
+# from book.book import *
 
 #
 #
 # APP CONFIG
 #
 #
-app = Flask(__name__)
+
 app.secret_key = '&#*A_==}{}#QPpa";.=1{@'
 app.config['SECURITY_PASSWORD_SALT'] = '(text)rade*'
 app.config['CSRF_ENABLED'] = True
@@ -135,80 +128,80 @@ BOOK_API_KEY = "AIzaSyBI_bJjoReQ2WboaqJvA6wA6lDraR9sJ54"
 # FLASK ADMIN CONFIG
 #
 #
-class TextradeModelView(ModelView):
-    """ModelView override."""
-    form_base_class = flask_wtf.Form
-    # Exclude encrypted password from admin view
-    column_exclude_list = [
-        'password', 'description', 'image_path'
-    ]
-    form_excluded_columns = ['password', ]
-    column_details_exclude_list = ['password', ]
-
-    def is_accessible(self):
-        return flask_login.current_user.is_admin()
-
-    def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for('login', next=request.url))
-
-admin = Admin(app, name="Textrade", template_mode="bootstrap3")
-
+# class TextradeModelView(ModelView):
+#     """ModelView override."""
+#     form_base_class = flask_wtf.Form
+#     # Exclude encrypted password from admin view
+#     column_exclude_list = [
+#         'password', 'description', 'image_path'
+#     ]
+#     form_excluded_columns = ['password', ]
+#     column_details_exclude_list = ['password', ]
 #
-#   USERS
+#     def is_accessible(self):
+#         return flask_login.current_user.is_admin()
 #
-admin.add_view(
-    TextradeModelView(
-        name="Users", model=models.User, endpoint="users", category="User"
-    )
-)
-admin.add_view(
-    TextradeModelView(
-        name="User Role", model=models.UserRole, endpoint="user-role", category="User"
-    )
-)
+#     def inaccessible_callback(self, name, **kwargs):
+#         return redirect(url_for('login', next=request.url))
+#
+# admin = Admin(app, name="Textrade", template_mode="bootstrap3")
+#
+# #
+# #   USERS
+# #
+# admin.add_view(
+#     TextradeModelView(
+#         name="Users", model=models.User, endpoint="users", category="User"
+#     )
+# )
+# admin.add_view(
+#     TextradeModelView(
+#         name="User Role", model=models.UserRole, endpoint="user-role", category="User"
+#     )
+# )
 
 #
 #   TRADES
 #
-admin.add_view(
-    TextradeModelView(
-        name="Trades", model=models.Trade, endpoint="trades", category="Trade",
-    )
-)
-admin.add_view(
-    TextradeModelView(
-        name="Trade Status", model=models.TradeStatus, endpoint="trade-status", category="Trade"
-    )
-)
+# admin.add_view(
+#     TextradeModelView(
+#         name="Trades", model=models.Trade, endpoint="trades", category="Trade",
+#     )
+# )
+# admin.add_view(
+#     TextradeModelView(
+#         name="Trade Status", model=models.TradeStatus, endpoint="trade-status", category="Trade"
+#     )
+# )
 
-#
-#   BOOKS
-#
-admin.add_view(
-    TextradeModelView(
-        name="Book for Rent", model=models.BookToRent, endpoint='book-rent', category="Book"
-    )
-)
-admin.add_view(
-    TextradeModelView(
-        name="Book to Trade Wanted", model=models.BookTradeWant, endpoint="book-trade-wanted", category="Book"
-    )
-)
-admin.add_view(
-    TextradeModelView(
-        name="Book to Trade Have", model=models.BookTradeHave, endpoint="book-trade-have", category="Book"
-    )
-)
-admin.add_view(
-    TextradeModelView(
-        name="Book Status", model=models.BookStatus, endpoint="book-status", category="Book"
-    )
-)
-admin.add_view(
-    TextradeModelView(
-        name="Book Condition", model=models.BookCondition, endpoint="book-condition", category="Book"
-    )
-)
+# #
+# #   BOOKS
+# #
+# admin.add_view(
+#     TextradeModelView(
+#         name="Book for Rent", model=models.BookToRent, endpoint='book-rent', category="Book"
+#     )
+# )
+# admin.add_view(
+#     TextradeModelView(
+#         name="Book to Trade Wanted", model=models.BookTradeWant, endpoint="book-trade-wanted", category="Book"
+#     )
+# )
+# admin.add_view(
+#     TextradeModelView(
+#         name="Book to Trade Have", model=models.BookTradeHave, endpoint="book-trade-have", category="Book"
+#     )
+# )
+# admin.add_view(
+#     TextradeModelView(
+#         name="Book Status", model=models.BookStatus, endpoint="book-status", category="Book"
+#     )
+# )
+# admin.add_view(
+#     TextradeModelView(
+#         name="Book Condition", model=models.BookCondition, endpoint="book-condition", category="Book"
+#     )
+# )
 
 
 def get_current_user():

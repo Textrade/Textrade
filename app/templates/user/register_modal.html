@@ -10,7 +10,7 @@
           </div>
           <div class="modal-body">
             <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
-            <form action="{{ url_for('register') }}" method="POST" class="form-horizontal">
+            <form action="{{ url_for('user.register') }}" method="POST" class="form-horizontal">
                 {{ form.hidden_tag() }}
                 {% for field in form %}
                         {{ render_modal_form(field) }}

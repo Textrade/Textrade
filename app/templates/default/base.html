@@ -30,9 +30,9 @@
                 {% endif %}
                 <li>
                     {% if not g.user.username %}
-                        <a href="{{ url_for('login') }}">Login</a>
+                        <a href="{{ url_for('user.login') }}">Login</a>
                     {% else %}
-                        <a href="{{ url_for('logout') }}">Logout</a>
+                        <a href="{{ url_for('index') }}">Logout</a>
                     {% endif %}
                 </li>
               </ul>
