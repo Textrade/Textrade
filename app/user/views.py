@@ -14,33 +14,33 @@ def login():
     # Login form in login view
     login_form = LoginForm()
     if not flask_login.current_user.is_authenticated():
-        # if login_form.validate_on_submit():
-        #     username = login_form.username.data
-        #     try:
-        #         current_user = models.User.get(models.User.username == username)
-        #     except models.DoesNotExist:
-        #         flash("Your username  or password doesn't match!", "error")
-        #         return redirect(url_for('login'))
-        #
-        #     # TODO: Check this logic in the next try catch statement maybe no need it.
-        #     if current_user.active:
-        #         try:
-        #             log_user = models.User.get(models.User.username == username)
-        #         except models.DoesNotExist:
-        #             flash("Your username  or password doesn't match!", "error")
-        #         else:
-        #             if check_password_hash(log_user.password, login_form.password.data):
-        #                 login_user(log_user)
-        #                 flash("You've been logged in!", "success")
-        #                 _next = request.args.get('next')
-        #                 if _next:
-        #                     return redirect(_next)
-        #                 else:
-        #                     return redirect(url_for('dashboard'))
-        #             else:
-        #                 flash("Your username  or password doesn't match!", "error")
-        #     else:
-        #         flash("You account is not active yet, please check you email.", "no-active")
+        if login_form.validate_on_submit():
+            username = login_form.username.data
+            try:
+                current_user = models.User.get(models.User.username == username)
+            except models.DoesNotExist:
+                flash("Your username  or password doesn't match!", "error")
+                return redirect(url_for('login'))
+
+            # TODO: Check this logic in the next try catch statement maybe no need it.
+            if current_user.active:
+                try:
+                    log_user = models.User.get(models.User.username == username)
+                except models.DoesNotExist:
+                    flash("Your username  or password doesn't match!", "error")
+                else:
+                    if check_password_hash(log_user.password, login_form.password.data):
+                        login_user(log_user)
+                        flash("You've been logged in!", "success")
+                        _next = request.args.get('next')
+                        if _next:
+                            return redirect(_next)
+                        else:
+                            return redirect(url_for('dashboard'))
+                    else:
+                        flash("Your username  or password doesn't match!", "error")
+            else:
+                flash("You account is not active yet, please check you email.", "no-active")
         return render_template(
             'user/login.html',
             section="user",
@@ -64,7 +64,7 @@ def logout():
 
 @user.route('/register/')
 def register():
-    return redirect(url_for('login'))
+    return redirect(url_for('user.login'))
 
 
 @user.route('/forgot-credentials')
