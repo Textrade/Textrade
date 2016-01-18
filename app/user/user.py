@@ -68,7 +68,7 @@ class UserController:
                 sql.update(User).where(
                     User.id == pk_id
                 ).values(
-                    password=generate_password_hash(new_password)
+                    password=UserController.__get_hash(new_password)
                 )
             )
             db.session.commit()
