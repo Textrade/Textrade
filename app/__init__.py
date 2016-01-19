@@ -16,7 +16,7 @@ db = SQLAlchemy(app)
 # LOGIN MANAGER
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'user.login'
 
 
 @app.before_request
@@ -61,4 +61,12 @@ from app.user.views import user
 
 app.register_blueprint(user)
 
+
+# WARNING! CHECK THAT YOU DON'T HAVE
+# DATA THAT YOU DON'T WANT TO DELETE
+# if True:
+#     db.drop_all()
+#
+
 db.create_all()
+

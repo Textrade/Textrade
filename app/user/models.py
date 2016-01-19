@@ -29,6 +29,8 @@ class User(UserMixin, db.Model):
     university_email = db.Column(db.String(255), nullable=False)
     # TODO: Add university name when expand
     # TODO: Add personal email
+    active = db.Column(db.Boolean, default=False)
+    activated_on = db.Column(db.DateTime, nullable=True, default=None)
     # role_id = db.Column(db.String(40), db.ForeignKey)
     # role = db.relation('UserRole',
     #                    backref=db.backref('user', lazy='dynamic'
@@ -55,3 +57,6 @@ class User(UserMixin, db.Model):
 
     def is_admin(self):
         return not self.role == "costumer"
+
+    def is_active(self):
+        return self.active
