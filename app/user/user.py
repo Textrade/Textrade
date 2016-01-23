@@ -50,6 +50,12 @@ class UserController:
                  self.password, self.university_email, self.role)
         )
         db.session.commit()
+        return {
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'username': self.username,
+            'university_email': self.university_email
+        }
 
     def change_password(self, old_password, new_password):
         """Change the user passed in constructor."""
@@ -112,17 +118,17 @@ class UserController:
 
     def __generate_token(self):
         return URLSafeTimedSerializer(
-                secret_key=SECRET_KEY,
-                salt=UserController.SALT
+            secret_key=SECRET_KEY,
+            salt=UserController.SALT
         ).dumps(
-                self.university_email,
+            self.university_email,
         )
 
     @staticmethod
     def generate_token(email):
         return URLSafeTimedSerializer(
-                secret_key=SECRET_KEY,
-                salt=UserController.SALT
+            secret_key=SECRET_KEY,
+            salt=UserController.SALT
         ).dumps(
             email
         )
@@ -130,8 +136,8 @@ class UserController:
     @staticmethod
     def confirm_token(token, expiration=None):
         serializer = URLSafeTimedSerializer(
-                secret_key=SECRET_KEY,
-                salt=UserController.SALT
+            secret_key=SECRET_KEY,
+            salt=UserController.SALT
         )
         if expiration:
             email = serializer.loads(

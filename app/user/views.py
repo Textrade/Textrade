@@ -6,6 +6,8 @@ from flask_login import login_user, logout_user, login_required
 from app.user.forms import (LoginForm, RegisterForm,
                             ResendActivationEmailForm, ForgotCredentialReset)
 from app.user.user import UserController
+from app import MAIL
+from app.tools.email import EmailController
 
 user = Blueprint('user', __name__)
 
@@ -73,19 +75,32 @@ def register():
                     password=reg_form.password.data,
                     university_email=university_email
                 ).create()
-            except Exception:  # Don't know exactly the exception
-                flash("We had a problem creating your user, please try again.")
-                return redirect(url_for('login'))
+            except Exception:  # Don't know exactly the exception name
+                # TODO: Flash error from form
+                flash("We had a problem creating your user, please try again.", "error")
+                return redirect(url_for('user.login'))
+
             flash("User created successfully!", "success")
 
-    return redirect(url_for('login'))
+            # Send email to activate accound
+            try:
+                EmailController(MAIL).send_activation_email(new_user)
+            except Exception:  # Don't know exactly the exception name
+                flash("We current send you an activation email.", "warning")
+                return redirect(url_for('user.login'))
+            flash("An email confirmation has been sent to your email.", "success")
+    return redirect(url_for('user.login'))
 
 
-@user.route('/forgot-credentials')
+@user.route('/forgot-credentials/')
 def forgot_credentials():
     return "Forgot credentials"
 
 
-@user.route('/resend-token')
+@user.route('/resend-token/')
 def resend_token():
-    return redirect(url_for('login'))
+    return redirect(url_for('user.login'))
+
+@user.route('/confirm-email/<string:token>')
+def confirm_email(token):
+    return "comfirm! %s " % token

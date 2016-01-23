@@ -39,3 +39,5 @@ CSRF_ENABLED = True
 CSRF_SESSION_KEY = "a*#(!'!<S>?>:=-LA<lSD@!"
 
 SECRET_KEY = "&!*#S<.,>,E-0oPQW??//CplQ{T}"
+
+DOMAIN_NAME = "http://0.0.0.0:5000"

@@ -1,6 +1,7 @@
 from flask import (Flask, render_template, g)
 from flask_sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
+from flask.ext.mail import Mail
 import flask_login
 
 # Instantiate application
@@ -13,6 +14,18 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 #
+# MAIL CONFIGURATION
+#
+MAIL = Mail()
+app.config['MAIL_SERVER'] = "smtp.gmail.com"
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_SENDER'] = "Textrade <umltextrade@gmail.com>"
+app.config['MAIL_USERNAME'] = "umltextrade@gmail.com"
+app.config['MAIL_PASSWORD'] = "Angell100."
+MAIL.init_app(app)
+
+#
 # LOGIN MANAGER
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -22,6 +35,7 @@ login_manager.login_view = 'user.login'
 @app.before_request
 def before_request():
     g.user = flask_login.current_user
+    g.domain = "http"
 
 
 # HTTP error handlers
@@ -34,7 +48,9 @@ def page_not_found(error):
 
 @app.route('/')
 def index():
-    return render_template("default/index.html")
+    from app.user.forms import RegisterForm
+    return render_template("default/index.html",
+                           register_form=RegisterForm())
 
 
 @app.route('/search/')
@@ -52,9 +68,14 @@ def team():
     return render_template("misc/the-team.html")
 
 
-@app.route('/faqs')
+@app.route('/faqs/')
 def faqs():
     return render_template("misc/faqs.html")
+
+
+@app.route('/contact/')
+def contact():
+    return render_template("misc/contact.html")
 
 
 from app.user.views import user
