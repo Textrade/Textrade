@@ -1,3 +1,5 @@
+import datetime
+
 from flask.ext.bcrypt import check_password_hash, generate_password_hash
 
 from .models import User
@@ -8,13 +10,13 @@ from config import SECRET_KEY
 import sqlalchemy as sql
 
 # Help generate token
-from itsdangerous import URLSafeTimedSerializer, TimedSerializer
+from itsdangerous import URLSafeTimedSerializer
 
 
 class UserController:
 
     SALT = "*lo!ki>,C}s%}651{343{"
-    DEFAULT_DAYS = 86400 * 3 # Day in seconds times the number of days to activate account
+    DEFAULT_DAYS = 86400 * 3  # Day in seconds times the number of days to activate account
 
     def __init__(self, first_name=None, last_name=None,
                  username=None, password=None, university_email=None,
@@ -109,6 +111,29 @@ class UserController:
             return user
 
     @staticmethod
+    def get_user_by_university_email(university_email=None):
+        user = User.query.filter_by(university_email=university_email).first()
+        if user is None:
+            raise UserController.UserNotFound("%s is not in our system." % university_email)
+        else:
+            return user
+
+    @staticmethod
+    def get_user_as_dict(university_email=None, username=None):
+        if university_email:
+            user = UserController.get_user_by_university_email(university_email)
+        elif username:
+            user = UserController.get_user_by_username(username)
+        else:
+            raise UserController.UserNotFound("No argument passed.")
+        return {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
+            'university_email': user.university_email
+        }
+
+    @staticmethod
     def __get_hash(password):
         return generate_password_hash(password)
 
@@ -134,7 +159,7 @@ class UserController:
         )
 
     @staticmethod
-    def confirm_token(token, expiration=None):
+    def __confirm_token(token, expiration=None):
         serializer = URLSafeTimedSerializer(
             secret_key=SECRET_KEY,
             salt=UserController.SALT
@@ -152,6 +177,19 @@ class UserController:
                 salt=UserController.SALT
             )
         return email
+
+    @staticmethod
+    def activate_account(token):
+        university_email = UserController.__confirm_token(token)
+        db.session.execute(
+            sql.update(User).where(
+                User.university_email == university_email
+            ).values(
+                active=True,
+                activated_on=datetime.datetime.now()
+            )
+        )
+        db.session.commit()
 
     class UserNotFound(Exception):
         pass

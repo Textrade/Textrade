@@ -2,6 +2,7 @@ from flask import (Blueprint, request, render_template, flash,
                    g, session, redirect, url_for)
 import flask_login
 from flask_login import login_user, logout_user, login_required
+from itsdangerous import BadTimeSignature, SignatureExpired
 
 from app.user.forms import (LoginForm, RegisterForm,
                             ResendActivationEmailForm, ForgotCredentialReset)
@@ -39,7 +40,7 @@ def login():
                     else:
                         flash("Your username  or password doesn't match!", "error")
                 else:
-                    flash("You account is not active yet, please check you email.", "no-active")
+                    flash("You account is not active yet, please check you email.", "resend-email")
         return render_template(
             'user/login.html',
             section="user",
@@ -86,21 +87,41 @@ def register():
             try:
                 EmailController(MAIL).send_activation_email(new_user)
             except Exception:  # Don't know exactly the exception name
-                flash("We current send you an activation email.", "warning")
+                flash("We current send you an activation email.", "resend-email")
                 return redirect(url_for('user.login'))
             flash("An email confirmation has been sent to your email.", "success")
+    return redirect(url_for('user.login'))
+
+
+@user.route('/confirm-email/<string:token>')
+def confirm_email(token):
+    try:
+        UserController.activate_account(token)
+    except SignatureExpired:
+        flash("Your link has expired.", "resend-email")
+    except BadTimeSignature:
+        flash("Invalid activation link.", "resend-email")
+    else:
+        flash("Your user have been activated, please login!", "success")
+    return redirect(url_for('user.login'))
+
+
+@user.route('/resend-token/', methods=['GET', 'POST'])
+def resend_token():
+    resend_form = ResendActivationEmailForm()
+    if resend_form.validate_on_submit():
+        university_email = resend_form.university_email.data
+        try:
+            EmailController(MAIL).send_activation_email(
+                UserController.get_user_as_dict(university_email=university_email)
+            )
+        except UserController.UserNotFound as e:
+            flash(str(e), "error")
+            return redirect(url_for('user.login'))
+        flash("We've resend an activation email to %s." % university_email, "success")
     return redirect(url_for('user.login'))
 
 
 @user.route('/forgot-credentials/')
 def forgot_credentials():
     return "Forgot credentials"
-
-
-@user.route('/resend-token/')
-def resend_token():
-    return redirect(url_for('user.login'))
-
-@user.route('/confirm-email/<string:token>')
-def confirm_email(token):
-    return "comfirm! %s " % token

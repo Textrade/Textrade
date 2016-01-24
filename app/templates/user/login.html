@@ -21,7 +21,7 @@
                     {% if messeages %}
                         {% for msg in messeages %}
                             <p>{{ msg[1] }}
-                                {% if msg[0] == "no-active" %}
+                                {% if msg[0] == "resend-email" %}
                                     If you want us to resend you an activation email
                                     <a href="#" data-toggle="modal" data-target="#resend-email-modal">click here.</a>
                                 {% endif %}
