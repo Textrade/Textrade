@@ -13,8 +13,8 @@
                     {% for field in log_form %}
                         {{ render_field(field) }}
                     {% endfor %}
-            <button id="submit" type="submit" name="login" value="Login" class="login loginmodal-submit btn btn-default">Login</button>
-            <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account |</a><span> </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
+                <button id="submit" type="submit" name="login" value="Login" class="login loginmodal-submit btn btn-default">Login</button>
+                <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account |</a><span> </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
             </form>
             <div style="padding-top: 10px;">
                 {% with messeages = get_flashed_messages(with_categories=True) %}

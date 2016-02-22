@@ -61,7 +61,7 @@ class UserController:
 
     def change_password(self, old_password, new_password):
         """Change the user passed in constructor."""
-        if UserController.check_hash(self.password, new_password):
+        if UserController.check_hash(self.password, old_password):
             db.session.execute(
                 sql.update(self.user).where(
                     User.username == self.username

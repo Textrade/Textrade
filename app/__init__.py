@@ -1,4 +1,4 @@
-from flask import (Flask, render_template, g)
+from flask import Flask, render_template, g
 from flask_sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.mail import Mail
@@ -45,49 +45,24 @@ def page_not_found(error):
 
 # TODO: Add 500 server error handler
 
+# Default views
+from app.views import init
+app.register_blueprint(init)
 
-@app.route('/')
-def index():
-    from app.user.forms import RegisterForm
-    return render_template("default/index.html",
-                           register_form=RegisterForm())
-
-
-@app.route('/search/')
-def search():
-    return render_template("rent/search.html")
-
-
-@app.route('/services/')
-def our_services():
-    return render_template("misc/our-services.html")
-
-
-@app.route('/team/')
-def team():
-    return render_template("misc/the-team.html")
-
-
-@app.route('/faqs/')
-def faqs():
-    return render_template("misc/faqs.html")
-
-
-@app.route('/contact/')
-def contact():
-    return render_template("misc/contact.html")
-
-
+# User views
 from app.user.views import user
-
 app.register_blueprint(user)
 
+# Dashboard views
+from app.dashboard.views import dashboard
+app.register_blueprint(dashboard)
 
-# WARNING! CHECK THAT YOU DON'T HAVE
-# DATA THAT YOU DON'T WANT TO DELETE
-# if True:
-#     db.drop_all()
-#
+# Setup
+# from app.user.models import UserRole
+# db.create_all()
+# db.drop_all()
 
-db.create_all()
-
+# db.session.add(UserRole(role="customer"))
+# db.session.add(UserRole(role="developer"))
+# db.session.add(UserRole(role="admin"))
+# db.session.commit()

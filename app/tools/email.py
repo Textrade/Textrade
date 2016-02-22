@@ -5,6 +5,8 @@ from app import app
 from config import DOMAIN_NAME
 from app.user.user import UserController
 
+import sendgrid
+
 
 class EmailController:
     def __init__(self, mail):
@@ -22,3 +24,26 @@ class EmailController:
             Message(subject=SUBJECT, recipients=[user['university_email']],
                     html=HTML, sender=app.config['MAIL_SENDER'])
         )
+
+
+class SendGridTest:
+    def __init__(self, html="", subject="",
+                 from_user="", to_user="", cc_user=""):
+        self.sg = sendgrid.SendGridClient(
+            ('SG.5I_F7IejRiSDZJEyjKBO9w.qwnuDNJMEFt'
+             'XZEQdllPSuPqB2ZyjZvied4H7hayNJt4')
+        )
+        self.mail_ = sendgrid.Mail()
+        self.to_user_ = to_user
+        self.from_user_ = from_user
+        self.cc_user_ = cc_user
+        self.subject_ = subject
+        self.html_ = html
+
+    def send(self):
+        self.mail_.add_to(self.to_user_)
+        self.mail_.add_cc(self.cc_user_)
+        self.mail_.set_subject(self.subject_)
+        self.mail_.set_html(self.html_)
+        self.mail_.set_from(self.from_user_)
+        self.sg.send(self.mail_)

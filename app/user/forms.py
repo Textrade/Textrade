@@ -5,40 +5,40 @@ from wtforms.validators import (DataRequired, Regexp, ValidationError, Email,
 from app.user.models import User
 
 
-# def username_exits(form, field):
-#     if User.select().where(User.username == field.data).exists():
-#         raise ValidationError('User with that username already exists.')
-#
-#
-# def university_email_exits(form, field):
-#     if User.select().where(User.university_email == field.data).exists():
-#         raise ValidationError('This email is already in our system.')
-#
-#
-# def university_email_does_not_exits(form, field):
-#     if not User.select().where(User.university_email == field.data).exists():
-#         raise ValidationError("This email is not in our system.")
-#
-#
-# def is_not_user_active(form, field):
-#     # This try was done to prevent UserDoesn't exist
-#     # Could not find specific exception
-#     try:
-#         if User.get(User.university_email == field.data).active:
-#             raise ValidationError("Your account is already active.")
-#     except not ValidationError:
-#         pass
-#
-#
+def username_exits(form, field):
+    if User.query.filter_by(username=field.data).first():
+        raise ValidationError('User with that username already exists.')
+
+
+def university_email_exits(form, field):
+    if User.query.filter_by(university_email=field.data).first():
+        raise ValidationError('This email is already in our system.')
+
+
+def university_email_does_not_exits(form, field):
+    if not User.query.filter_by(university_email=field.data).first():
+        raise ValidationError("This email is not in our system.")
+
+
+def is_not_user_active(form, field):
+    # This try was done to prevent UserDoesn't exist
+    # Could not find specific exception
+    try:
+        if User.query.filter_by(username=field.data).first().is_active():
+            raise ValidationError("Your account is already active.")
+    except not ValidationError:
+        pass
+
+
 # def personal_email_exits(form, field):
 #     if User.select().where(User.personal_email == field.data).exists():
 #         raise ValidationError('This email is already in our system.')
-#
-#
-# def is_uml_email(form, field):
-#     if "@student.uml.edu" not in field.data:
-#         raise ValidationError('This is not a valid email. You must be a UML student.')
-#
+
+
+def is_uml_email(form, field):
+    if "@student.uml.edu" not in field.data:
+        raise ValidationError('This is not a valid email. You must be a UML student.')
+
 
 class RegisterForm(Form):
     """Form to register an user."""
@@ -67,8 +67,8 @@ class RegisterForm(Form):
         validators=[
             DataRequired(),
             Email(),
-            # is_uml_email,
-            # university_email_exits
+            is_uml_email,
+            university_email_exits
         ]
     )
     username = StringField(
@@ -80,7 +80,7 @@ class RegisterForm(Form):
                 message=("Username should be one word, letters, "
                          "numbers, and '_, -'.")
             ),
-            # username_exits
+            username_exits
         ]
     )
     password = PasswordField(
@@ -129,7 +129,7 @@ class ResendActivationEmailForm(Form):
         validators=[
             DataRequired(),
             Email(),
-            # university_email_does_not_exits,
+            university_email_does_not_exits,
         ]
     )
 
@@ -141,7 +141,7 @@ class ForgotCredentialReset(Form):
         validators=[
             DataRequired(),
             Email(),
-            # university_email_does_not_exits
+            university_email_does_not_exits
         ]
     )
 

@@ -1,5 +1,5 @@
 from flask import (Blueprint, request, render_template, flash,
-                   g, session, redirect, url_for)
+                   redirect, url_for)
 import flask_login
 from flask_login import login_user, logout_user, login_required
 from itsdangerous import BadTimeSignature, SignatureExpired
@@ -9,6 +9,7 @@ from app.user.forms import (LoginForm, RegisterForm,
 from app.user.user import UserController
 from app import MAIL
 from app.tools.email import EmailController
+from app.tools.helpers import flash_from_errors
 
 user = Blueprint('user', __name__)
 
@@ -50,7 +51,6 @@ def login():
             forgot_form=ForgotCredentialReset(),
             resend_from=ResendActivationEmailForm()
         )
-    # TODO: Find why this has been printing twice! If still doing
     flash("You are logged in already.", "success")
     return redirect(url_for('dashboard'))
 
@@ -83,13 +83,15 @@ def register():
 
             flash("User created successfully!", "success")
 
-            # Send email to activate accound
+            # TODO: Send email with SendGrid
             try:
                 EmailController(MAIL).send_activation_email(new_user)
             except Exception:  # Don't know exactly the exception name
-                flash("We current send you an activation email.", "resend-email")
+                flash("We couldn't send you an activation email.", "resend-email")
                 return redirect(url_for('user.login'))
             flash("An email confirmation has been sent to your email.", "success")
+        else:
+            flash_from_errors(reg_form)
     return redirect(url_for('user.login'))
 
 

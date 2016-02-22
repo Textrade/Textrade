@@ -30,6 +30,14 @@ SQLALCHEMY_DATABASE_URI = (
     )
 )
 
+# MAIL CONFIG
+# MAIL_SERER = "smtp.gmail.com"
+# MAIL_PORT = 465
+# MAIL_USE_SSL = True
+# MAIL_SENDER = "Textrade <umltextrade@gmail.com>"
+# MAIL_USERNAME = "umltextrade@gmail.com"
+# MAIL_PASSWORD = "Angell100."
+
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 THREADS_PER_PAGE = 2
