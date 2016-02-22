@@ -26,7 +26,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     joined = db.Column(db.DateTime, default=datetime.datetime.now)
-    university_email = db.Column(db.String(255), nullable=False)
+    university_email = db.Column(db.String(255), unique=True, nullable=False)
     # TODO: Add university name when expand
     # TODO: Add personal email
     active = db.Column(db.Boolean, default=False)
