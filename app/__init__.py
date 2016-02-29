@@ -1,5 +1,4 @@
-from flask import (Flask, render_template, g, redirect,
-                   url_for, request, flash)
+from flask import Flask, render_template, g
 from flask_sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.mail import Mail
@@ -47,71 +46,20 @@ def page_not_found(error):
 # TODO: Add 500 server error handler
 
 
-@app.route('/')
-def index():
-    from app.user.forms import RegisterForm
-    return render_template("default/index.html",
-                           register_form=RegisterForm())
+from app.views import init
 
-
-@app.route('/search/')
-def search():
-    return render_template("rent/search.html")
-
-
-@app.route('/services/')
-def our_services():
-    return render_template("misc/our-services.html")
-
-
-@app.route('/team/')
-def team():
-    return render_template("misc/the-team.html")
-
-
-@app.route('/faqs/')
-def faqs():
-    return render_template("misc/faqs.html")
-
-
-@app.route('/contact/')
-def contact():
-    return render_template("misc/contact.html")
-
-
-# This will be eliminated
-@app.route('/send-email/')
-def send_email():
-    return render_template("email/send_email.html")
-
-
-@app.route('/get_email_content/', methods=['GET', 'POST'])
-def get_email_content():
-    from app.tools.email import SendGridTest
-    try:
-        SendGridTest(
-            request.form['email_content'],
-            request.form['subject'],
-            "Daniel Santos <{}>".format(request.form['from_email']),
-            request.form['to_email'],
-            request.form['cc_email']
-        ).send()
-        flash("Message send :)")
-    except Exception as e:
-        flash(e)
-
-    return redirect(url_for('send_email'))
+app.register_blueprint(init)
 
 from app.user.views import user
 
 app.register_blueprint(user)
 
+from app.user.models import UserRole
 
-# WARNING! CHECK THAT YOU DON'T HAVE
-# DATA THAT YOU DON'T WANT TO DELETE
-# if True:
-#     db.drop_all()
-#
+# db.create_all()
+# db.drop_all()
 
-db.create_all()
-
+# db.session.add(UserRole(role="customer"))
+# db.session.add(UserRole(role="developer"))
+# db.session.add(UserRole(role="admin"))
+# db.session.commit()

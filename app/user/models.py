@@ -4,20 +4,6 @@ from app import db
 from flask_login import UserMixin
 
 
-# class UserRole(db.Model):
-#     """UserRole table to store the different user categories and
-#     and control privileges for users.
-#     """
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     role = db.Column(db.String(40), unique=True)
-#
-#     def __init__(self, role):
-#         self.role = role
-#
-#     def __repr__(self):
-#         return "<Role: %r>" % self.role
-
-
 class User(UserMixin, db.Model):
     """User model"""
     id = db.Column(db.Integer, primary_key=True)
@@ -31,11 +17,7 @@ class User(UserMixin, db.Model):
     # TODO: Add personal email
     active = db.Column(db.Boolean, default=False)
     activated_on = db.Column(db.DateTime, nullable=True, default=None)
-    # role_id = db.Column(db.String(40), db.ForeignKey)
-    # role = db.relation('UserRole',
-    #                    backref=db.backref('user', lazy='dynamic'
-    #                                       )
-    #                    )
+    role = db.Column(db.String(255), db.ForeignKey('user_role.role'))
 
     def __init__(self, first_name, last_name,
                  username, password, university_email, role):
@@ -60,3 +42,17 @@ class User(UserMixin, db.Model):
 
     def is_active(self):
         return self.active
+
+
+class UserRole(db.Model):
+    """UserRole table to store the different user categories and
+    and control privileges for users.
+    """
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    role = db.Column(db.String(40), unique=True)
+
+    def __init__(self, role):
+        self.role = role
+
+    def __repr__(self):
+        return "<Role: %r>" % self.role

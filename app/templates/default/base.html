@@ -16,23 +16,23 @@
           <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display-->
             <div class="navbar-header">
-              <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="{{ url_for('index') }}" class="navbar-brand">Textrade</a>
+              <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="{{ url_for('init.index') }}" class="navbar-brand">Textrade</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling-->
             <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('search') }}">Marketplace</a></li>
-                <li><a href="{{ url_for('our_services') }}">Our Services</a></li>
-                <li><a href="{{ url_for('team') }}">The Team</a></li>
-                <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
+                <li><a href="{{ url_for('init.search') }}">Marketplace</a></li>
+                <li><a href="{{ url_for('init.our_services') }}">Our Services</a></li>
+                <li><a href="{{ url_for('init.team') }}">The Team</a></li>
+                <li><a href="{{ url_for('init.faqs') }}">FAQs</a></li>
                 {% if g.user.username %}
-                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('init.dashboard') }}">Dashboard</a></li>
                 {% endif %}
                 <li>
                     {% if not g.user.username %}
                         <a href="{{ url_for('user.login') }}">Login</a>
                     {% else %}
-                        <a href="{{ url_for('index') }}">Logout</a>
+                        <a href="{{ url_for('init.index') }}">Logout</a>
                     {% endif %}
                 </li>
               </ul>
@@ -56,16 +56,16 @@
                 <h2>Textrade</h2>
                 <h4>An Educated Book Buying Market</h4>
                 <ul class="col-xs-12 col-md-3">
-                  <li><a href="{{ url_for('team') }}" style="color:white">The Team</a></li>
-                  <li><a href="{{ url_for('contact') }}" style="color:white">Contact</a></li>
+                  <li><a href="{{ url_for('init.team') }}" style="color:white">The Team</a></li>
+                  <li><a href="{{ url_for('init.contact') }}" style="color:white">Contact</a></li>
                 </ul>
                 <ul class="col-xs-12 col-md-3">
-                  <li><a href="{{ url_for('our_services') }}" style="color:white">Services</a></li>
-                  <li><a href="{{ url_for('our_services') }}#rent" style="color:white">Rent</a></li>
-                  <li><a href="{{ url_for('our_services') }}#trade" style="color:white">Trade</a></li>
+                  <li><a href="{{ url_for('init.our_services') }}" style="color:white">Services</a></li>
+                  <li><a href="{{ url_for('init.our_services') }}#rent" style="color:white">Rent</a></li>
+                  <li><a href="{{ url_for('init.our_services') }}#trade" style="color:white">Trade</a></li>
                 </ul>
                 <ul class="col-xs-12 col-md-3">
-                  <li><a href="{{ url_for('search') }}" style="color:white">Marketplace</a></li>
+                  <li><a href="{{ url_for('init.search') }}" style="color:white">Marketplace</a></li>
                 </ul>
                 <ul class="col-xs-12 col-md-3">
                   <li><a href="{{ url_for('user.login') }}" style="color:white">Login</a></li>
