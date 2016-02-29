@@ -1,0 +1,96 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% from 'dashboard/modals/trade_macros.html' import approve_trade_modal %}
+{% from 'dashboard/modals/trade_macros.html' import decline_trade_modal %}
+{% block content %}
+    <div id="page-wrapper">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="page-header">Trade Requests</h1>
+              <h3>Incoming Requests</h3>
+          <p style="margin-bottom:50px;">The following trades have been identified. To accept or decline a trade match, simply select the appropriate action from the action menu. If you and the other Textrade member accept to a trade match, you'll be notified to finalize the trade. To delete a book listed as available for trade visit <a href="trades.html">Trade Listings</a></p>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <i class="fa fa-book fa-fw"></i> <strong>Incoming</strong> Rental Requests
+              </div>
+              <!-- /.panel-heading -->
+              <div class="panel-body">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div class="table-responsive">
+                              <table class="table table-bordered table-hover table-striped">
+                                {% if trades_as_primary[0] or trades_as_secondary[0] %}
+                                    <thead>
+                                      <tr>
+                                        <th>Date</th>
+                                        <th>Your Title (Trading)</th>
+                                        <th>Their Title(Receiving)</th>
+                                        <th>Action</th>
+                                      </tr>
+                                    </thead>
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-md-6 col-lg-offset-4">
+                                            <h3>No trades request available</h3>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <tbody>
+                                {% for trade in trades_as_primary %}
+                                  <tr>
+                                    <td>{{ trade.date_to_formatted_string() }}</td>
+                                    <td>{{ trade.book_one }}</td>
+                                    <td>{{ trade.book_two }}</td>
+                                    <td>
+                                      <div class="dropdown">
+                                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Approve/Decline
+                                        <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                            <li><a data-toggle="modal" data-target="#accept-trade-request-{{ trade.id }}">Approve</a></li>
+                                            <li><a data-toggle="modal" data-target="#decline-trade-request-{{ trade.id }}">Decline</a></li>
+                                        </ul>
+                                      </div>
+                                        {{ approve_trade_modal(trade) }}
+                                        {{ decline_trade_modal(trade) }}
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                {% for trade in trades_as_secondary %}
+                                  <tr>
+                                    <td>{{ trade.date_to_formatted_string() }}</td>
+                                    <td>{{ trade.book_two }}</td>
+                                    <td>{{ trade.book_one }}</td>
+                                    <td>
+                                      <div class="dropdown">
+                                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Approve/Decline
+                                        <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                            <li><a data-toggle="modal" data-target="#accept-trade-request-{{ trade.id }}">Approve</a></li>
+                                            <li><a data-toggle="modal" data-target="#decline-trade-request-{{ trade.id }}">Decline</a></li>
+                                        </ul>
+                                      </div>
+                                        {{ approve_trade_modal(trade) }}
+                                        {{ decline_trade_modal(trade) }}
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                </tbody>
+                              </table>
+                          </div>
+                          <!-- /.table-responsive -->
+                      </div>
+                      <!-- /.col-lg-8 (nested) -->
+                  </div>
+                  <!-- /.row -->
+              </div>
+              <!-- /.panel-body -->
+          </div>
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+
+    <!-- /#page-wrapper -->
+{% endblock %}

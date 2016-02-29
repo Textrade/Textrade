@@ -1,0 +1,39 @@
+{% macro remove_have_book(book) %}
+    <div class="modal fade" id="remove-have-book-{{ book.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title" id="myModalLabel">Confirmation</h3>
+                </div>
+                <p style="padding: 20px;">Are you sure you want to remove <b>"{{ book.name }}"</b> from your available books for trade?</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a href="{{ url_for('delete_have_book', have_book_id=book.id) }}">
+                        <button type="button" class="btn btn-primary">Remove Listing</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro remove_want_book(book) %}
+    <div class="modal fade" id="remove-want-book-{{ book.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title" id="myModalLabel">Confirmation</h3>
+                </div>
+                <p style="padding: 20px;">Are you sure you want to remove <b>"{{ book.name }}"</b> from your available books for trade?</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <a href="{{ url_for('delete_want_book', want_book_id=book.id) }}">
+                        <button type="button" class="btn btn-primary">Remove Listing</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
