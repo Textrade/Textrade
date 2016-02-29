@@ -7,6 +7,7 @@ from app.user.user import UserController
 
 import sendgrid
 
+
 class EmailController:
     def __init__(self, mail):
         self.mail = mail
@@ -26,16 +27,23 @@ class EmailController:
 
 
 class SendGridTest:
-    def __init__(self):
+    def __init__(self, html="", subject="",
+                 from_user="", to_user="", cc_user=""):
         self.sg = sendgrid.SendGridClient(
             ('SG.5I_F7IejRiSDZJEyjKBO9w.qwnuDNJMEFt'
              'XZEQdllPSuPqB2ZyjZvied4H7hayNJt4')
         )
-        self.message = sendgrid.Mail()
+        self.mail_ = sendgrid.Mail()
+        self.to_user_ = to_user
+        self.from_user_ = from_user
+        self.cc_user_ = cc_user
+        self.subject_ = subject
+        self.html_ = html
 
-    def send_test(self, email):
-        self.message.add_to(email)
-        self.message.set_subject("Textrade")
-        self.message.set_html("<h1>Big hi, the test works!</h1>")
-        self.message.set_from("Joseph Meli <joseph.meli@textrade.us>")
-        self.sg.send(self.message)
+    def send(self):
+        self.mail_.add_to(self.to_user_)
+        self.mail_.add_cc(self.cc_user_)
+        self.mail_.set_subject(self.subject_)
+        self.mail_.set_html(self.html_)
+        self.mail_.set_from(self.from_user_)
+        self.sg.send(self.mail_)

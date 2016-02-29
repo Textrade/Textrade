@@ -1,4 +1,5 @@
-from flask import (Flask, render_template, g)
+from flask import (Flask, render_template, g, redirect,
+                   url_for, request, flash)
 from flask_sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.mail import Mail
@@ -77,6 +78,29 @@ def faqs():
 def contact():
     return render_template("misc/contact.html")
 
+
+# This will be eliminated
+@app.route('/send-email/')
+def send_email():
+    return render_template("email/send_email.html")
+
+
+@app.route('/get_email_content/', methods=['GET', 'POST'])
+def get_email_content():
+    from app.tools.email import SendGridTest
+    try:
+        SendGridTest(
+            request.form['email_content'],
+            request.form['subject'],
+            "Daniel Santos <{}>".format(request.form['from_email']),
+            request.form['to_email'],
+            request.form['cc_email']
+        ).send()
+        flash("Message send :)")
+    except Exception as e:
+        flash(e)
+
+    return redirect(url_for('send_email'))
 
 from app.user.views import user
 

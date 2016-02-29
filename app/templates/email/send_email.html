@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'textarea' });</script>
+</head>
+<body>
+    <form action="{{ url_for('get_email_content') }}" method="post">
+        <label for="to_email">To:</label>
+        <input id= "to_email" type="text" name="to_email">
+        </br>
+        <label for="from_email">From:</label>
+        <input id= "from_email" type="text" name="from_email">
+        </br>
+        </br>
+        <label for="subject">Subject:</label>
+        <input id= "subject" type="text" name="subject">
+        </br>
+        <label for="cc_email">CC:</label>
+        <input id= "cc_email" type="text" name="cc_email">
+        </br>
+        <textarea name="email_content">Start typing your email here.</textarea>
+        <input type="submit" value="Send!">
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+</body>
+</html>
