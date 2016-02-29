@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+        body {
+          font-family: Open Sans, sans-serif;
+          background: #efefef;
+        }
+
+        body .email-wrapper {
+          max-width: 500px;
+          margin: auto;
+          background: white;
+          padding: 20px 15px;
+          border-radius: 5px;
+        }
+
+        body .email-wrapper .header {
+          text-align: left;
+          background: #2196F3;
+          padding: 5px 20px;
+        }
+
+        body .email-wrapper .header h1 {
+          color: white;
+          font-size: 36px;
+        }
+
+        body .email-wrapper .message {
+          padding: 15px 25px;
+        }
+
+        body .email-wrapper .message .btn-primary {
+          font-size: 14px;
+          font-family: Open Sans, sans-serif;
+          margin: auto;
+          background: #2196F3;
+          border: none;
+          color: white;
+          border-radius: 4px;
+          padding: 5px 15px;
+          text-align: center;
+        }
+
+        body .email-wrapper .footer {
+          margin-top: 50px;
+          text-align: left;
+        }
+
+        body .email-wrapper .footer img {
+          height: 100px;
+        }
+
+        body .email-wrapper .footer .unsubscribe {
+          color: grey;
+          font-size: 12px;
+          text-align: left;
+        }
+
+        body .email-wrapper .footer .unsubscribe a {
+          text-decoration: underline;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <div class="header">
+        <h1>Textrade Logo</h1>
+      </div>
+      <div class="message">
+        <h2>Hi {{ name }}</h2>
+        <p>Welcome to Textrade! We're excited to have you. Before you can start renting and trading on Textrade you'll have to veryify your account. To do so, simply click the link below, or let us know if you're having a problem.</p>
+        <a href="{{ g.domain }}/{{ url_for('confirm_email', token=token) }}"><button class="btn-primary">Verify your account</button></a>
+      </div>
+      <div class="footer"><img src="{{ g.domain }}/static/email/logoBW.png" style="margin:auto">
+        <p class="unsubscribe">We know, it's not you, it's us. If you'd like us to give you some space, just <a>unsubscribe</a></p>
+      </div>
+    </div>
+  </body>
+</html>

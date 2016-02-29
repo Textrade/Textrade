@@ -1,0 +1,70 @@
+@app.route('/book/add/', methods=('GET', 'POST'))
+@login_required
+def add_book_rent():
+    rent_book_form = AddBookRentForm()
+    trade_book_form = AddBookTradeForm()
+
+    if request.method == "POST":
+        # Check which form was submitted
+        which_form = request.form['hidden']
+        if which_form is "0":
+            # Add a book for rent
+            if rent_book_form.validate_on_submit():
+                # Get ISBN from form after validate
+                isbn = rent_book_form.isbn.data
+                # Try to load information
+                book = load_book_info(isbn)
+                if book:
+                    # file = request.files['img']
+                    # if file and allowed_file(file.filename, BOOK_IMG_EXTENTIONS):
+                    #     # Secure the input file
+                    #     filename = secure_filename(
+                    #         "{}-{}.{}".format(
+                    #             flask_login.current_user.username,
+                    #             uuid.uuid4(),
+                    #             file.filename.rsplit('.', 1)[1]
+                    #         )
+                    #     )
+                    #     # Save the image to the server
+                    #     img_path = DOMAIN_NAME + '/static/img/books/' + filename
+                    #     file.save(os.path.join(UPLOAD_FOLDER, filename))
+                        # Create a book record in the database
+                    create_book_rent(
+                        name=book['title'],
+                        author=book['authors'],
+                        description=book['description'],
+                        isbn=isbn,
+                        condition=rent_book_form.condition.data,
+                        condition_comment=rent_book_form.condition_comment.data,
+                        username=get_current_user().username,
+                        marks=rent_book_form.marks.data,
+                        # img_path=img_path
+                    )
+                    flash("You book have been created!", "success")
+                    return redirect(url_for('add_book_rent'))
+                    # else:
+                    #     flash("This format of the file is not allowed.", "error")
+                else:
+                    flash("We couldn't find this book, check the ISBN number.", "error")
+                    return redirect(url_for('add_book_rent'))
+        elif which_form is "1":
+            # Add a book to trade
+            if trade_book_form.validate_on_submit():
+                have_book_isbn = trade_book_form.have_book.data
+                want_book_isbn = trade_book_form.want_book.data
+                create_book_trade(
+                    have_name=load_book_info(have_book_isbn)['title'],
+                    want_name=load_book_info(want_book_isbn)['title'],
+                    want_isbn=want_book_isbn,
+                    have_isbn=have_book_isbn,
+                    user=get_current_user(),
+                )
+                flash("Books for trade added successfully.", "success")
+    for errors in rent_book_form.errors.items():
+        for error in errors[1]:
+            flash("{}".format(error))
+    for errors in trade_book_form.errors.items():
+        for error in errors[1]:
+            flash("{}".format(error))
+    return redirect(url_for('your_rentals'))
+

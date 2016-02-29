@@ -1,0 +1,49 @@
+{% extends 'default/base.html' %}
+{% from 'default/macros_login.html' import render_field %}
+{% from 'user/register_modal.html' import register_account %}
+{% from 'user/forgot_password_modal.html' import forgot_password_modal %}
+{% from 'user/resend_verification_modal.html' import resend_email_modal %}
+{% block content %}
+    <!-- - write content here-->
+    <div class="row login-page-row">
+      <div id="login-wrap">
+        <div id="login-dialog"><img src="/static/img/logo.png" style="width:250px;margin:auto;float:center">
+            <form action="" method="POST">
+                {{ log_form.hidden_tag() }}
+                    {% for field in log_form %}
+                        {{ render_field(field) }}
+                    {% endfor %}
+            <button id="submit" type="submit" name="login" value="Login" class="login loginmodal-submit btn btn-default">Login</button>
+            <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account |</a><span> </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
+            </form>
+            <div style="padding-top: 10px;">
+                {% with messeages = get_flashed_messages(with_categories=True) %}
+                    {% if messeages %}
+                        {% for msg in messeages %}
+                            <p>{{ msg[1] }}
+                                {% if msg[0] == "no-active" %}
+                                    If you want us to resend you an activation email
+                                    <a href="#" data-toggle="modal" data-target="#resend-email-modal">click here.</a>
+                                {% endif %}
+                            </p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+      </div>
+    </div>
+
+    {# Include register modal #}
+    {{ register_account(register_form) }}
+
+    {# Include forgot password modal  #}
+    {{ forgot_password_modal(forgot_form) }}
+
+    {# Include resend activation email modal  #}
+    {{ resend_email_modal(resend_from) }}
+
+    {#  Override footer to blank  #}
+    {% block footer %}
+    {% endblock %}
+{% endblock %}
