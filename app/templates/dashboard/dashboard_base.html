@@ -51,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}">Textrade | Dashboard</a>
+                <a class="navbar-brand" href="{{ url_for('init.index') }}">Textrade | Dashboard</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -251,9 +251,9 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="{{ url_for('user_page', username=g.user.username) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
+{#                        <li><a href="{{ url_for('user.user_page', username=g.user.username) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>#}
                         </li>
-                        <li><a href="{{ url_for('account_settings') }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+{#                        <li><a href="{{ url_for('account_settings') }}"><i class="fa fa-gear fa-fw"></i> Settings</a>#}
                         </li>
                         <li class="divider"></li>
                         <li><a href="{{ url_for('user.logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -281,16 +281,16 @@
                         </li>
                         -->
                         <li>
-                            <a href="{{ url_for('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="{{ url_for('dashboard.index') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-book fa-fw"></i> Rent<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{{ url_for('your_rentals') }}">Your Rentals</a>
+                                    <a href="{{ url_for('dashboard.your_rentals') }}">Your Rentals</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url_for('rental_requests') }}">Rentals Requests</a>
+                                    <a href="{{ url_for('dashboard.rental_requests') }}">Rentals Requests</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -299,10 +299,10 @@
                             <a href="#"><i class="fa fa-book fa-fw"></i> Trade<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{{ url_for('trades') }}">Trade Listings</a>
+                                    <a href="{{ url_for('dashboard.trades') }}">Trade Listings</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url_for('trade_requests') }}">Trade Requests</a>
+                                    <a href="{{ url_for('dashboard.trade_requests') }}">Trade Requests</a>
                                 </li>
                             </ul>
                         </li>
@@ -310,10 +310,10 @@
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Your Account<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{{ url_for('account_settings') }}">Settings</a>
+                                    <a href="{{ url_for('dashboard.account_settings') }}">Settings</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url_for('account_history') }}">History</a>
+                                    <a href="{{ url_for('dashboard.account_history') }}">History</a>
                                 </li>
                             </ul>
                         </li>

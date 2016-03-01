@@ -1,5 +1,5 @@
 from flask import (Blueprint, request, render_template, flash,
-                   g, session, redirect, url_for)
+                   redirect, url_for)
 import flask_login
 from flask_login import login_user, logout_user, login_required
 from itsdangerous import BadTimeSignature, SignatureExpired

@@ -45,17 +45,20 @@ def page_not_found(error):
 
 # TODO: Add 500 server error handler
 
-
+# Default views
 from app.views import init
-
 app.register_blueprint(init)
 
+# User views
 from app.user.views import user
-
 app.register_blueprint(user)
 
-from app.user.models import UserRole
+# Dashboard views
+from app.dashboard.views import dashboard
+app.register_blueprint(dashboard)
 
+# Setup
+# from app.user.models import UserRole
 # db.create_all()
 # db.drop_all()
 
