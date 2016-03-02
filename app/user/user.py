@@ -103,6 +103,14 @@ class UserController:
             raise PermissionError("You password is wrong.")
 
     @staticmethod
+    def get_user_by_id(user_id):
+        user = User.query.filter_by(id=user_id).first()
+        if user is None:
+            raise UserController.UserNotFound("%s is not a username." % user_id)
+        else:
+            return user
+
+    @staticmethod
     def get_user_by_username(username=None):
         user = User.query.filter_by(username=username).first()
         if user is None:

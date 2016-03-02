@@ -26,13 +26,13 @@
                 <li><a href="{{ url_for('init.team') }}">The Team</a></li>
                 <li><a href="{{ url_for('init.faqs') }}">FAQs</a></li>
                 {% if g.user.username %}
-                    <li><a href="{{ url_for('init.dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
                 {% endif %}
                 <li>
                     {% if not g.user.username %}
                         <a href="{{ url_for('user.login') }}">Login</a>
                     {% else %}
-                        <a href="{{ url_for('init.index') }}">Logout</a>
+                        <a href="{{ url_for('user.logout') }}">Logout</a>
                     {% endif %}
                 </li>
               </ul>

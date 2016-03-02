@@ -7,7 +7,7 @@ from itsdangerous import BadTimeSignature, SignatureExpired
 from app.user.forms import (LoginForm, RegisterForm,
                             ResendActivationEmailForm, ForgotCredentialReset)
 from app.user.user import UserController
-from app import MAIL
+from app import MAIL, login_manager
 from app.tools.email import EmailController
 from app.tools.helpers import flash_from_errors
 
@@ -16,6 +16,14 @@ user = Blueprint('user', __name__)
 
 def get_current_user():
     return flask_login.current_user
+
+
+@login_manager.user_loader
+def load_user(userid):
+    """Return a passed user.
+    :param userid:
+    """
+    return UserController.get_user_by_id(userid)
 
 
 @user.route('/login/', methods=['GET', 'POST'])
@@ -31,13 +39,17 @@ def login():
             else:
                 if current_user.is_active():
                     if UserController.check_hash(current_user.password, login_form.password.data):
-                        login_user(current_user)  # Login/create session for the user
+                        try:
+                            login_user(current_user)  # Login/create session for the user
+                        except UserController.UserNotFound:
+                            flash("We couldn't create a session for this user", "error")
+                            return redirect(url_for('user.login'))
                         flash("You've been logged in!", "success")
                         next_page = request.args.get('next')
                         if next_page:
                             return redirect(next_page)
                         else:
-                            return redirect(url_for('dashboard'))
+                            return redirect(url_for('dashboard.index'))
                     else:
                         flash("Your username  or password doesn't match!", "error")
                 else:
@@ -52,14 +64,15 @@ def login():
             resend_from=ResendActivationEmailForm()
         )
     flash("You are logged in already.", "success")
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('dashboard.index'))
 
 
 @user.route('/logout/')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    flash("You've been successfully logged out.")
+    return redirect(url_for('init.index'))
 
 
 @user.route('/register/', methods=['GET', 'POST'])
