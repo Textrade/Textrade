@@ -1,14 +1,10 @@
 {% macro render_modal_form(field) %}
     <div class="form-group">
-        {% if field.errors %}
-            {% for error in field.errors %}
-                <div class="notification error "><p style="color: red; margin: 0;">{{ error }}</p></div>
-            {% endfor %}
-        {% endif %}
         {% if not field.id == "csrf_token" %}
             <label for="{{ field.id }}" class="col-sm-3 control-label">{{ field.label.text }}</label>
         {% endif %}
         <div class="col-sm-9">
+            <p id="{{ field.id }}-modal-notification" style="color:#c62828 ; padding: 0; margin: 0"></p>
             {{ field(placeholder=field.label.text, class_="form-control") }}
         </div>
     </div>

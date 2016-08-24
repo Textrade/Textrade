@@ -5,7 +5,7 @@
   <script>tinymce.init({ selector:'textarea' });</script>
 </head>
 <body>
-    <form action="{{ url_for('get_email_content') }}" method="post">
+    <form action="{{ url_for('init.get_email_content') }}" method="post">
         <label for="to_email">To:</label>
         <input id= "to_email" type="text" name="to_email">
         </br>

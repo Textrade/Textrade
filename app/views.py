@@ -44,9 +44,9 @@ def send_email():
 
 @init.route('/get_email_content/', methods=['GET', 'POST'])
 def get_email_content():
-    from app.tools.email import SendGridTest
+    from app.tools.email import EmailController
     try:
-        SendGridTest(
+        EmailController(
             request.form['email_content'],
             request.form['subject'],
             "Daniel Santos <{}>".format(request.form['from_email']),
@@ -57,4 +57,4 @@ def get_email_content():
     except Exception as e:
         flash(e)
 
-    return redirect(url_for('send_email'))
+    return redirect(url_for('init.send_email'))

@@ -16,16 +16,15 @@ db = SQLAlchemy(app)
 #
 # MAIL CONFIGURATION
 #
-MAIL = Mail()
-app.config['MAIL_SERVER'] = "smtp.gmail.com"
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_SENDER'] = "Textrade <umltextrade@gmail.com>"
-app.config['MAIL_USERNAME'] = "umltextrade@gmail.com"
-app.config['MAIL_PASSWORD'] = "Angell100."
-MAIL.init_app(app)
+# MAIL = Mail()
+# app.config['MAIL_SERVER'] = "smtp.gmail.com"
+# app.config['MAIL_PORT'] = 465
+# app.config['MAIL_USE_SSL'] = True
+# app.config['MAIL_SENDER'] = "Textrade <umltextrade@gmail.com>"
+# app.config['MAIL_USERNAME'] = "umltextrade@gmail.com"
+# app.config['MAIL_PASSWORD'] = "Angell100."
+# MAIL.init_app(app)
 
-#
 # LOGIN MANAGER
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -59,7 +58,7 @@ app.register_blueprint(dashboard)
 
 # Setup
 # from app.user.models import UserRole
-# db.create_all()
+db.create_all()
 # db.drop_all()
 
 # db.session.add(UserRole(role="customer"))

@@ -44,6 +44,7 @@ class RegisterForm(Form):
     """Form to register an user."""
     first_name = StringField(
         'First Name',
+        id="first_name-reg",
         validators=[
             DataRequired(),
             Regexp(
@@ -54,6 +55,7 @@ class RegisterForm(Form):
     )
     last_name = StringField(
         'Last Name',
+        id="last_name-reg",
         validators=[
             DataRequired(),
             Regexp(
@@ -64,6 +66,7 @@ class RegisterForm(Form):
     )
     university_email = StringField(
         'University Email',
+        id="university_email-reg",
         validators=[
             DataRequired(),
             Email(),
@@ -73,6 +76,7 @@ class RegisterForm(Form):
     )
     username = StringField(
         'Username',
+        id="username-reg",
         validators=[
             DataRequired(),
             Regexp(
@@ -85,6 +89,7 @@ class RegisterForm(Form):
     )
     password = PasswordField(
         'Password',
+        id="password-reg",
         validators=[
             DataRequired(),
             Length(min=5),
@@ -93,6 +98,7 @@ class RegisterForm(Form):
     )
     password2 = PasswordField(
         'Confirm Password',
+        id="password2-reg",
         validators=[DataRequired()]
     )
     # TODO: when expansion to different schools

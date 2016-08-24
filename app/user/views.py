@@ -1,5 +1,6 @@
+from config import DOMAIN_NAME
 from flask import (Blueprint, request, render_template, flash,
-                   redirect, url_for)
+                   redirect, url_for, jsonify)
 import flask_login
 from flask_login import login_user, logout_user, login_required
 from itsdangerous import BadTimeSignature, SignatureExpired
@@ -7,9 +8,9 @@ from itsdangerous import BadTimeSignature, SignatureExpired
 from app.user.forms import (LoginForm, RegisterForm,
                             ResendActivationEmailForm, ForgotCredentialReset)
 from app.user.user import UserController
-from app import MAIL, login_manager
+from app import login_manager
 from app.tools.email import EmailController
-from app.tools.helpers import flash_from_errors
+
 
 user = Blueprint('user', __name__)
 
@@ -30,40 +31,62 @@ def load_user(userid):
 def login():
     login_form = LoginForm()
     if not get_current_user().is_authenticated():
-        if login_form.validate_on_submit():
+        if login_form.is_submitted():
             try:
                 current_user = UserController.get_user_by_username(login_form.username.data)
             except UserController.UserNotFound:
-                flash("Your username  or password doesn't match!", "error")
-                return redirect(url_for('user.login'))
+                return jsonify(
+                    status="error",
+                    msg="Your username  or password doesn't match!",
+                    url=None
+                )
             else:
-                if current_user.is_active():
                     if UserController.check_hash(current_user.password, login_form.password.data):
-                        try:
-                            login_user(current_user)  # Login/create session for the user
-                        except UserController.UserNotFound:
-                            flash("We couldn't create a session for this user", "error")
-                            return redirect(url_for('user.login'))
-                        flash("You've been logged in!", "success")
-                        next_page = request.args.get('next')
-                        if next_page:
-                            return redirect(next_page)
+                        if current_user.is_active():
+                            try:
+                                login_user(current_user)  # Login/create session for the user
+                            except UserController.UserNotFound:
+                                return jsonify(
+                                    status="error",
+                                    msg="We couldn't create a session for this user",
+                                    url=None
+                                )
+                            next_page = request.args.get('next')
+                            if next_page:
+                                return jsonify(
+                                    status="success",
+                                    msg="You've been logged in!",
+                                    url="{}{}".format(DOMAIN_NAME, url_for(next_page))
+                                )
+                            else:
+                                return jsonify(
+                                    status="success",
+                                    msg=None,
+                                    url="{}{}".format(DOMAIN_NAME, url_for('dashboard.index'))
+                                )
                         else:
-                            return redirect(url_for('dashboard.index'))
+                            return jsonify(
+                                status="no-active",
+                                msg="You account is not active yet, please check you email.",
+                                url=None
+                            )
                     else:
-                        flash("Your username  or password doesn't match!", "error")
-                else:
-                    flash("You account is not active yet, please check you email.", "resend-email")
+                        return jsonify(
+                            status="error",
+                            msg="Your username  or password doesn't match!",
+                            url=None
+                        )
         return render_template(
             'user/login.html',
             section="user",
             title="Login",
             log_form=login_form,
             register_form=RegisterForm(),
+            regiter_action="{}{}".format(DOMAIN_NAME, url_for('user.register')),
+            user_check_api="{}{}".format(DOMAIN_NAME, url_for('user.check_username', username="{}")),
             forgot_form=ForgotCredentialReset(),
             resend_from=ResendActivationEmailForm()
         )
-    flash("You are logged in already.", "success")
     return redirect(url_for('dashboard.index'))
 
 
@@ -79,33 +102,41 @@ def logout():
 def register():
     if not get_current_user().is_authenticated():
         reg_form = RegisterForm()
-        if reg_form.validate_on_submit():
+        if reg_form.is_submitted():
             university_email = reg_form.university_email.data
-            try:
-                new_user = UserController(
-                    first_name=reg_form.first_name.data,
-                    last_name=reg_form.last_name.data,
-                    username=reg_form.username.data,
-                    password=reg_form.password.data,
-                    university_email=university_email
-                ).create()
-            except Exception:  # Don't know exactly the exception name
-                # TODO: Flash error from form
-                flash("We had a problem creating your user, please try again.", "error")
-                return redirect(url_for('user.login'))
-
-            flash("User created successfully!", "success")
+            new_user = UserController(
+                first_name=reg_form.first_name.data,
+                last_name=reg_form.last_name.data,
+                username=reg_form.username.data,
+                password=reg_form.password.data,
+                university_email=university_email
+            ).create()
 
             # TODO: Send email with SendGrid
             try:
                 EmailController(MAIL).send_activation_email(new_user)
             except Exception:  # Don't know exactly the exception name
                 flash("We couldn't send you an activation email.", "resend-email")
-                return redirect(url_for('user.login'))
-            flash("An email confirmation has been sent to your email.", "success")
-        else:
-            flash_from_errors(reg_form)
+                return jsonify(
+                    status="no-active",
+                    msg=("User created successfully! "
+                         "We couldn't send you an activation email."),
+                    url=None
+                )
+            return jsonify(
+                status="no-active",
+                msg=("User created successfully! "
+                     "An email confirmation has been sent to your email."),
+                url=None
+            )
     return redirect(url_for('user.login'))
+
+
+@user.route('/api/exist/<string:username>/')
+def check_username(username):
+    return jsonify(
+        status=UserController.username_exists(username),
+    )
 
 
 @user.route('/confirm-email/<string:token>')
@@ -127,7 +158,8 @@ def resend_token():
     if resend_form.validate_on_submit():
         university_email = resend_form.university_email.data
         try:
-            EmailController(MAIL).send_activation_email(
+            # TODO: Pass arguments to EmailController
+            EmailController().send_activation_email(
                 UserController.get_user_as_dict(university_email=university_email)
             )
         except UserController.UserNotFound as e:

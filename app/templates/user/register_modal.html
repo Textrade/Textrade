@@ -1,5 +1,5 @@
 {% from 'default/macros_modal_form.html' import render_modal_form %}
-{% macro register_account(form) %}
+{% macro register_account(form, action_url, user_check_api) %}
     <!-- Modal Creat Account-->
     <div id="create-account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" class="modal fade">
       <div role="document" class="modal-dialog">
@@ -10,7 +10,7 @@
           </div>
           <div class="modal-body">
             <p>Fill out the form below to create your Textrade account. You'll need a ".uml.edu" email address in order to register your account.</p><br>
-            <form action="{{ url_for('user.register') }}" method="POST" class="form-horizontal">
+            <form id="register-form" action="{{ action_url }}" method="POST" class="form-horizontal">
                 {{ form.hidden_tag() }}
                 {% for field in form %}
                         {{ render_modal_form(field) }}
@@ -25,4 +25,105 @@
         </div>
       </div>
     </div>
+
+    {#  AJAX Implementation of Register Modal  #}
+    <script>
+        $("#register-form").submit(function (event) {
+            // Prevent default behavior of submit
+            event.preventDefault();
+
+            refreshFields();
+
+            var $form = $(this),
+                firstName = $form.find("input[name='first_name']").val(),
+                lastName = $form.find("input[name='last_name']").val(),
+                universityEmail = $form.find("input[name='university_email']").val(),
+                userName = $form.find("input[name='username']").val(),
+                userPassword = $form.find("input[name='password']").val(),
+                userPassword2 = $form.find("input[name='password2']").val(),
+                url = $form.attr("action"),
+                post;
+
+            if(checkEmptyFields(firstName, lastName, universityEmail, userName, userPassword, userPassword2)
+                && checkPassword(userPassword, userPassword2)) {
+                post = $.post(url, {
+                    first_name: firstName,
+                    last_name: lastName,
+                    university_email: universityEmail,
+                    username: userName,
+                    password: userPassword
+                });
+            }
+
+            post.done(function (data) {
+                // TODO: Make a helper function to no copy this code
+                // In case that the server doesn't return anything, we show this
+                if(data == null) {
+                    $("#message").css("color", "#c62828").text("We have an error in the server.");
+                } else if (data.status === "error") {
+                    $("#message").css("color", "#c62828").text(data.msg);
+                } else if (data.status === "success") {
+                    $(location).attr("href", data.url);
+                } else if(data.status == "no-active") {
+                    $("#message").css("color", "#009688").text(data.msg).append(
+                            " If you want us to resend you an activation email" +
+                            " <a href='#' data-toggle='modal' data-target='#resend-email-modal'>click here.</a>"
+                    )
+                }
+            })
+        });
+
+        function checkPassword(userPassword, userPassword2) {
+            var equalPassword = userPassword === userPassword2;
+            if(!equalPassword) {
+                $("#password2-reg-modal-notification").text("Passwords doesn't match");
+            }
+            return equalPassword;
+        }
+
+        function checkEmptyFields(firstName, lastName, universityEmail, userName, userPassword, userPassword2) {
+            var passed = true;
+            if (firstName === "" || lastName === "" || universityEmail === ""
+                    || userName === "" || userPassword === "" || userPassword2 === "") {
+                if (firstName === "") {
+                    $("#first_name-reg-modal-notification").text("First name is required");
+                    passed = false;
+                }
+                if (lastName === "") {
+                    $("#last_name-reg-modal-notification").text("Last name is required");
+                    passed = false;
+                }
+                if (universityEmail === "") {
+                    $("#university_email-reg-modal-notification").text("University email is required");
+                    passed = false;
+                }
+                if (userName === "") {
+                    $("#username-reg-modal-notification").text("Username is required");
+                    passed = false;
+                }
+                if (userPassword === "") {
+                    $("#password-reg-modal-notification").text("Password is required");
+                    passed = false;
+                }  else {
+                    if (userPassword2 === "") {
+                        $("#password2-reg-modal-notification").text("Please confirm password");
+                        passed = false;
+                    }
+                }
+            }
+            return passed;
+        }
+
+        function refreshFields() {
+            $("#first_name-reg-modal-notification").text("");
+            $("#last_name-reg-modal-notification").text("");
+            $("#university_email-reg-modal-notification").text("");
+            $("#username-reg-modal-notification").text("");
+            $("#password-reg-modal-notification").text("");
+            $("#password2-modal-reg-modal-notification").text("");
+        }
+
+
+    </script>
 {% endmacro %}
+

@@ -8,7 +8,7 @@
     <div class="row login-page-row">
       <div id="login-wrap">
         <div id="login-dialog"><img src="/static/img/logo.png" style="width:250px;margin:auto;float:center">
-            <form action="" method="POST">
+            <form id="login-form" action="" method="POST">
                 {{ log_form.hidden_tag() }}
                     {% for field in log_form %}
                         {{ render_field(field) }}
@@ -16,34 +16,95 @@
                 <button id="submit" type="submit" name="login" value="Login" class="login loginmodal-submit btn btn-default">Login</button>
                 <p id="login-help"><a href="#" data-toggle="modal" data-target="#create-account-modal">Create an Account |</a><span> </span><a href="#" data-toggle="modal" data-target="#forgot-password-modal">Forgot Password</a></p>
             </form>
-            <div style="padding-top: 10px;">
-                {% with messeages = get_flashed_messages(with_categories=True) %}
-                    {% if messeages %}
-                        {% for msg in messeages %}
-                            <p>{{ msg[1] }}
-                                {% if msg[0] == "resend-email" %}
-                                    If you want us to resend you an activation email
-                                    <a href="#" data-toggle="modal" data-target="#resend-email-modal">click here.</a>
-                                {% endif %}
-                            </p>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
+            <div id="feedback-message" style="padding-top: 10px;">
+                <p id="message">
+                    {% with messeages = get_flashed_messages(with_categories=True) %}
+                        {% if messeages %}
+                            {% for msg in messeages %}
+                                {{ msg[1] }}
+                                    {% if msg[0] == "resend-email" %}
+                                        <a href="#" data-toggle="modal" data-target="#resend-email-modal">click here.</a>
+                                    {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </p>
             </div>
         </div>
       </div>
     </div>
 
+    {#  Override footer to blank  #}
+    {% block footer %}
+    {% endblock %}
+{% endblock %}
+
+{% block modals %}
     {# Include register modal #}
-    {{ register_account(register_form) }}
+    {{ register_account(register_form, regiter_action, user_check_api) }}
 
     {# Include forgot password modal  #}
     {{ forgot_password_modal(forgot_form) }}
 
     {# Include resend activation email modal  #}
     {{ resend_email_modal(resend_from) }}
+{% endblock %}
 
-    {#  Override footer to blank  #}
-    {% block footer %}
-    {% endblock %}
+{% block javascript %}
+    <script>
+        // AJAX for the Login Form
+        $("#login-form").submit(function (event) {
+            // Prevent the default behavior of the browser
+            event.preventDefault();
+
+            refreshErrors();
+
+            var $form = $(this),
+                userName = $form.find("input[name='username']").val(),
+                userPassword = $form.find("input[name='password']").val(),
+                url = $form.attr("action");
+
+
+
+            // Check if fields are empty
+            if (userName === "" || userPassword === "") {
+                if(userName === "") $("#username-notification").text("This field is required");
+                if(userPassword === "") $("#password-notification").text("This field is required");
+            } else {
+                var posting = $.post(url, {
+                    username: userName,
+                    password: userPassword
+                });
+            }
+
+            posting.done(function (data) {
+                // In case that the server doesn't return anything, we show this
+                if(data == null) {
+                    $("#message").css("color", "#c62828").text("We have an error in the server.");
+                } else if (data.status === "error") {
+                    $("#message").css("color", "#c62828").text(data.msg);
+                } else if (data.status === "success") {
+                    $(location).attr("href", data.url);
+                } else if(data.status == "no-active") {
+                    $("#message").css("color", "#009688").text(data.msg).append(
+                            " If you want us to resend you an activation email" +
+                            " <a href='#' data-toggle='modal' data-target='#resend-email-modal'>click here.</a>"
+                    )
+                }
+            });
+
+            posting.error(function (data) {
+                $("#message").text(
+                        "We have an error communicating with the server."
+                        + "Please check you connection and try again."
+                );
+            })
+        }); // End Login Form AJAX
+
+        function refreshErrors() {
+            $("#message").css("color", "black");
+            $("#username-notification").text("");
+            $("#password-notification").text("");
+        }
+    </script>
 {% endblock %}

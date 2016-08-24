@@ -127,6 +127,15 @@ class UserController:
             return user
 
     @staticmethod
+    def username_exists(username):
+        try:
+            UserController.get_user_by_username(username)
+        except UserController.UserNotFound:
+            return False
+        else:
+            return True
+
+    @staticmethod
     def get_user_as_dict(university_email=None, username=None):
         if university_email:
             user = UserController.get_user_by_university_email(university_email)

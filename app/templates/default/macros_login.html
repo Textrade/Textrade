@@ -1,10 +1,6 @@
 {% macro render_field(field) %}
     <div class="form-group">
-        {% if field.errors %}
-            {% for error in field.errors %}
-                <div class="notification error "><p style="color: red; margin: 0;">{{ error }}</p></div>
-            {% endfor %}
-        {% endif %}
+        <p id="{{ field.id }}-notification" style="color:#c62828 ; padding: 0; margin: 0"></p>
         {{  field(placeholder=field.label.text) }}
     </div>
 {% endmacro %}
