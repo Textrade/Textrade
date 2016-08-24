@@ -16,7 +16,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # PASSWORD = "3a9b0e26"
 
 # Local DB
-HOST = "0.0.0.0"
+HOST = "127.0.0.1"
 PORT = 3606
 USERNAME = "root"
 PASSWORD = "root"
@@ -40,4 +40,6 @@ CSRF_SESSION_KEY = "a*#(!'!<S>?>:=-LA<lSD@!"
 
 SECRET_KEY = "&!*#S<.,>,E-0oPQW??//CplQ{T}"
 
-DOMAIN_NAME = "http://0.0.0.0:5000"
+DOMAIN_NAME = "http://{HOST}:{PORT}".format(HOST=HOST, PORT=5000)
+
+SENDGRID_API_KEY = "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"

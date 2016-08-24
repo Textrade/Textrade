@@ -64,7 +64,8 @@
                     $("#message").css("color", "#c62828").text(data.msg);
                 } else if (data.status === "success") {
                     $(location).attr("href", data.url);
-                } else if(data.status == "no-active") {
+                } else if(data.status == "success-no-active") {
+                    $("#create-account-modal").modal('toggle');
                     $("#message").css("color", "#009688").text(data.msg).append(
                             " If you want us to resend you an activation email" +
                             " <a href='#' data-toggle='modal' data-target='#resend-email-modal'>click here.</a>"

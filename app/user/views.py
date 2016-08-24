@@ -9,7 +9,7 @@ from app.user.forms import (LoginForm, RegisterForm,
                             ResendActivationEmailForm, ForgotCredentialReset)
 from app.user.user import UserController
 from app import login_manager
-from app.tools.email import EmailController
+from app.tools.email import EmailController, EmailException
 
 
 user = Blueprint('user', __name__)
@@ -114,8 +114,8 @@ def register():
 
             # TODO: Send email with SendGrid
             try:
-                EmailController(MAIL).send_activation_email(new_user)
-            except Exception:  # Don't know exactly the exception name
+                EmailController().send_activation_email(new_user)
+            except EmailException:
                 flash("We couldn't send you an activation email.", "resend-email")
                 return jsonify(
                     status="no-active",
@@ -124,7 +124,7 @@ def register():
                     url=None
                 )
             return jsonify(
-                status="no-active",
+                status="success-no-active",
                 msg=("User created successfully! "
                      "An email confirmation has been sent to your email."),
                 url=None
@@ -132,6 +132,7 @@ def register():
     return redirect(url_for('user.login'))
 
 
+# TODO: Need to implement security or whole API
 @user.route('/api/exist/<string:username>/')
 def check_username(username):
     return jsonify(
