@@ -27,18 +27,6 @@ from flask_sqlalchemy import SQLAlchemy
 #         return "<BookStatus Model: {}>".format(self.status)
 #
 #
-# class BookCondition(Model):
-#     """List of condition for the books."""
-#     condition = CharField(max_length=255, unique=True)
-#     label = CharField(max_length=255)
-#
-#     class Meta:
-#         database = db
-#
-#     def __str__(self):
-#         return "<BookCondition Model: {}>".format(self.condition)
-#
-#
 # class BookToRent(Model):
 #     """BookToRent model."""
 #     name = CharField(max_length=255)
