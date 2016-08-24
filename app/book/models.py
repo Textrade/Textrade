@@ -132,3 +132,51 @@ class BookRentingRequest(BaseModel):
             self.book, self.renter, self.rentee
         )
 
+
+class BookTradeHave(BaseModel):
+    """
+        BookTradeHave model. This model holds information about
+    a book that the user have. For example, this will be a book
+    that the user owns and plans to trade it for another book.
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    isbn = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User.__name__,
+                           backref=db.backref('book_trade_have', lazy='dynamic'))
+    date_posted = db.Column(db.DateTime, default=datetime.datetime.now())
+
+    def __init__(self, name, isbn, user):
+        self.name = name
+        self.isbn = isbn
+        self.user = user
+        self.user_id = user.id
+
+    def __repr__(self):
+        return "<BookTradeHave: {}>".format(self.isbn)
+
+
+class BookTradeWant(BaseModel):
+    """
+        BookTradeWant model. This model holds information about
+    a book that the user want. For example, this will be a book
+    that the user is will to receive by trading one of the books
+    that he/she owns.
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    isbn = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship(User.__name__,
+                           backref=db.backref('book_trade_have', lazy='dynamic'))
+    date_posted = db.Column(db.DateTime, default=datetime.datetime.now())
+
+    def __init__(self, name, isbn, user):
+        self.name = name
+        self.isbn = isbn
+        self.user = user
+        self.user_id = user.id
+
+    def __repr__(self):
+        return "<BookTradeWant: {}>".format(self.isbn)

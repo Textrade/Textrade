@@ -15,59 +15,6 @@ from flask_sqlalchemy import SQLAlchemy
 #     def __str__(self):
 #         return "<TradeStatus Model: {}>".format(self.status)
 #
-# class BookRentingRequest(Model):
-#     """BookRentingRequest model. This table will hold the renting until the renter accept."""
-#     book = ForeignKeyField(BookToRent, to_field='id', related_name='book_requested')
-#     renter = ForeignKeyField(User, to_field='username', related_name='renter_requested')
-#     rentee = ForeignKeyField(User, to_field='username', related_name='user_requesting')
-#     date_requested = DateTimeField(default=datetime.datetime.now)
-#
-#     class Meta:
-#         database = db
-#
-#     def __str__(self):
-#         return "<BookRentingRequest Model: {} - {}>".format(self.book, self.rentee)
-#
-#     def date_requested_to_string(self):
-#         return self.date_requested.strftime("%m/%d/%Y")
-#
-#
-# class BookTradeHave(Model):
-#     """BookTradeHave model."""
-#     name = CharField(max_length=255)
-#     isbn = CharField(max_length=255)
-#     # TODO: Change to username
-#     user = ForeignKeyField(User, to_field='username', related_name="book_trade_have")
-#     date_posted = DateTimeField(default=datetime.datetime.now)
-#
-#     class Meta:
-#         database = db
-#
-#     def __str__(self):
-#         return "<BookTradeHave Model: {}>".format(self.isbn)
-#
-#     def date_to_formatted_string(self):
-#         return self.date_posted.strftime("%m/%d/%Y")
-#
-#
-# class BookTradeWant(Model):
-#     """BookTradeWant model."""
-#     name = CharField(max_length=255)
-#     isbn = CharField(max_length=255)
-#     # TODO: Change to username convention
-#     user = ForeignKeyField(User, to_field='username', related_name="book_trade_want")
-#     date_posted = DateTimeField(default=datetime.datetime.now)
-#
-#     class Meta:
-#         database = db
-#
-#     def __str__(self):
-#         return "<BookTradeWant Model: {}>".format(self.isbn)
-#
-#     def date_to_formatted_string(self):
-#         return self.date_posted.strftime("%m/%d/%Y")
-#
-#
 # class Trade(Model):
 #     """Trade model."""
 #     internal_id = CharField(max_length=255, unique=True)
