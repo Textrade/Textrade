@@ -1,4 +1,6 @@
 import os
+import logging
+
 
 # Debug environment variable
 DEBUG = True
@@ -6,8 +8,12 @@ DEBUG = True
 # Application directory
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-# Database configurarion
+# Runtime Config
+HOST = '127.0.0.1'
+PORT = 5000
+DEBUG = True
 
+# Database configuration
 # Production DB
 # HOST = "us-cdbr-iron-east-03.cleardb.net"
 # DATABASE_NAME = "heroku_b0692bbbba2a643"
@@ -16,8 +22,8 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # PASSWORD = "3a9b0e26"
 
 # Local DB
-HOST = "127.0.0.1"
-PORT = 3606
+DB_HOST = "127.0.0.1"
+DB_PORT = 3606
 USERNAME = "root"
 PASSWORD = "root"
 DATABASE_NAME = "textrade-local"
@@ -25,8 +31,8 @@ DATABASE_NAME = "textrade-local"
 SQLALCHEMY_DATABASE_URI = (
     "mysql+pymysql://"
     "{username}:{password}@{host}/{dbname}".format(
-            username=USERNAME, password=PASSWORD,
-            host=HOST, dbname=DATABASE_NAME
+        username=USERNAME, password=PASSWORD,
+        host=DB_HOST, port=DB_PORT, dbname=DATABASE_NAME
     )
 )
 
@@ -43,3 +49,14 @@ SECRET_KEY = "&!*#S<.,>,E-0oPQW??//CplQ{T}"
 DOMAIN_NAME = "http://{HOST}:{PORT}".format(HOST=HOST, PORT=5000)
 
 SENDGRID_API_KEY = "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"
+
+
+def init_project(app, db, reset=False):
+    if reset:
+        app.logger.info("Resetting Database")
+        app.logger.info("Dropping Tables...")
+        db.drop_all()
+        app.logger.info("Tables Dropped")
+        app.logger.info("Creating Tables")
+        db.create_all()
+        app.logger.info("Tables Created")

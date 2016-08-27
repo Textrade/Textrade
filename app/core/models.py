@@ -1,7 +1,7 @@
 from app import db
 
 
-class BaseModel(db.Model):
+class BaseModel:
     def create(self):
         db.session.commit(self)
         return self

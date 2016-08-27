@@ -4,7 +4,7 @@ from app.core.models import db, BaseModel
 from app.user.models import User
 
 
-class BookCondition(BaseModel):
+class BookCondition(BaseModel, db.Model):
     """Book condition model."""
     id = db.Column(db.Integer, primary_key=True)
     condition = db.Column(db.String(255), unique=True)
@@ -18,7 +18,7 @@ class BookCondition(BaseModel):
         return "<Book Condition: {}>".format(self.condition)
 
 
-class BookStatus(BaseModel):
+class BookStatus(BaseModel, db.Model):
     """BookStatus model."""
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(255), unique=True)
@@ -30,14 +30,14 @@ class BookStatus(BaseModel):
         return "<BookStatus: {}>".format(self.status)
 
 
-class BookToRent(BaseModel):
+class BookToRent(BaseModel, db.Model):
     """BookToRent model."""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     author = db.Column(db.String(255))
     description = db.Column(db.Text)
     isbn = db.Column(db.String(255))
-    condition_id = db.Column(db.Integer, db.ForeignKey('book_condition.condition'),
+    condition_id = db.Column(db.Integer, db.ForeignKey('book_condition.id'),
                              nullable=False)
     condition = db.relationship(BookCondition.__name__,
                                 backref=db.backref('book_to_rent', lazy='dynamic'))
@@ -71,29 +71,28 @@ class BookToRent(BaseModel):
         return "<Book To Rent: {}>".format(self.name)
 
 
-class BookRenting(BaseModel):
+class BookRenting(BaseModel, db.Model):
     """BookRenting model. This table is for book that user are currently renting."""
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('book_to_rent.id'), nullable=False)
-    book = db.relationship(BookToRent.__name__,
-                           backref=db.backref('book_renting', lazy='dynamic'))
-    renter_id = db.Column(db.String(255), db.ForeignKey('user.id'), nullable=False)
-    renter = db.relationship(User.__name__,
-                             backref=db.backref('book_renting_renter', lazy='dynamic'))
-    rentee_id = db.Column(db.String(255), db.ForeignKey('user.id'), nullable=False)
-    rentee = db.relationship(User.__name__,
-                             backref=db.backref('book_renting_rentee', lazy='dynamic'))
+    # book = db.relationship(BookToRent.__name__,
+    #                        backref=db.backref('book_renting', lazy='dynamic'))
+    renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # renter = db.relationship(User.__name__,
+    #                          backref=db.backref('book_renting_renter', lazy='dynamic'))
+    rentee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # rentee = db.relationship(User.__name__,
+    #                          backref=db.backref('book_renting_rentee', lazy='dynamic'))
     rented_date = db.Column(db.DateTime, default=datetime.datetime.now())
-    returning_date = db.Column(db.DataTime,
-                               default=datetime.datetime.now() +
-                                       datetime.timedelta(weeks=18))
+    returning_date = db.Column(db.DateTime,
+                               default=datetime.datetime.now() + datetime.timedelta(weeks=18))
 
     def __init__(self, book, renter, rentee):
-        self.book = book
+        # self.book = book
         self.book_id = book.id
-        self.renter = renter
+        # self.renter = renter
         self.renter_id = renter.id
-        self.rentee = rentee
+        # self.rentee = rentee
         self.rentee_id = rentee.id
 
     def __repr__(self):
@@ -105,24 +104,24 @@ class BookRenting(BaseModel):
         return self.returning_date.strftime("%m/%d/%Y")
 
 
-class BookRentingRequest(BaseModel):
+class BookRentingRequest(BaseModel, db.Model):
     """BookRenting model. This table will hold information of a pre-book-renting"""
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('book_to_rent.id'), nullable=False)
     book = db.relationship(BookToRent.__name__,
-                           backref=db.backref('book_renting_request', lazy='dynamic'))
-    renter_id = db.Column(db.String(255), db.ForeignKey('user.id'), nullable=False)
+                           backref=db.backref('book_renting_request_book', lazy='dynamic'))
+    renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     renter = db.relationship(User.__name__,
-                             backref=db.backref('book_renting_renter', lazy='dynamic'))
-    rentee_id = db.Column(db.String(255), db.ForeignKey('user.id'), nullable=False)
+                             backref=db.backref('book_renting_request_renter', lazy='dynamic'))
+    rentee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     rentee = db.relationship(User.__name__,
-                             backref=db.backref('book_renting_rentee', lazy='dynamic'))
+                             backref=db.backref('book_renting_request_rentee', lazy='dynamic'))
     date_requested = db.Column(db.DateTime, default=datetime.datetime.now())
 
     def __init__(self, book, renter, rentee):
-        self.book = book
+        # self.book = book
         self.book_id = book.id
-        self.renter = renter
+        # self.renter = renter
         self.renter_id = renter.id
         self.rentee = rentee
         self.rentee_id = rentee.id
@@ -133,7 +132,7 @@ class BookRentingRequest(BaseModel):
         )
 
 
-class BookTradeHave(BaseModel):
+class BookTradeHave(BaseModel, db.Model):
     """
         BookTradeHave model. This model holds information about
     a book that the user have. For example, this will be a book
@@ -157,7 +156,7 @@ class BookTradeHave(BaseModel):
         return "<BookTradeHave: {}>".format(self.isbn)
 
 
-class BookTradeWant(BaseModel):
+class BookTradeWant(BaseModel, db.Model):
     """
         BookTradeWant model. This model holds information about
     a book that the user want. For example, this will be a book
@@ -169,7 +168,7 @@ class BookTradeWant(BaseModel):
     isbn = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship(User.__name__,
-                           backref=db.backref('book_trade_have', lazy='dynamic'))
+                           backref=db.backref('book_trade_want', lazy='dynamic'))
     date_posted = db.Column(db.DateTime, default=datetime.datetime.now())
 
     def __init__(self, name, isbn, user):

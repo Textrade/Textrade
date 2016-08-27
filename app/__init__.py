@@ -48,12 +48,9 @@ from app.dashboard.views import dashboard
 app.register_blueprint(dashboard)
 
 
-# Setup
-# from app.user.models import UserRole
-db.create_all()
-# db.drop_all()
-#
-# db.session.add(UserRole(role="customer"))
-# db.session.add(UserRole(role="developer"))
-# db.session.add(UserRole(role="admin"))
-# db.session.commit()
+# Book views
+from app.book.models import (BookToRent, BookStatus, BookCondition,
+                             BookTradeHave, BookTradeWant, BookRenting,
+                             BookRentingRequest)
+
+config.init_project(app, db, reset=False)
