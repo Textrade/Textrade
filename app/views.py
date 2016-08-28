@@ -1,5 +1,7 @@
-from flask import (Blueprint, render_template, g, redirect,
+from flask import (Blueprint, render_template, redirect,
                    url_for, request, flash)
+
+import config
 
 init = Blueprint('init', __name__)
 
@@ -7,8 +9,11 @@ init = Blueprint('init', __name__)
 @init.route('/')
 def index():
     from app.user.forms import RegisterForm
-    return render_template("default/index.html",
-                           register_form=RegisterForm())
+    return render_template(
+        "default/index.html",
+        register_action="{}{}".format(config.DOMAIN_NAME, url_for('user.register')),
+        user_check_api="{}{}".format(config.DOMAIN_NAME, url_for('user.check_username', username="{}")),
+        register_form=RegisterForm())
 
 
 @init.route('/search/')

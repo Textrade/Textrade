@@ -32,6 +32,9 @@
       </div>
     </div>
 
+{% endblock %}
+
+{% block modals %}
     {#  Include register modal  #}
-    {{ register_account(register_form) }}
+    {{ register_account(register_form, register_action, user_check_api) }}
 {% endblock %}

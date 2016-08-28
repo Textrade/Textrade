@@ -53,4 +53,4 @@ from app.book.models import (BookToRent, BookStatus, BookCondition,
                              BookTradeHave, BookTradeWant, BookRenting,
                              BookRentingRequest)
 
-config.init_project(app, db, reset=False)
+config.init_project(app, db, reset=True)

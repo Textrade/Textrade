@@ -1,6 +1,4 @@
 import os
-import logging
-
 
 # Debug environment variable
 DEBUG = True
@@ -60,3 +58,15 @@ def init_project(app, db, reset=False):
         app.logger.info("Creating Tables")
         db.create_all()
         app.logger.info("Tables Created")
+
+        create_user_roles(app, db)
+
+
+def create_user_roles(app, db):
+    from app.user.models import UserRole
+    app.logger.info("Creating Roles")
+    db.session.add(UserRole('customer'))
+    db.session.add(UserRole('developer'))
+    db.session.add(UserRole('admin'))
+    db.session.commit()
+    app.logger.info("Roles created")

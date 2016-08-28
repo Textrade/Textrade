@@ -75,29 +75,23 @@ class BookRenting(BaseModel, db.Model):
     """BookRenting model. This table is for book that user are currently renting."""
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('book_to_rent.id'), nullable=False)
-    # book = db.relationship(BookToRent.__name__,
-    #                        backref=db.backref('book_renting', lazy='dynamic'))
+    book = db.relationship(BookToRent.__name__,
+                           backref=db.backref('book_renting', lazy='dynamic'))
     renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    # renter = db.relationship(User.__name__,
-    #                          backref=db.backref('book_renting_renter', lazy='dynamic'))
     rentee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    # rentee = db.relationship(User.__name__,
-    #                          backref=db.backref('book_renting_rentee', lazy='dynamic'))
     rented_date = db.Column(db.DateTime, default=datetime.datetime.now())
     returning_date = db.Column(db.DateTime,
                                default=datetime.datetime.now() + datetime.timedelta(weeks=18))
 
     def __init__(self, book, renter, rentee):
-        # self.book = book
+        self.book = book
         self.book_id = book.id
-        # self.renter = renter
         self.renter_id = renter.id
-        # self.rentee = rentee
         self.rentee_id = rentee.id
 
     def __repr__(self):
         return "<BookRenting: {} - {} <-> {}>".format(
-            self.book, self.renter, self.rentee
+            self.book, self.renter_id, self.rentee_id
         )
 
     def get_due_date(self):
@@ -111,24 +105,18 @@ class BookRentingRequest(BaseModel, db.Model):
     book = db.relationship(BookToRent.__name__,
                            backref=db.backref('book_renting_request_book', lazy='dynamic'))
     renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    renter = db.relationship(User.__name__,
-                             backref=db.backref('book_renting_request_renter', lazy='dynamic'))
     rentee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    rentee = db.relationship(User.__name__,
-                             backref=db.backref('book_renting_request_rentee', lazy='dynamic'))
     date_requested = db.Column(db.DateTime, default=datetime.datetime.now())
 
     def __init__(self, book, renter, rentee):
-        # self.book = book
+        self.book = book
         self.book_id = book.id
-        # self.renter = renter
         self.renter_id = renter.id
-        self.rentee = rentee
         self.rentee_id = rentee.id
 
     def __repr__(self):
         return "<BookRenting: {} - {} <-> {}>".format(
-            self.book, self.renter, self.rentee
+            self.book, self.renter_id, self.rentee_id
         )
 
 

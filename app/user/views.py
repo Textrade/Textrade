@@ -1,10 +1,10 @@
-from config import DOMAIN_NAME
 from flask import (Blueprint, request, render_template, flash,
                    redirect, url_for, jsonify)
 import flask_login
 from flask_login import login_user, logout_user, login_required
 from itsdangerous import BadTimeSignature, SignatureExpired
 
+import config
 from app.user.forms import (LoginForm, RegisterForm,
                             ResendActivationEmailForm, ForgotCredentialReset)
 from app.user.user import UserController
@@ -56,13 +56,13 @@ def login():
                                 return jsonify(
                                     status="success",
                                     msg="You've been logged in!",
-                                    url="{}{}".format(DOMAIN_NAME, url_for(next_page))
+                                    url="{}{}".format(config.DOMAIN_NAME, url_for(next_page))
                                 )
                             else:
                                 return jsonify(
                                     status="success",
                                     msg=None,
-                                    url="{}{}".format(DOMAIN_NAME, url_for('dashboard.index'))
+                                    url="{}{}".format(config.DOMAIN_NAME, url_for('dashboard.index'))
                                 )
                         else:
                             return jsonify(
@@ -82,8 +82,8 @@ def login():
             title="Login",
             log_form=login_form,
             register_form=RegisterForm(),
-            regiter_action="{}{}".format(DOMAIN_NAME, url_for('user.register')),
-            user_check_api="{}{}".format(DOMAIN_NAME, url_for('user.check_username', username="{}")),
+            register_action="{}{}".format(config.DOMAIN_NAME, url_for('user.register')),
+            user_check_api="{}{}".format(config.DOMAIN_NAME, url_for('user.check_username', username="{}")),
             forgot_form=ForgotCredentialReset(),
             resend_from=ResendActivationEmailForm()
         )
