@@ -43,7 +43,7 @@ class BookToRent(BaseModel, db.Model):
                                 backref=db.backref('book_to_rent', lazy='dynamic'))
     condition_comment = db.Column(db.String(255))
     marks = db.Column(db.Boolean)
-    username_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship(User.__name__,
                            backref=db.backref('book_to_rent', lazy='dynamic'))
     book_status_id = db.Column(db.Integer, db.ForeignKey('book_status.id'),
@@ -63,7 +63,7 @@ class BookToRent(BaseModel, db.Model):
         self.condition_comment = comment
         self.marks = marks
         self.user = user
-        self.username_id = user.id
+        self.user_id = user.id
         self.book_status = book_status
         self.book_status_id = book_status.id
 
