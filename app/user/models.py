@@ -1,10 +1,10 @@
 import datetime
 
-from app import db
+from app.core.models import db, BaseModel
 from flask_login import UserMixin
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, BaseModel, db.Model):
     """User model"""
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(255), nullable=False)
@@ -30,6 +30,10 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return "<User: %r>" % self.username
+
+    @staticmethod
+    def get_by_username(username):
+        return User.query.filter_by(username=username).first()
 
     def get_name(self):
         return "%s %s" % (self.first_name, self.last_name)

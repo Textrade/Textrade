@@ -1,5 +1,5 @@
 from flask import (Blueprint, request, render_template, flash,
-                   redirect, url_for, jsonify)
+                   redirect, url_for, jsonify, abort)
 import flask_login
 from flask_login import login_user, logout_user, login_required
 from itsdangerous import BadTimeSignature, SignatureExpired
@@ -8,6 +8,7 @@ import config
 from app.user.forms import (LoginForm, RegisterForm,
                             ResendActivationEmailForm, ForgotCredentialReset)
 from app.user.user import UserController
+from app.book.book import BookRentController
 from app import login_manager
 from app.tools.email import EmailController, EmailException
 
@@ -173,3 +174,17 @@ def resend_token():
 @user.route('/forgot-credentials/')
 def forgot_credentials():
     return "Forgot credentials"
+
+
+@user.route('/user/<string:username>')
+def user_page(username):
+    user_rv = None
+    try:
+        user_rv = UserController.get_user_by_username(username)
+    except UserController.UserNotFound:
+        abort(404)
+    else:
+        if not user_rv.is_active():
+            abort(404)
+    user_rent_books = BookRentController.get_available_rentals(username)
+    return render_template('user/profile.html', user=user_rv, rent_book=user_rent_books)

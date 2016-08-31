@@ -1,4 +1,5 @@
 from .models import BookToRent, BookRenting, BookRentingRequest
+from app.user.models import User
 
 
 class BookRentController:
@@ -66,6 +67,12 @@ class BookRentController:
     @staticmethod
     def get_book_to_rent(book_id):
         return BookToRent.query.filter_by(id=book_id).first()
+
+    @staticmethod
+    def get_available_rentals(username):
+        return BookToRent.query.filter_by(
+            user_id=User.get_by_username(username).id
+        )
 
     @staticmethod
     def get_book_to_rent_user(book_id):
