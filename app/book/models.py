@@ -83,11 +83,19 @@ class BookRenting(BaseModel, db.Model):
     returning_date = db.Column(db.DateTime,
                                default=datetime.datetime.now() + datetime.timedelta(weeks=18))
 
-    def __init__(self, book, renter, rentee):
+    def __init__(self, book, renter_id, rentee_id):
         self.book = book
         self.book_id = book.id
-        self.renter_id = renter.id
-        self.rentee_id = rentee.id
+        self.renter_id = renter_id
+        self.rentee_id = rentee_id
+
+    @staticmethod
+    def create_from_request(renting_request):
+        return BookRenting(
+            renting_request.book,
+            renting_request.renter_id,
+            renting_request.rentee_id
+        ).create()
 
     def __repr__(self):
         return "<BookRenting: {} - {} <-> {}>".format(
@@ -100,6 +108,7 @@ class BookRenting(BaseModel, db.Model):
 
 class BookRentingRequest(BaseModel, db.Model):
     """BookRenting model. This table will hold information of a pre-book-renting"""
+
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('book_to_rent.id'), nullable=False)
     book = db.relationship(BookToRent.__name__,

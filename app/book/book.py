@@ -1,13 +1,7 @@
-import requests
-import json
-
-from app import db
-from .models import (BookToRent, BookTradeWant, BookTradeHave, BookRenting,
-                     BookRentingRequest)
+from .models import BookToRent, BookRenting, BookRentingRequest
 
 
-class BookController:
-
+class BookRentController:
     @staticmethod
     def allowed_file(filename, allowed_extensions):
         return '.' in filename \
@@ -30,7 +24,7 @@ class BookController:
 
     @staticmethod
     def create_renting_request(book_id, user):
-        book = BookController.get_book_to_rent(book_id)
+        book = BookRentController.get_book_to_rent(book_id)
         if book:
             return BookRentingRequest(
                 book,
@@ -41,19 +35,33 @@ class BookController:
 
     @staticmethod
     def delete_renting_request(pk):
-        pass
+        BookRentingRequest.query.filter_by(id=pk).delete()
 
     @staticmethod
     def accept_renting_request(request_id):
-        pass
+        renting_request = BookRentingRequest.query.filter_by(
+            id=request_id).first()
+        return BookRenting.create_from_request(renting_request)
 
     @staticmethod
-    def get_currently_renting(username):
-        pass
+    def get_currently_renting(user_id):
+        return BookRenting.query.filter_by(rentee_id=user_id)
 
     @staticmethod
-    def get_currently_renting_out(username):
-        pass
+    def get_currently_renting_out(user_id):
+        return BookRenting.query.filter_by(renter_id=user_id)
+
+    @staticmethod
+    def get_renting_request_by_id(request_id):
+        return BookRentingRequest.query.filter_by(id=request_id).first()
+
+    @staticmethod
+    def get_user_renting_incoming_requests(user_id):
+        return BookRentingRequest.query.filter_by(renter_id=user_id)
+
+    @staticmethod
+    def get_user_renting_outgoing_request(user_id):
+        return BookRentingRequest.query.filter_by(rentee_id=user_id)
 
     @staticmethod
     def get_book_to_rent(book_id):
@@ -61,7 +69,11 @@ class BookController:
 
     @staticmethod
     def get_book_to_rent_user(book_id):
-        return BookController.get_book_to_rent(book_id).user
+        return BookRentController.get_book_to_rent(book_id).user
+
+    @staticmethod
+    def delete_book_to_rent(book_id):
+        BookToRent.query.filter_by(id=book_id).delete()
 
     class DuplicateEntry(Exception):
         pass
