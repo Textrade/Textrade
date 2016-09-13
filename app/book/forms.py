@@ -3,7 +3,7 @@ from wtforms import (StringField, SelectField, FileField, TextAreaField,
                      BooleanField)
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length
 
-from models import BookCondition
+from app.book.models import BookCondition
 
 
 def check_file(ALLOWED_EXTENSIONS, filename):
@@ -30,8 +30,8 @@ class AddBookRentForm(Form):
         ]
     )
     condition_list = []
-    for condition in BookCondition.select():
-        condition_list.append((condition.condition, condition.condition))
+    for condition in BookCondition.query.all():
+        condition_list.append((condition.condition, condition.label))
 
     condition = SelectField(
         'Condition',

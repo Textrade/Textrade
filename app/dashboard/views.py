@@ -1,8 +1,10 @@
 from flask import (Blueprint, request, render_template, flash,
                    redirect, url_for)
+from flask_login import login_required
 
+from app.book.forms import AddBookRentForm
+from app.book.book import BookRentController
 from app.user.views import get_current_user
-from app.user.user import UserController
 
 dashboard = Blueprint('dashboard', __name__)
 
@@ -18,16 +20,17 @@ def index():
     )
 
 
-@dashboard.route('/your_rentals/')
+@dashboard.route('/dashboard/your-rentals/')
+@login_required
 def your_rentals():
     user = get_current_user()
     return render_template(
         'dashboard/rentals.html',
         title="Your Rentals",
-        rental_list=[0, 1, 2],
-        add_rental_form=None,
-        currently_renting=[0, 1, 2],
-        currently_renting_out=[0, 1, 2]
+        rental_list=None,
+        add_rental_form=AddBookRentForm(),
+        currently_renting=BookRentController.get_available_rentals(user.username),
+        currently_renting_out=BookRentController.get_currently_renting_out(user.id)
     )
 
 

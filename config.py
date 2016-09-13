@@ -48,6 +48,11 @@ DOMAIN_NAME = "http://{HOST}:{PORT}".format(HOST=HOST, PORT=5000)
 
 SENDGRID_API_KEY = "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"
 
+UNDER_CONSTRUCTION_VIEW = [
+    "dashboard/settings",
+    "dashboard/history",
+]
+
 
 def init_project(app, db, reset=False):
     if reset:
@@ -60,6 +65,7 @@ def init_project(app, db, reset=False):
         app.logger.info("Tables Created")
 
         create_user_roles(app, db)
+        create_book_conditions(app, db)
 
 
 def create_user_roles(app, db):
@@ -70,3 +76,15 @@ def create_user_roles(app, db):
     db.session.add(UserRole('admin'))
     db.session.commit()
     app.logger.info("Roles created")
+
+
+def create_book_conditions(app, db):
+    from app.book.models import BookCondition
+    app.logger.info("Creating Book Conditions")
+    db.session.add(BookCondition("Like New"))
+    db.session.add(BookCondition("Very Good", "Minimal wear on cover, otherwise perfect"))
+    db.session.add(BookCondition("Good", "Some wear on the cover, spine and pages"))
+    db.session.add(BookCondition("Fair", "Noticeable wear on the cover, spine and pages"))
+    db.session.add(BookCondition("Bad", "Clear evidence of heavy use"))
+    db.session.commit()
+    app.logger.info("Book Conditions created")
