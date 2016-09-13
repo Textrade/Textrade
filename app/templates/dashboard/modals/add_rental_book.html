@@ -8,7 +8,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h3 class="modal-title" id="myModalLabel">Request for New Rental Listing</h3>
                 </div>
-              <form action="{# {{ url_for('add_book_rent') }} #}" method="post" class="form-horizontal">
+              <form action="{{ url_for('dashboard.add_book_rent') }}" method="post" class="form-horizontal">
                 <div class="modal-body">
                     {{ form.hidden_tag() }}
                       {% for field in form %}

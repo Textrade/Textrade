@@ -1,9 +1,8 @@
-from flask import (Blueprint, request, render_template, flash,
-                   redirect, url_for)
+from flask import (Blueprint, render_template)
 from flask_login import login_required
 
-from app.book.forms import AddBookRentForm
 from app.book.book import BookRentController
+from app.book.forms import AddBookRentForm
 from app.user.views import get_current_user
 
 dashboard = Blueprint('dashboard', __name__)
