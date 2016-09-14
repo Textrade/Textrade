@@ -88,3 +88,14 @@ def create_book_conditions(app, db):
     db.session.add(BookCondition("Bad", "Clear evidence of heavy use"))
     db.session.commit()
     app.logger.info("Book Conditions created")
+
+#
+# def create_book_status(app, db):
+#     from app.book.models import BookStatus
+#     app.logger.info("Creating Book Status")
+#     db.session.add(BookStatus("available"))
+#     db.session.add(BookStatus("no_available"))
+#     db.session.add(BookStatus("requested"))
+#     db.session.add(BookStatus("rented"))
+#     db.session.commit()
+#     app.logger.info("Book Status created")

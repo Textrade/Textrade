@@ -19,7 +19,7 @@ class BookRentController:
             comment=kwargs['condition_comment'],
             marks=kwargs['marks'],
             user=kwargs['user'],
-            book_status='available',
+            book_status=1,
         ).create()
         return book
 

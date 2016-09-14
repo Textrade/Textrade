@@ -1,4 +1,4 @@
-from flask import (Blueprint, render_template)
+from flask import Blueprint, render_template
 from flask_login import login_required
 
 from app.book.book import BookRentController
