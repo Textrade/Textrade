@@ -80,7 +80,7 @@ class BookRentController:
 
     @staticmethod
     def delete_book_to_rent(book_id):
-        BookToRent.query.filter_by(id=book_id).delete()
+        BookToRent.query.get(book_id).delete()
 
     class DuplicateEntry(Exception):
         pass

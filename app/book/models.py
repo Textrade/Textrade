@@ -78,6 +78,10 @@ class BookToRent(BaseModel, db.Model):
     def __repr__(self):
         return "<Book To Rent: {}>".format(self.name)
 
+    @staticmethod
+    def get_by_id(pk):
+        return BookToRent.query.get(pk)
+
     def get_listed_date(self):
         return self.added.strftime("%m/%d/%Y")
 
