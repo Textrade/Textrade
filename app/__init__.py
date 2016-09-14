@@ -28,11 +28,15 @@ def before_request():
 
 
 # HTTP error handlers
-@app.errorhandler(400)
+@app.errorhandler(404)
 def page_not_found(error):
     return render_template('misc/404.html')
 
-# TODO: Add 500 server error handler
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('misc/500.html')
+
 
 # Default views
 from app.views import init

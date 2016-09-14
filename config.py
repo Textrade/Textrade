@@ -1,15 +1,12 @@
 import os
 
-# Debug environment variable
-DEBUG = True
-
 # Application directory
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Runtime Config
 HOST = '127.0.0.1'
 PORT = 5000
-DEBUG = True
+DEBUG = False
 
 # Database configuration
 # Production DB
