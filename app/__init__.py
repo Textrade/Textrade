@@ -55,4 +55,4 @@ from app.book.models import (BookToRent, BookStatus, BookCondition,
                              BookRentingRequest)
 app.register_blueprint(book)
 
-# config.init_project(app, db, reset=False)
+# config.init_project(app, db, reset=True)

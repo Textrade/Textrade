@@ -1,7 +1,8 @@
 from flask_wtf import Form
-from wtforms import (StringField, SelectField, FileField, TextAreaField,
+from wtforms import (StringField, SelectField, TextAreaField,
                      BooleanField)
-from wtforms.validators import DataRequired, Regexp, ValidationError, Length
+from wtforms.validators import DataRequired, Regexp
+from sqlalchemy.exc import ProgrammingError
 
 from app.book.models import BookCondition
 
@@ -30,8 +31,11 @@ class AddBookRentForm(Form):
         ]
     )
     condition_list = []
-    for condition in BookCondition.query.all():
-        condition_list.append((condition.condition, condition.label))
+    try:
+        for condition in BookCondition.query.all():
+            condition_list.append((condition.id, condition.condition))
+    except ProgrammingError:
+        pass
 
     condition = SelectField(
         'Condition',

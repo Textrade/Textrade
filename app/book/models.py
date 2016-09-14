@@ -17,6 +17,10 @@ class BookCondition(BaseModel, db.Model):
     def __repr__(self):
         return "<Book Condition: {}>".format(self.condition)
 
+    @staticmethod
+    def get_by_id(pk):
+        return BookCondition.query.get(pk)
+
 
 class BookStatus(BaseModel, db.Model):
     """BookStatus model."""
@@ -28,6 +32,10 @@ class BookStatus(BaseModel, db.Model):
 
     def __repr__(self):
         return "<BookStatus: {}>".format(self.status)
+
+    @staticmethod
+    def get_by_id(pk):
+        return BookStatus.query.get(pk)
 
 
 class BookToRent(BaseModel, db.Model):
@@ -69,6 +77,9 @@ class BookToRent(BaseModel, db.Model):
 
     def __repr__(self):
         return "<Book To Rent: {}>".format(self.name)
+
+    def get_listed_date(self):
+        return self.added.strftime("%m/%d/%Y")
 
 
 class BookRenting(BaseModel, db.Model):

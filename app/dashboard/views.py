@@ -26,9 +26,9 @@ def your_rentals():
     return render_template(
         'dashboard/rentals.html',
         title="Your Rentals",
-        rental_list=None,
+        rental_list=BookRentController.get_available_rentals(user.username),
         add_rental_form=AddBookRentForm(),
-        currently_renting=BookRentController.get_available_rentals(user.username),
+        currently_renting=BookRentController.get_currently_renting(user.id),
         currently_renting_out=BookRentController.get_currently_renting_out(user.id)
     )
 

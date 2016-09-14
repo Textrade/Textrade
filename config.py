@@ -66,6 +66,7 @@ def init_project(app, db, reset=False):
 
         create_user_roles(app, db)
         create_book_conditions(app, db)
+        create_book_status(app, db)
 
 
 def create_user_roles(app, db):
@@ -81,7 +82,7 @@ def create_user_roles(app, db):
 def create_book_conditions(app, db):
     from app.book.models import BookCondition
     app.logger.info("Creating Book Conditions")
-    db.session.add(BookCondition("Like New"))
+    db.session.add(BookCondition("Like New", "New"))
     db.session.add(BookCondition("Very Good", "Minimal wear on cover, otherwise perfect"))
     db.session.add(BookCondition("Good", "Some wear on the cover, spine and pages"))
     db.session.add(BookCondition("Fair", "Noticeable wear on the cover, spine and pages"))
@@ -89,13 +90,13 @@ def create_book_conditions(app, db):
     db.session.commit()
     app.logger.info("Book Conditions created")
 
-#
-# def create_book_status(app, db):
-#     from app.book.models import BookStatus
-#     app.logger.info("Creating Book Status")
-#     db.session.add(BookStatus("available"))
-#     db.session.add(BookStatus("no_available"))
-#     db.session.add(BookStatus("requested"))
-#     db.session.add(BookStatus("rented"))
-#     db.session.commit()
-#     app.logger.info("Book Status created")
+
+def create_book_status(app, db):
+    from app.book.models import BookStatus
+    app.logger.info("Creating Book Status")
+    db.session.add(BookStatus("available"))
+    db.session.add(BookStatus("no_available"))
+    db.session.add(BookStatus("requested"))
+    db.session.add(BookStatus("rented"))
+    db.session.commit()
+    app.logger.info("Book Status created")

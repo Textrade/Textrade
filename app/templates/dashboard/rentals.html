@@ -34,8 +34,8 @@
                                   <tbody>
                                         {% for rental in rental_list %}
                                             <tr>
-                                                <td>{{ rental.date_listed() }}</td>
-                                                <td>{{ rental.get_book_name() }}</td>
+                                                <td>{{ rental.get_listed_date() }}</td>
+                                                <td>{{ rental.name }}</td>
                                                 <td><button id="remove-rent-{{ rental.id }}" class="btn btn-danger" data-toggle="modal" data-target="#{{ rental.id }}">Remove</button></td>
                                             </tr>
                                             {{ remove_listing_modal(rental) }}
@@ -77,20 +77,24 @@
                     <div class="col-lg-12">
                       <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
-                            <thead>
-                              <tr>
-                                <th>Due Date</th>
-                                <th>Title</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                                {% for renting in currently_renting %}
-                                    <tr>
-                                      <td>{{ renting.get_due_date() }}</td>
-                                      <td>{{ renting.book.name }}</td>
-                                    </tr>
-                                {% endfor %}
-                              </tbody>
+                            {% if currently_renting[0] %}
+                                <thead>
+                                  <tr>
+                                    <th>Due Date</th>
+                                    <th>Title</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for renting in currently_renting %}
+                                        <tr>
+                                          <td>{{ renting }}</td>
+                                          <td>{{ renting.name }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            {% else %}
+                                <h3>Nothing to show</h3>
+                            {% endif %}
                           </table>
                       </div>
                       <!-- /.table-responsive -->
@@ -116,22 +120,26 @@
                       <div class="col-lg-12">
                         <div class="table-responsive">
                           <table class="table table-bordered table-hover table-striped">
-                              <thead>
-                                <tr>
-                                  <th>Due Date</th>
-                                  <th>Title</th>
-                                  <th>Renting To</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                              {% for renting_out in currently_renting_out %}
-                                  <tr>
-                                    <td>{{ renting_out.get_due_date() }}</td>
-                                    <td>{{ renting_out.book.name }}</td>
-                                    <td>@{{ renting_out.rentee.username }}</td>
-                                  </tr>
-                             {% endfor %}
-                                </tbody>
+                              {% if currently_renting_out[0] %}
+                                  <thead>
+                                    <tr>
+                                      <th>Due Date</th>
+                                      <th>Title</th>
+                                      <th>Renting To</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                      {% for renting_out in currently_renting_out %}
+                                          <tr>
+                                            <td>{{ renting_out.get_due_date() }}</td>
+                                            <td>{{ renting_out.book.name }}</td>
+                                            <td>@{{ renting_out.rentee.username }}</td>
+                                          </tr>
+                                      {% endfor %}
+                                 </tbody>
+                              {% else %}
+                                  <h3>Nothing to show</h3>
+                              {% endif %}
                             </table>
                         </div>
                         <!-- /.table-responsive -->

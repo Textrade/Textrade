@@ -1,4 +1,4 @@
-from .models import BookToRent, BookRenting, BookRentingRequest
+from .models import BookToRent, BookRenting, BookCondition, BookStatus, BookRentingRequest
 from app.user.models import User
 
 
@@ -15,11 +15,11 @@ class BookRentController:
             author=kwargs['author'],
             description=kwargs['description'],
             isbn=kwargs['isbn'],
-            condition=kwargs['condition'],
+            condition=BookCondition.get_by_id(kwargs['condition']),
             comment=kwargs['condition_comment'],
             marks=kwargs['marks'],
             user=kwargs['user'],
-            book_status=1,
+            book_status=BookStatus.get_by_id(1),
         ).create()
         return book
 

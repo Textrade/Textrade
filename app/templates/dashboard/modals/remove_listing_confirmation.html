@@ -6,10 +6,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h3 class="modal-title" id="myModalLabel">Confirmation</h3>
                 </div>
-                <p style="padding: 20px;">Are you sure you want to remove {{ book.get_book_name() }} from your available books for trade?</p>
+                <p style="padding: 20px;">Are you sure you want to remove {{ book.name }} from your available books for trade?</p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <a href="{{ url_for('delete_rental_book', book_id=book.id) }}"><button id="remove-rent-book" type="button" class="btn btn-primary">Remove Listing</button></a>
+{#                    <a href="{{ url_for('delete_rental_book', book_id=book.id) }}"><button id="remove-rent-book" type="button" class="btn btn-primary">Remove Listing</button></a>#}
                 </div>
             </div>
         </div>

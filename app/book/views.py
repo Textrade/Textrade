@@ -9,10 +9,11 @@ from app.user.views import get_current_user
 book = Blueprint('book', __name__)
 
 
-@book.route('/book/add-book-to-rent', methods=['POST'])
+@book.route('/book/add-book-to-rent', methods=['GET', 'POST'])
 def add_book_rent():
     rent_book_form = AddBookRentForm()
-
+    user = get_current_user()
+    username = get_current_user().username  # If not accessed, undefined behavior occurs
     if rent_book_form.is_submitted():
         book_isbn = rent_book_form.isbn.data
         book = GoogleAPI.load_book_info(book_isbn)
@@ -24,7 +25,7 @@ def add_book_rent():
                 isbn=book_isbn,
                 condition=rent_book_form.condition.data,
                 condition_comment=rent_book_form.condition_comment.data,
-                user=get_current_user().username,
+                user=user,
                 marks=rent_book_form.marks.data
             )
             return jsonify(
@@ -38,4 +39,4 @@ def add_book_rent():
                 msg="We couldn't find this book, check the ISBN number",
                 url=None
             )
-    return redirect(url_for('dashboard.add_book_rent'))
+    return redirect(url_for('dashboard.your_rentals'))
