@@ -60,3 +60,4 @@ from app.book.models import (BookToRent, BookStatus, BookCondition,
 app.register_blueprint(book)
 
 # config.init_project(app, db, reset=True)
+config.make_scenario()

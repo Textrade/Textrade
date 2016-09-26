@@ -1,7 +1,7 @@
 import datetime
 
 from app.core.models import db, BaseModel
-from app.user.models import User
+from app.user.user import UserController, User
 
 
 class BookCondition(BaseModel, db.Model):
@@ -116,6 +116,12 @@ class BookRenting(BaseModel, db.Model):
         return "<BookRenting: {} - {} <-> {}>".format(
             self.book, self.renter_id, self.rentee_id
         )
+
+    def get_rentee(self):
+        return UserController.get_user_by_id(self.rentee_id)
+
+    def get_renter(self):
+        return UserController.get_user_by_id(self.renter_id)
 
     def get_due_date(self):
         return self.returning_date.strftime("%m/%d/%Y")

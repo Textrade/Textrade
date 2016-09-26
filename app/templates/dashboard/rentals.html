@@ -87,8 +87,8 @@
                                 <tbody>
                                     {% for renting in currently_renting %}
                                         <tr>
-                                          <td>{{ renting }}</td>
-                                          <td>{{ renting.name }}</td>
+                                          <td>{{ renting.get_due_date() }}</td>
+                                          <td>{{ renting.book.name }}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -133,7 +133,7 @@
                                           <tr>
                                             <td>{{ renting_out.get_due_date() }}</td>
                                             <td>{{ renting_out.book.name }}</td>
-                                            <td>@{{ renting_out.rentee.username }}</td>
+                                            <td><a href="{{ url_for('user.user_page', username=renting_out.get_rentee().username) }}">@{{ renting_out.get_rentee().username }}</a></td>
                                           </tr>
                                       {% endfor %}
                                  </tbody>

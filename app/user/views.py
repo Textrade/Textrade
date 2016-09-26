@@ -42,41 +42,41 @@ def login():
                     url=None
                 )
             else:
-                    if UserController.check_hash(current_user.password, login_form.password.data):
-                        if current_user.is_active():
-                            try:
-                                login_user(current_user)  # Login/create session for the user
-                            except UserController.UserNotFound:
-                                return jsonify(
-                                    status="error",
-                                    msg="We couldn't create a session for this user",
-                                    url=None
-                                )
-                            next_page = request.args.get('next')
-                            if next_page:
-                                return jsonify(
-                                    status="success",
-                                    msg="You've been logged in!",
-                                    url="{}{}".format(config.DOMAIN_NAME, url_for(next_page))
-                                )
-                            else:
-                                return jsonify(
-                                    status="success",
-                                    msg=None,
-                                    url="{}{}".format(config.DOMAIN_NAME, url_for('dashboard.index'))
-                                )
+                if UserController.check_hash(current_user.password, login_form.password.data):
+                    if current_user.is_active():
+                        try:
+                            login_user(current_user)  # Login/create session for the user
+                        except UserController.UserNotFound:
+                            return jsonify(
+                                status="error",
+                                msg="We couldn't create a session for this user",
+                                url=None
+                            )
+                        next_page = request.args.get('next')
+                        if next_page:
+                            return jsonify(
+                                status="success",
+                                msg="You've been logged in!",
+                                url="{}{}".format(config.DOMAIN_NAME, url_for(next_page))
+                            )
                         else:
                             return jsonify(
-                                status="no-active",
-                                msg="You account is not active yet, please check you email.",
-                                url=None
+                                status="success",
+                                msg=None,
+                                url="{}{}".format(config.DOMAIN_NAME, url_for('dashboard.index'))
                             )
                     else:
                         return jsonify(
-                            status="error",
-                            msg="Your username  or password doesn't match!",
+                            status="no-active",
+                            msg="You account is not active yet, please check you email.",
                             url=None
                         )
+                else:
+                    return jsonify(
+                        status="error",
+                        msg="Your username  or password doesn't match!",
+                        url=None
+                    )
         return render_template(
             'user/login.html',
             section="user",

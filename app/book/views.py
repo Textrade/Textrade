@@ -68,8 +68,6 @@ def delete_book_rent(pk):
     else:
         return jsonify(
             status="error",
-            msg="he book that you are try to delete doesn't exists",
+            msg="The book that you are try to delete doesn't exists",
             url=None
         )
-
-    return redirect(url_for('dashboard.your_rentals'))

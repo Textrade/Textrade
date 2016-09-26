@@ -59,6 +59,18 @@ class UserController:
             'university_email': self.university_email
         }
 
+    @staticmethod
+    def activate(username):
+        db.session.execute(
+            sql.update(User).where(
+                User.username == username
+            ).values(
+                active=True,
+                activated_on=datetime.datetime.now()
+            )
+        )
+        db.session.commit()
+
     def change_password(self, old_password, new_password):
         """Change the user passed in constructor."""
         if UserController.check_hash(self.password, old_password):
@@ -95,8 +107,8 @@ class UserController:
         """Delete a user. The password must be provided."""
         user = User.get(User.username == username)
         if UserController.check_hash(
-            user.password,  # Hash
-            password
+                user.password,  # Hash
+                password
         ):
             user.delete_instance()
         else:

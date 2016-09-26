@@ -6,7 +6,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 # Runtime Config
 HOST = '127.0.0.1'
 PORT = 5000
-DEBUG = False
+DEBUG = True
 
 # Database configuration
 # Production DB
@@ -51,19 +51,14 @@ UNDER_CONSTRUCTION_VIEW = [
 ]
 
 
-def init_project(app, db, reset=False):
-    if reset:
-        app.logger.info("Resetting Database")
-        app.logger.info("Dropping Tables...")
-        db.drop_all()
-        app.logger.info("Tables Dropped")
-        app.logger.info("Creating Tables")
-        db.create_all()
-        app.logger.info("Tables Created")
+def init_project(app, db):
+    app.logger.info("Creating Tables")
+    db.create_all()
+    app.logger.info("Tables Created")
 
-        create_user_roles(app, db)
-        create_book_conditions(app, db)
-        create_book_status(app, db)
+    create_user_roles(app, db)
+    create_book_conditions(app, db)
+    create_book_status(app, db)
 
 
 def create_user_roles(app, db):
@@ -97,3 +92,42 @@ def create_book_status(app, db):
     db.session.add(BookStatus("rented"))
     db.session.commit()
     app.logger.info("Book Status created")
+
+
+def create_fake_users():
+    import faker
+    from app.user.user import UserController
+
+    fake = faker.Factory.create()
+    users = []
+
+    for i in range(0, 10):
+        users.append(
+            UserController(
+                fake.first_name_male(),
+                fake.last_name_male(),
+                fake.user_name(),
+                "test",
+                fake.email()
+            ).create()
+        )
+        UserController.activate(users[i]['username'])
+
+    return users
+
+
+def make_scenario():
+    ISBN_LIST = [
+        "0026515628",
+        "0030020786",
+        "0030350840",
+        "0688079512",
+        "9780061906107",
+        "0813521505",
+        "0195372883",
+        "0385347405",
+        "145551215X",
+        "1586488287",
+    ]
+
+    users = create_fake_users()
